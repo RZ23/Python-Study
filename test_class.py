@@ -13,6 +13,4 @@ class Airport:
 class Chinese_Airport(Airport):
     def get_pinyin(self,pinyin):
         self.pinyin = pinyin
-    def add_hub(self,hub):
-        self.hub = hub
 
