@@ -45,7 +45,13 @@ for i in range(Customized_Airport):
     AP_Name = input("Please input the airport name")
     AP_Lc = input("Please input the airport location")
     AP_Hub = input("Is the Hub for the Airlines? Y/N")
-    New_Ap = Airport(AP_Code,AP_Name,AP_Lc)
+    AP_CN= input("Is the Chinese Airport?Y/N")
+    if(AP_CN.lower()=="y"):
+        New_Ap = Chinese_Airport(AP_Code,AP_Name,AP_Lc)
+        PY=input("Please input the PINYIN for the Airport")
+        New_Ap.get_pinyin(PY)
+    else:
+        New_Ap = Airport(AP_Code,AP_Name,AP_Lc)
     if AP_Hub.lower() == "y":
         Hub_Airline = input("Please input the Hub Airline:")
         New_Ap.add_hub(Hub_Airline)
@@ -53,19 +59,19 @@ for i in range(Customized_Airport):
     Airport_Dic.update(temp_air_port_dict)
     temp_air_port_dict.clear()
     Airport_list.append(New_Ap)
-for item in Airport_Dic:
-    if(hasattr(Airport_Dic[item],"hub")):
-        print(item + ":" + Airport_Dic[item].airport_name+" and is the Hub for "+Airport_Dic[item].hub)
-    else:
-        print(item + ":" + Airport_Dic[item].airport_name+" and is not the Hub for any airlines")
-PEK = Chinese_Airport("PEK","Beijing Capital International Airport","Beijing,CN")
-PEK.add_hub("CA")
-PEK.get_pinyin("BEIJING SHOUDU GUOJI JICHANG")
-Airport_Dic.update({"PEK":PEK})
+# for item in Airport_Dic:
+#     if(hasattr(Airport_Dic[item],"hub")):
+#         print(item + ":" + Airport_Dic[item].airport_name+" and is the Hub for "+Airport_Dic[item].hub)
+#     else:
+#         print(item + ":" + Airport_Dic[item].airport_name+" and is not the Hub for any airlines")
+# PEK = Chinese_Airport("PEK","Beijing Capital International Airport","Beijing,CN")
+# PEK.add_hub("CA")
+# PEK.get_pinyin("BEIJING SHOUDU GUOJI JICHANG")
+# Airport_Dic.update({"PEK":PEK})
 for item in Airport_Dic:
     if(hasattr(Airport_Dic[item],"hub")):
         if (hasattr(Airport_Dic[item], "pinyin")):
-            print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub+" PINYIN:" +Airport_Dic[item].pinyin)
+            print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub+", PINYIN:" +Airport_Dic[item].pinyin)
         else:
             print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub)
     else:
@@ -74,4 +80,5 @@ for item in Airport_Dic:
         else:
             print(item + ":" + Airport_Dic[item].airport_name+" and is not the Hub for any airlines")
 
-
+# f= open("test.txt")
+# print(f.readline())
