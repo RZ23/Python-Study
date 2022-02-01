@@ -3,8 +3,11 @@ class Airport:
         self.airport_code = airport_code
         self.airport_name = airport_name
         self.airport_locations = airport_locations
+        self.hub_list = []
     def add_hub(self,hub):
         self.hub = hub
+    def add_hub_list(self, hub):
+        self.hub_list.append(hub)
     def get_info(self):
         print("Airport infor: /n")
         print("The "+self.airport_code+": ")
