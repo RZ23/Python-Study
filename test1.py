@@ -65,7 +65,8 @@ for i in range(Customized_Airport):
             New_Ap = Airport(AP_Code,AP_Name,AP_Lc)
         if AP_Hub.lower() == "y":
             Hub_Airline = input("Please input the Hub Airline:")
-            New_Ap.add_hub(Hub_Airline)
+            #New_Ap.add_hub(Hub_Airline)
+            New_Ap.add_hub_list(Hub_Airline)
         temp_air_port_dict = {AP_Code: New_Ap}
         Airport_Dic.update(temp_air_port_dict)
         temp_air_port_dict.clear()
@@ -77,12 +78,15 @@ for item in Airport_Dic:
         if (hasattr(Airport_Dic[item], "pinyin")):
             # print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub+", PINYIN:" +Airport_Dic[item].pinyin)
             #print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub_list[0]+", PINYIN:" +Airport_Dic[item].pinyin)
-            print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub_list+ ", PINYIN:" + Airport_Dic[item].pinyin)
+            print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for ",end = "")
+            print(Airport_Dic[item].hub_list,end = " ")
+            print(", PINYIN:" + Airport_Dic[item].pinyin)
         else:
             # print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub)
             # print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for " + Airport_Dic[item].hub_list[0])
             print(item + ":" + Airport_Dic[item].airport_name + " and is the Hub for ",end = " ")
             print(Airport_Dic[item].hub_list,end = " ")
+            print()
     else:
         if (hasattr(Airport_Dic[item], "pinyin")):
             print(item + ":" + Airport_Dic[item].airport_name + " and is not the Hub for any airlines, PINYIN:" + Airport_Dic[item].pinyin)
@@ -118,5 +122,5 @@ def Airline_Hub_Airport(airline,airport_dic):
             print(Airport_item,end = " ")
 airline = input("Please input the Airline for Hub Airport Search")
 
-Airline_Hub_Airport(airline,Airport_Dic)
+Airline_Hub_Airport(airline.upper(),Airport_Dic)
 
