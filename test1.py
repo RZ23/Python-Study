@@ -53,21 +53,12 @@ for i in range(Customized_Airport):
     else:
         New_Ap = Airport(AP_Code,AP_Name,AP_Lc)
     if AP_Hub.lower() == "y":
-        Hub_Airline = input("Please input the Hub Airline:")
-        New_Ap.add_hub(Hub_Airline)
+            Hub_Airline = input("Please input the Hub Airline:")
+            New_Ap.add_hub(Hub_Airline)
     temp_air_port_dict = {AP_Code: New_Ap}
     Airport_Dic.update(temp_air_port_dict)
     temp_air_port_dict.clear()
     Airport_list.append(New_Ap)
-# for item in Airport_Dic:
-#     if(hasattr(Airport_Dic[item],"hub")):
-#         print(item + ":" + Airport_Dic[item].airport_name+" and is the Hub for "+Airport_Dic[item].hub)
-#     else:
-#         print(item + ":" + Airport_Dic[item].airport_name+" and is not the Hub for any airlines")
-# PEK = Chinese_Airport("PEK","Beijing Capital International Airport","Beijing,CN")
-# PEK.add_hub("CA")
-# PEK.get_pinyin("BEIJING SHOUDU GUOJI JICHANG")
-# Airport_Dic.update({"PEK":PEK})
 for item in Airport_Dic:
     if(hasattr(Airport_Dic[item],"hub")):
         if (hasattr(Airport_Dic[item], "pinyin")):
@@ -82,3 +73,20 @@ for item in Airport_Dic:
 
 # f= open("test.txt")
 # print(f.readline())
+
+def Airline_Hub_Airport(airline,airport_dic):
+    Hub_Airport = []
+    for item in airport_dic:
+        if hasattr(airport_dic[item],"hub") and (airport_dic[item].hub==airline):
+            Hub_Airport.append(item)
+    if len(Hub_Airport) == 0:
+        print(airline+" has no Hub Airport")
+    else:
+        print(airline+"'has "+str(len(Hub_Airport))+" Hub Airport(s):")
+        for Airport_item in Hub_Airport:
+            print(Airport_item,end = " ")
+
+airline = input("Please input the Airline for Hub Airport Research")
+
+Airline_Hub_Airport(airline,Airport_Dic)
+
