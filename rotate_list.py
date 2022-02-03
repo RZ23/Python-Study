@@ -86,7 +86,7 @@ for item in tests:
     if linear_search(item["input"]["nums"])==item["output"]:
         Status ="Pass"
     else:
-        Status == "Fail"
+        Status = "Fail"
     print("Status:"+Status)
 print("The Linear Search for the Rotated Function is finished")
 
@@ -100,6 +100,6 @@ for item in tests:
     if Binary_search(item["input"]["nums"])==item["output"]:
         Status ="Pass"
     else:
-        Status == "Fail"
+        Status = "Fail"
     print("Status:"+Status)
 print("The Binary Search for the Rotated Function is finished")
