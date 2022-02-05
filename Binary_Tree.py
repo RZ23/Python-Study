@@ -177,7 +177,7 @@ insert(Airport_Tree2,EWR.Airport_Code,EWR)
 #     key,value = list[mid]
 #     root = BSTNode(key,value)
 #     root.parent = parent
-#     root.left = make_balanced_BST(list,low,id-1,root)
+#     root.left = make_balanced_BST(list,low,mid-1,root)
 #     root.right = make_balanced_BST(list,mid+1,high,root)
 #     return root
 def make_balanced_BST(list,low = 0,high = None,parent = None):
