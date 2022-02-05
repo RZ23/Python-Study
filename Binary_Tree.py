@@ -134,25 +134,36 @@ DIK = Airport("DIK","Dickinson")
 LAX = Airport("LAX","los Angeles")
 CKG = Airport("CKG","Chongqing")
 SEA = Airport("SEA","Seattle")
+TOL = Airport("TOL","Toledo")
+EWR = Airport("EWR","Newark")
 Airport_tree = BSTNode(PEK.Airport_Code,PEK)
 Airport_tree. left= BSTNode(DEN.Airport_Code,DEN)
 Airport_tree.right =BSTNode(DIK.Airport_Code,DIK)
-# display_key(Airport_tree)
 Airport_Tree2= insert(None, PEK.Airport_Code,PEK)
 insert(Airport_Tree2,CKG.Airport_Code,CKG)
 insert(Airport_Tree2,DIK.Airport_Code,DIK)
 insert(Airport_Tree2,LAX.Airport_Code,LAX)
 insert(Airport_Tree2,DEN.Airport_Code,DEN)
 insert(Airport_Tree2,SEA.Airport_Code,SEA)
+insert(Airport_Tree2,TOL.Airport_Code,TOL)
+insert(Airport_Tree2,EWR.Airport_Code,EWR)
 display_key(Airport_Tree2)
-find_node = find(Airport_Tree2,"LAS")
-find_node2 = find(Airport_Tree2,"LAX")
-print(find_node2.key)
-find_result = []
-find_result.append(find_node)
-find_result.append(find_node2)
-for item in find_result:
-    if item is None:
-        print("Not Find",end =" ")
+while True:
+    airport = input("Please input the Airport Code to Search:").upper()
+    if find(Airport_Tree2,airport) is None:
+        print("There is no Airport with the code: "+airport)
+        break
     else:
-        print("find: "+item.value.Airport_Location,end = " ")
+        print("Found " + find(Airport_Tree2,airport).key + " at " + find(Airport_Tree2,airport).value.Airport_Location)
+# find_node2 = find(Airport_Tree2,"LAX")
+# print(find_node2.key)
+# find_result = []
+# find_result.append(find_node)
+# find_result.append(find_node2)
+# for item in find_result:
+#     if item is None:
+#         print("Not Find")
+#     else:
+#         print("Found "+item.key+" at "+item.value.Airport_Location)
+
+
