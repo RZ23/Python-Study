@@ -108,7 +108,7 @@ class BSTNode():
         self.right = None
         self.parent = None
 
-def insert(node, key,value):
+def insert(node, key,value=None):
     if node is None:
         node = BSTNode(key,value)
     elif key<node.key:
@@ -147,14 +147,14 @@ insert(Airport_Tree2,DEN.Airport_Code,DEN)
 insert(Airport_Tree2,SEA.Airport_Code,SEA)
 insert(Airport_Tree2,TOL.Airport_Code,TOL)
 insert(Airport_Tree2,EWR.Airport_Code,EWR)
-display_key(Airport_Tree2)
-while True:
-    airport = input("Please input the Airport Code to Search:").upper()
-    if find(Airport_Tree2,airport) is None:
-        print("There is no Airport with the code: "+airport)
-        break
-    else:
-        print("Found " + find(Airport_Tree2,airport).key + " at " + find(Airport_Tree2,airport).value.Airport_Location)
+# display_key(Airport_Tree2)
+# while True:
+#     airport = input("Please input the Airport Code to Search:").upper()
+#     if find(Airport_Tree2,airport) is None:
+#         print("There is no Airport with the code: "+airport)
+#         break
+#     else:
+#         print("Found " + find(Airport_Tree2,airport).key + " at " + find(Airport_Tree2,airport).value.Airport_Location)
 # find_node2 = find(Airport_Tree2,"LAX")
 # print(find_node2.key)
 # find_result = []
@@ -166,4 +166,44 @@ while True:
 #     else:
 #         print("Found "+item.key+" at "+item.value.Airport_Location)
 
+#  create a balanced BST from a sorted list/array of key-value pairs
 
+# def make_balanced_BST(list,low = 0,high = None,parent = None):
+#     if high is None:
+#         high = len(list)-1
+#     if high<low:
+#         return None
+#     mid = (low+high)//2
+#     key,value = list[mid]
+#     root = BSTNode(key,value)
+#     root.parent = parent
+#     root.left = make_balanced_BST(list,low,id-1,root)
+#     root.right = make_balanced_BST(list,mid+1,high,root)
+#     return root
+def make_balanced_BST(list,low = 0,high = None,parent = None):
+    if high is None:
+        high = len(list)-1
+    if high<low:
+        return None
+    mid = (low+high)//2
+    key= list[mid]
+    root = BSTNode(key)
+    root.parent = parent
+    root.left = make_balanced_BST(list,low,mid-1,root)
+    root.right = make_balanced_BST(list,mid+1,high,root)
+    return root
+
+
+display_key(tree2," ")
+# list = inOrder(tree2)
+list = [1,2,3,4,5,6,7,8]
+balanced_node = make_balanced_BST(list)
+unbalanced_node=BSTNode(0)
+for item in list:
+    insert(unbalanced_node,item)
+print("Unbalanced Tree")
+display_key(unbalanced_node,"   ")
+print("Balanced Tree")
+list = [0,1,2,3,4,5,6,7,8]
+balanced_node = make_balanced_BST(list)
+display_key(balanced_node,"   ")
