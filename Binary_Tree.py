@@ -238,5 +238,43 @@ def print_a_list(list):
     print()
 print("Updated List")
 delete_node = int(input("please input the key need to be deleted: "))
-print_a_list(delete_from_bst(unbalanced_node,delete_node))
-display_key(make_balanced_BST(delete_from_bst(unbalanced_node,delete_node)),"   ")
+# print_a_list(delete_from_bst(unbalanced_node,delete_node))
+# display_key(make_balanced_BST(delete_from_bst(unbalanced_node,delete_node)),"   ")
+
+def MaxvalueNode(node):
+    current = node
+    while (current.left is not None):
+        current = current.left
+    return current
+def deleteNode(node,key):
+    # base case, if the node is None
+    if node is None:
+        return None
+    # if the node to delete is smaller than the root's key, then it is lies in left
+    if key<node.key:
+        node.left = deleteNode(node.left,key)
+    # if the node to delete is greater than the root's key, then it is lies in left
+    elif key>node.key:
+        node.right = deleteNode(node.right,key)
+    # if found the key, three cases, no child node, one child note, and two child node
+    else:
+        # if has right only child
+        if node.left is None:
+            temp= node.right
+            node = None
+            return temp
+        elif node.right is None:
+            temp=node.left
+            node = None
+            return temp
+        # has both left and right child, find the max node from the right child
+        temp = MaxvalueNode(node.right)
+        node.key = temp.key
+        node.right = deleteNode(node.right,temp.key)
+    return node
+
+display_key(deleteNode(unbalanced_node,delete_node)," ")
+deleted_list =inOrder(deleteNode(unbalanced_node,delete_node))
+display_key(make_balanced_BST(deleted_list))
+
+
