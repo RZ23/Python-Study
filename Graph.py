@@ -10,9 +10,11 @@ class Graph:
     #add new edge
     def add_dege(self,edge):
         n1,n2=edge[0],edge[1]
-        print(n1,n2)
-        self.data[n1].append(n2)
-        self.data[n2].append(n1)
+        if n2 in self.data[n1]:
+            print("Edge Exist")
+        else:
+            self.data[n1].append(n2)
+            self.data[n2].append(n1)
     # delete a edge
     def delete_edge(self,edge):
         n1,n2=edge[0],edge[1]
@@ -32,12 +34,17 @@ graph1 = Graph(num_nodes,edges)
 # print(graph1.data)
 # print(["{}:{}".format(n,neighbores) for n,neighbores in enumerate(graph1.data)])
 print(graph1)
-# graph1.add_dege((2,0))
-# print(graph1)
-# graph1.delete_edge((2,0))
-# print(graph1)
-# graph1.delete_edge((2,0))
-# print(graph1)
+print("Add Edge")
+graph1.add_dege((2,0))
+print(graph1)
+print("Add Exist Edge")
+graph1.add_dege((2,0))
+print("Delete Edge")
+graph1.delete_edge((2,0))
+print(graph1)
+print("Delete Not Exist Edge")
+graph1.delete_edge((2,0))
+print("------------------------------------")
 print("Adjacency Matrix")
 #Adjacency Matrix
 class Adjacency_Matrix_Graph():
@@ -49,6 +56,8 @@ class Adjacency_Matrix_Graph():
             self.data[n2][n1]=1
     def add_node(self,edge):
         n1,n2 = edge[0],edge[1]
+        if self.data[n1][n2]==1:
+            print("Edge Exist")
         self.data[n1][n2]=1
         self.data[n2][n1]=1
     def delete_dege(self,edge):
@@ -58,19 +67,17 @@ class Adjacency_Matrix_Graph():
         else:
             self.data[n1][n2]=0
             self.data[n2][n1]=0
-    # def __repr__(self):
-    #     for i in range(num_nodes):
-    #         for j in range(num_nodes):
-    #             return " "+str(self.data[i][j])
-    #         return "\n"
-    # def __str__(self):
-    #     return self.__repr__()
     def __repr__(self):
         return repr(self.data)
 graph2 = Adjacency_Matrix_Graph(num_nodes,edges)
 print(graph2)
+print("Add Edge")
 graph2.add_node((0,2))
 print(graph2)
+print("Add the same edge")
+graph2.add_node((0,2))
+print("Delete a edge")
 graph2.delete_dege((0,2))
 print(graph2)
-
+print("Delete the same edge")
+graph2.delete_dege((0,2))
