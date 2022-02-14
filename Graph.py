@@ -39,7 +39,7 @@ print(graph1)
 # graph1.delete_edge((2,0))
 # print(graph1)
 print("Adjacency Matrix")
-#Adjency Matrix
+#Adjacency Matrix
 class Adjacency_Matrix_Graph():
     def __init__(self,num_nodes,edges):
         self.num_nodes = num_nodes
