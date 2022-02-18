@@ -81,3 +81,75 @@ graph2.delete_dege((0,2))
 print(graph2)
 print("Delete the same edge")
 graph2.delete_dege((0,2))
+
+class Adjacency_List_Dict():
+    def __init__(self,num_node,edges):
+        self.num_node = num_node
+        self.data = {}
+        for node1,node2 in edges:
+            if node1 in self.data:
+                self.data[node1].append(node2)
+            else:
+                self.data[node1]=list(node2)
+            if node2 in self.data:
+                self.data[node2].append(node1)
+            else:
+                self.data[node2] = list(node1)
+    def add_dege(self,edge):
+        node1,node2 = edge[0],edge[1]
+        if node1 in self.data:
+            if node2 in self.data[node1]:
+                print("Edge Exist")
+                return
+            else:
+                self.data[node1].append(node2)
+        elif node1 not in self.data:
+            self.data[node1] = list(node2)
+        if node2 in self.data:
+            if node1 in self.data[node2]:
+                print("Edge Exist")
+                return
+            else:
+                self.data[node2].append(node1)
+        elif node2 not in self.data:
+            self.data[node2] = list(node1)
+    def del_edge(self,edge):
+        node1,node2 = edge[0],edge[1]
+        if node1 not in self.data.keys() or node2 not in self.data.keys():
+            print("Node Not Exist")
+        elif node2 not in self.data[node1] or node1 not in self.data[node2]:
+            print("Edge Not Exist")
+        else:
+            self.data[node1].remove(node2)
+            self.data[node2].remove(node1)
+
+num_nodes = 6
+edges = (("a","b"),("a","c"),("b","d"),("c","e"),("d","f"))
+print("---------------------------------------------------")
+print("Adjacency List with Dict")
+dict_graph = Adjacency_List_Dict(num_nodes,edges)
+def print_Adjacency_list_Dict(graph):
+    for key in graph.data.keys():
+        s = key.upper()+":"
+        for value in graph.data[key]:
+            s = " "+s+" "+value.upper()
+        print(s,end = " ")
+    print()
+print_Adjacency_list_Dict(dict_graph)
+print("Add New Edge: (E,F)")
+new_dege = ("e","f")
+exist_edge = ("a","c")
+dict_graph.add_dege(new_dege)
+print_Adjacency_list_Dict(dict_graph)
+print("Add Exist Edge: (A,C)")
+dict_graph.add_dege(exist_edge)
+print_Adjacency_list_Dict(dict_graph)
+print("Delete Edge (A,C)")
+dict_graph.del_edge(("a","c"))
+print_Adjacency_list_Dict(dict_graph)
+print("Delete Not Exist Edge (A,C)")
+dict_graph.del_edge(("a","c"))
+print_Adjacency_list_Dict(dict_graph)
+print("Delete Not Exist Node (X,Y)")
+dict_graph.del_edge(("x","y"))
+print_Adjacency_list_Dict(dict_graph)
