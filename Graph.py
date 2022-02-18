@@ -25,7 +25,8 @@ class Graph:
         else:
             print("Edge Not Exist")
     def __repr__(self):
-        return "\n".join(["{}:{}".format(n,neighbores) for n,neighbores in enumerate(self.data)])
+        return " ".join(["{}:{}".format(n,neighbores) for n,neighbores in enumerate(self.data)])
+        # return "\n".join(["{}:{}".format(n,neighbores) for n,neighbores in enumerate(self.data)])
     def __str__(self):
         return self.__repr__()
 
@@ -34,16 +35,17 @@ edges = [(0,1),(0,4),(1,2),(1,3),(1,4),(2,3),(3,4)]
 graph1 = Graph(num_nodes,edges)
 # print(graph1.data)
 # print(["{}:{}".format(n,neighbores) for n,neighbores in enumerate(graph1.data)])
+print("Adjacency List Display")
 print(graph1)
-print("Add Edge")
+print("Add Edge (2,0)")
 graph1.add_dege((2,0))
 print(graph1)
-print("Add Exist Edge")
+print("Add Exist Edge (2,0)")
 graph1.add_dege((2,0))
-print("Delete Edge")
+print("Delete Edge (2,0)")
 graph1.delete_edge((2,0))
 print(graph1)
-print("Delete Not Exist Edge")
+print("Delete Not Exist Edge (2,0)")
 graph1.delete_edge((2,0))
 print("------------------------------------")
 print("Adjacency Matrix")
@@ -177,7 +179,7 @@ print_Adjacency_list_Dict(dict_graph)
 print("Delete Not Exist Node (X,Y)")
 dict_graph.del_edge(("x","y"))
 print_Adjacency_list_Dict(dict_graph)
-
+print("---------------------BFS AND DFS------------------------")
 #Deep Frist Search
 def dfs(graph,start_node):
     s = []
@@ -216,6 +218,83 @@ def bfs(graph,start_node):
                 status[neighbor]="V"
         seq = seq+current.upper()
     return seq
-
+print("Breadth First Search")
 print(bfs(dict_graph,"a"))
 
+# Create an Graph class for the weighted graph to calculate the shortest path
+class weight_graph():
+    def __init__(self, edges):
+        self.weight={}
+        for start,end,weight in edges:
+            start_node = start
+            end_node = end
+            path_weight = weight
+            self.weight[start_node,end_node]=weight
+        self.data={}
+        for start,end,weight in edges:
+            start_node = start
+            end_node = end
+            path_weight = weight
+            if start_node not in self.data.keys():
+                if end_node not in self.data.keys():
+                    self.data[start_node]=list(end_node)
+                    self.data[end_node] = list(start_node)
+                else:
+                    self.data[start_node] = list(end_node)
+                    self.data[end_node].append(start_node)
+            else:
+                if end_node not in self.data.keys():
+                    self.data[start_node].append(end_node)
+                    self.data[end_node]=list(start_node)
+                else:
+                    self.data[start_node].append(end_node)
+                    self.data[end_node].append(start_node)
+def display(graph):
+    for start,end in graph.weight:
+        print("("+start+","+end+")："+str(graph.weight[(start,end)]))
+
+weight_edges=edges = [
+    ('X', 'A', 7), ('X', 'B', 2),('X', 'C', 3),('X', 'E', 4), ('A', 'B', 3), ('A', 'D', 4), ('B', 'D', 4), ('B', 'H', 5), ('C', 'L', 2), ('D', 'F', 1),
+    ('F', 'H', 3),('G', 'H', 2),('G', 'Y', 2),('I', 'J', 6),('I', 'K', 4),('I', 'L', 4),('J', 'L', 1), ('K', 'Y', 5),
+                     ]
+
+weight_graph = weight_graph(weight_edges)
+display(weight_graph)
+
+def dijsktra(graph,start,end):
+    shortest_paths= {start:(None,0)}
+    current = start
+    visited = set()
+    while current !=end:
+        visited.add(current)
+        destination = set(graph.data[current]).symmetric_difference(list(visited))
+        print(destination)
+        weight_to_current_node = shortest_paths[current][1]
+        # update the weight for each node
+        # print(graph.data[current])
+        for neighbor_node in graph.data[current]:
+            print("current = "+current," neighbor="+neighbor_node)
+            print(graph.weight[current,neighbor_node])
+            weight = graph.weight[current,neighbor_node]+weight_to_current_node
+            if neighbor_node not in shortest_paths:
+                shortest_paths[neighbor_node]=(current,weight)
+            else:
+                current_short_wight = shortest_paths[neighbor_node][1]
+                if current_short_wight>weight:
+                    shortest_paths[neighbor_node]=(current,weight)
+        next_destination = {node:shortest_paths[node] for node in shortest_paths if node not in visited}
+        if not next_destination:
+            return "Route Not Possible"
+        current = min(next_destination,key = lambda k:next_destination[k][1])
+    path = []
+    weight = 0
+    while current is not None:
+        path.append(current)
+        next = shortest_paths[current][0]
+        weight = shortest_paths[current][1]+weight
+        current =next
+    path = path[::-1]
+    print("Shortest Path:"+str(weight))
+    return path
+
+dijsktra(weight_graph, 'X', 'Y')
