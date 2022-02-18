@@ -1,3 +1,4 @@
+from collections import deque
 #Adjacency List
 class Graph:
     def __init__(self,num_nodes,edges):
@@ -176,3 +177,45 @@ print_Adjacency_list_Dict(dict_graph)
 print("Delete Not Exist Node (X,Y)")
 dict_graph.del_edge(("x","y"))
 print_Adjacency_list_Dict(dict_graph)
+
+#Deep Frist Search
+def dfs(graph,start_node):
+    s = []
+    seq = ""
+    status = {}
+    for key in graph.data.keys():
+        status[key] = "UV"
+    current = start_node
+    status[current] = "V"
+    s.append(current)
+    while len(s)>0:
+        current = s.pop()
+        for neighbor in graph.data[current]:
+            if status[neighbor] == "UV":
+                s.append(neighbor)
+        status[current] = "V"
+        seq= seq+current.upper()
+    return seq
+print("Deep First Search")
+print(dfs(dict_graph,"a"))
+
+def bfs(graph,start_node):
+    status = {}
+    for key in graph.data.keys():
+        status[key] = "UV"
+    current = start_node
+    s = deque()
+    seq = ""
+    s.append(start_node)
+    status[start_node] = "V"
+    while len(s)>0:
+        current = s.popleft()
+        for neighbor in graph.data[current]:
+            if status[neighbor]=="UV":
+                s.append(neighbor)
+                status[neighbor]="V"
+        seq = seq+current.upper()
+    return seq
+
+print(bfs(dict_graph,"a"))
+
