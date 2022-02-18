@@ -96,23 +96,37 @@ class Adjacency_List_Dict():
             else:
                 self.data[node2] = list(node1)
     def add_dege(self,edge):
-        node1,node2 = edge[0],edge[1]
-        if node1 in self.data:
-            if node2 in self.data[node1]:
-                print("Edge Exist")
+        if len(edge)==1:
+            node = edge
+            # print("Add single Node")
+            if node not in self.data.keys():
+                self.data[node] = []
+            return
+        else:
+            node1,node2 = edge[0],edge[1]
+            if node1==node2:
+                # print("Add Circle Edge")
+                if node1 not in self.data.keys():
+                    self.data[node1] = [node1]
+                elif node1 in self.data.keys():
+                    self.data[node1].append(node1)
                 return
-            else:
-                self.data[node1].append(node2)
-        elif node1 not in self.data:
-            self.data[node1] = list(node2)
-        if node2 in self.data:
-            if node1 in self.data[node2]:
-                print("Edge Exist")
-                return
-            else:
-                self.data[node2].append(node1)
-        elif node2 not in self.data:
-            self.data[node2] = list(node1)
+            if node1 in self.data:
+                if node2 in self.data[node1]:
+                    print("Edge Exist")
+                    return
+                else:
+                    self.data[node1].append(node2)
+            elif node1 not in self.data:
+                self.data[node1] = list(node2)
+            if node2 in self.data:
+                if node1 in self.data[node2]:
+                    print("Edge Exist")
+                    return
+                else:
+                    self.data[node2].append(node1)
+            elif node2 not in self.data:
+                self.data[node2] = list(node1)
     def del_edge(self,edge):
         node1,node2 = edge[0],edge[1]
         if node1 not in self.data.keys() or node2 not in self.data.keys():
@@ -132,7 +146,10 @@ def print_Adjacency_list_Dict(graph):
     for key in graph.data.keys():
         s = key.upper()+":"
         for value in graph.data[key]:
-            s = " "+s+" "+value.upper()
+            if value is None:
+                s = " "+s
+            else:
+                s = " "+s+" "+value.upper()
         print(s,end = " ")
     print()
 print_Adjacency_list_Dict(dict_graph)
@@ -143,6 +160,12 @@ dict_graph.add_dege(new_dege)
 print_Adjacency_list_Dict(dict_graph)
 print("Add Exist Edge: (A,C)")
 dict_graph.add_dege(exist_edge)
+print_Adjacency_list_Dict(dict_graph)
+print("Add Circle X,X")
+dict_graph.add_dege(("x","x"))
+print_Adjacency_list_Dict(dict_graph)
+print("Add single node y")
+dict_graph.add_dege("y")
 print_Adjacency_list_Dict(dict_graph)
 print("Delete Edge (A,C)")
 dict_graph.del_edge(("a","c"))
