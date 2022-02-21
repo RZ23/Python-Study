@@ -328,3 +328,110 @@ def dijsktra(graph,start,end):
     return path
 
 print(dijsktra(weight_graph, 'X', 'Y'))
+
+# Has Path Algorithem
+# Unweighted Directed Graph
+class unweight_direct_graph():
+    def __init__(self,edges):
+        self.data = {}
+        for start_node,dest_node in edges:
+            if start_node not in self.data.keys():
+                self.data[start_node] = list(dest_node)
+            else:
+                self.data[start_node].append(dest_node)
+
+    def display(self):
+        node_list = set(self.data.keys())
+        for node in node_list:
+            print(str(node)+":"+str(self.data[node]))
+has_path_node = 6
+edges=(("f","g"),("f","i"),("g","h"),("i","g"),("j","i"),("i","k"))
+
+unweight_direct_graph = unweight_direct_graph(edges)
+# unweight_direct_graph.display()
+
+# Has Path Function
+def has_path(graph, start, destination):
+    node_list = set(graph.data.keys())
+    # check if found the destination node
+    if start==destination:
+        return True
+    # check if node has 0 neighbor node(s)
+    elif start not in node_list:
+        return False
+    # if the node not the destination node
+    # and has the neighbor node, then search the neighbor node
+    else:
+        for node in graph.data[start]:
+            if has_path(graph,node,destination):
+                return True
+    return False
+print(has_path(unweight_direct_graph,"f","h"))
+print(has_path(unweight_direct_graph,"i","j"))
+
+class unweight_undirect_graph():
+    def __init__(self,edges):
+        self.data = {}
+        for start,destination in edges:
+            if start not in set(self.data.keys()):
+                if destination not in set(self.data.keys()):
+                    self.data[start] = list(destination)
+                    self.data[destination] = list(start)
+                else:
+                    self.data[start]=list(destination)
+                    self.data[destination].append(start)
+            else:
+                if destination not in set(self.data.keys()):
+                    self.data[start].append(destination)
+                    self.data[destination] = list(start)
+                else:
+                    self.data[start].append(destination)
+                    self.data[destination].append(start)
+    def display(self):
+        node_list = set(self.data.keys())
+        for node in node_list:
+            print(str(node)+":"+str(self.data[node]))
+
+number_of_component_unweighted_undirect_edge = (("1","2"),("4","6"),("5","6"),("6","8"),("6","7"),("3","3"))
+unweighted_undirect_graph = unweight_undirect_graph(number_of_component_unweighted_undirect_edge)
+
+def number_of_component(graph):
+    visted = []
+    count = 0
+    node_list =set(graph.data.keys())
+    for node in node_list:
+        if explor(graph,node,visted) :
+            count = count+1
+    return count
+def explor(graph,current_node,visted):
+    if current_node in visted:
+        return False
+    visted.append(current_node)
+    for node in graph.data[current_node]:
+        explor(graph,node,visted)
+    return True
+print("There are "+str(number_of_component(unweighted_undirect_graph))+" Coponent(s) in th graph")
+
+largest_component_unweight_undirect_edges=(("1","0"),("8","0"),("5","0"),
+("2","3"),("2","4"))
+largest_component_unweight_undirect_graph = unweight_undirect_graph(largest_component_unweight_undirect_edges)
+# largest_component_unweight_undirect_graph.display()
+
+def largestComponent(graph):
+    visted = []
+    largest = 0
+    node_list = graph.data.keys()
+    for node in node_list:
+        size = explorSize(graph,node,visted)
+        if size> largest:
+            largest = size
+    return largest
+def explorSize(graph,node,visted):
+    if node in visted:
+        return 0
+    visted.append(node)
+    size = 1
+    for neighbhor in graph.data[node]:
+        size = size+explorSize(graph,neighbhor,visted)
+    return size
+print("The Largest component has "+str(largestComponent(largest_component_unweight_undirect_graph))+" node(s)")
