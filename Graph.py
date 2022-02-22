@@ -435,3 +435,71 @@ def explorSize(graph,node,visted):
         size = size+explorSize(graph,neighbhor,visted)
     return size
 print("The Largest component has "+str(largestComponent(largest_component_unweight_undirect_graph))+" node(s)")
+
+# Find the island
+def find_island(grid):
+    visted = []
+    count = 0
+    for i in range (len(grid)):
+        for j in range (len(grid[0])):
+            if find_island_explore(grid,i,j,visted)==True:
+                count = count+1
+    return count
+def find_island_explore(grid,i,j,visted):
+    current_point = str(i)+","+str(j)
+    if current_point in visted:
+        return False
+    visted.append(current_point)
+    x_boundary = i>=0 and i<len(grid)
+    y_boundary = j>=0 and j<len(grid[0])
+    if (not x_boundary) or (not y_boundary):
+        return False
+    elif grid[i][j]=="w":
+        return False
+    else:
+        find_island_explore(grid,i-1,j,visted)
+        find_island_explore(grid,i+1,j,visted)
+        find_island_explore(grid,i,j+1,visted)
+        find_island_explore(grid,i,j-1,visted)
+    return True
+grid = [["w","l","w","w","w"],
+        ["w","l","w","w","w"],
+        ["w","w","w","l","w"],
+        ["l","w","w","l","l"],
+        ["l","l","w","w","w"]]
+
+print(find_island(grid))
+
+# Find the largest island
+def find_smallest_island(grid):
+    smallest = len(grid)*len(grid[0])
+    largest = 0
+    visted = []
+    for i in range(len(grid)):
+        for j in range(len(grid[0])):
+            size = find_smallest_island_explore(grid, i,j,visted)
+            if size>0 and (size<smallest):
+                smallest = size
+            if size>largest:
+                largest = size
+    return smallest,largest
+
+def find_smallest_island_explore(grid,i,j,visted):
+    current_point = str(i)+","+str(j)
+    if current_point in visted:
+        return 0
+    visted.append(current_point)
+    size = 1
+    x_boundary = i>=0 and i<len(grid)
+    y_boundary = j>=0 and j<len(grid[0])
+    if (not x_boundary) or (not y_boundary):
+        return 0
+    if grid[i][j]=="w":
+        return 0
+    else:
+        size = size+ find_smallest_island_explore(grid,i+1,j,visted)
+        size = size +find_smallest_island_explore(grid,i-1,j,visted)
+        size = size + find_smallest_island_explore(grid,i,j-1,visted)
+        size = size+ find_smallest_island_explore(grid,i,j+1,visted)
+    return size
+print(find_smallest_island(grid))
