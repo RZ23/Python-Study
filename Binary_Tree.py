@@ -1,3 +1,4 @@
+from collections import deque
 # Declare TreeNode Class
 # Include key, left and right attribute
 class TreeNode:
@@ -277,4 +278,56 @@ display_key(deleteNode(unbalanced_node,delete_node)," ")
 deleted_list =inOrder(deleteNode(unbalanced_node,delete_node))
 display_key(make_balanced_BST(deleted_list))
 
+# Algorithm for Binary Tree
+
+# Define Class
+
+class Node():
+    def __init__(self,value):
+        self.value = value
+        self. left = None
+        self.right = None
+node_list = ["a","b","c","d","e","f"]
+a= Node("a")
+b= Node("b")
+c=Node("c")
+d= Node("d")
+e = Node("e")
+f= Node("f")
+# print(a.value)
+a.left= b
+a.right = c
+b.left=d
+b.right=e
+c.right=f
+
+#Breadth_First_Search
+def Breadth_First_Search(Node):
+    if Node is None:
+        return []
+    path = []
+    queue= deque()
+    queue.append(Node)
+    while len(queue)>0:
+        node = queue.popleft()
+        path.append(node.value)
+        if node.left is not None:
+            queue.append(node.left)
+        if node.right is not None:
+            queue.append(node.right)
+    return path
+print(Breadth_First_Search(a))
+
+# Deep First Search
+def Deep_First_Search(Node):
+    path = []
+    if Node is None:
+        return []
+    else:
+        path.append(Node.value)
+        left = Deep_First_Search(Node.left)
+        right= Deep_First_Search(Node.right)
+        return path+left+right
+
+print(Deep_First_Search(a))
 
