@@ -1,7 +1,11 @@
+import itertools
 import math
 import random
 import collections
+from collections import deque
+from binarytree import tree
 from collections import Counter
+from binarytree import tree,Node
 print("------------------Merge Sort-----------------------------")
 lst = [random.randint(1,20) for x in range(10)]
 print("Before Sorting")
@@ -176,8 +180,8 @@ def Check_Symmetric_Tree(node):
     if node is None:
         return True
     return Symmetric_Tree(node.left,node.right)
-
-class Node():
+# Customized the Node class set to be the subclass of the binarytree's Node class
+class Node(Node):
     def __init__(self,value=None,left= None,right=None):
         self.value = value
         self.right = right
@@ -202,6 +206,7 @@ node16 = Node(9,node13,node14)
 node17 = Node(2,node15,node16)
 node18 =Node(5,node11,node17)
 Symmetric_Head = Node(10,node9,node18)
+print(Symmetric_Head)
 # Node_List = [Symmetric_Head,node1,node2,node3,node4,node5,node6,node7,node8,node9,
 #              node10,node11,node12,node13,node14,node15,node16,node17, node18,node18]
 #
@@ -235,6 +240,7 @@ Un_node16 = Node(9,Un_node13,Un_node14)
 Un_node17 = Node(2,Un_node15,Un_node16)
 Un_node18 =Node(5,Un_node11,Un_node17)
 Un_Symmetric_Head = Node(10,Un_node9,Un_node18)
+print(Un_Symmetric_Head)
 print("The Tree is the symmetric Tree? {}".format(Check_Symmetric_Tree(Un_Symmetric_Head)))
 
 #Gas Station Travel Question
@@ -280,3 +286,258 @@ def gas_station(gas,cost):
     else:
         return candidate
 print("The Start Gas Station should be {}".format(gas_station_travel(gas,cost)))
+
+# Course Schedule
+print("------------------Course Schedule -----------------------------")
+n = 6
+prerequisties = [[3,0],[1,3],[2,1],[4,1],[4,2],[5,3],[5,4]]
+print("0->3->1->2")
+print("   |   |  ")
+print("   5<- 4  ")
+print("Deep First Search:")
+def dfs(graph,node,path,order,visted):
+    path.add(node)
+    for neighbor in graph[node]:
+        if neighbor in path:
+            return False
+        if neighbor not in visted:
+            visted.add(neighbor)
+            if not dfs(graph,neighbor,path,order,visted):
+                return False
+    path .remove(node)
+    order.append(node)
+    return True
+def course_schedule(n,prerequisties):
+    graph = [[] for i in range(n)]
+    for pre in prerequisties:
+        graph[pre[1]].append(pre[0])
+    visted = set()
+    path = set()
+    order = []
+    for course in range(n):
+        if course not in visted:
+            visted.add(course)
+            if not dfs(graph,course,path,order,visted):
+                return False
+    return True
+print("The {} Couses with Schedule {} is availiable? {} ".format(n,prerequisties,course_schedule(n,prerequisties)))
+print("Breadth Search First:")
+def course_schedule_bsf(n,prerequisties):
+    graph = [[] for i in range(n)]
+    indegree = [0 for i in range(n)]
+    for pre in prerequisties:
+        graph[pre[1]].append(pre[0])
+        indegree[pre[0]] = indegree[pre[0]]+1
+    order = []
+    queue = deque([i for i in range(n) if indegree[i]==0])
+    while queue:
+        node = queue.popleft()
+        order.append(node)
+        for neighbor in graph[node]:
+            indegree[neighbor] = indegree[neighbor]-1
+            if indegree[neighbor]==0:
+                queue.append(neighbor)
+    return len(order)==n
+print("The {} Couses with Schedule {} is availiable? {} ".format(n,prerequisties,course_schedule_bsf(n,prerequisties)))
+
+class Course():
+    def __init__(self,num_course,prequisties):
+        self.num_course = num_course
+        self. prequisties = {}
+        for pre in prerequisties:
+            if pre[1] in self.prequisties.keys():
+                self.prequisties[pre[1]].append(pre[0])
+            else:
+                self.prequisties[pre[1]] = list(pre[0])
+    def display(self):
+        course_list = list(self.prequisties.keys())
+        for course in course_list:
+            print("The Course After {} is {}".format(str(course).upper(),str(self.prequisties[course]).upper()))
+n = 6
+prerequisties = [["d","a"],["b","d"],["c","b"],["e","b"],["e","c"],["f","d"],["f","e"]]
+print("a->d->b->c")
+print("   |   |  ")
+print("   f<- e  ")
+course = Course(n,prerequisties)
+course.display()
+# Kth Permutation
+print("------------------Kth Permutation -----------------------------")
+print("Regular Method: (build-in permutation function )")
+def kth_permutation_build_in(n,k):
+    permutations = list(itertools.permutations(range(1,n+1)))
+    # for i in range (len(permutations)):
+    #     print("{} is {}".format(i,permutations[i]))
+    return "".join(map(str,permutations[k-1]))
+print("the {}th of {} numbers permutation is {}".format(k,n,kth_permutation_build_in(4,16)))
+print("Customized Function:")
+def kth_permutation(n,k):
+    permutation = []
+    unused = list(range(1,n+1))
+    print(unused)
+    fact = [1]*(n+1)
+    for i in range(1,n+1):
+        fact[i] = i*fact[i-1]
+    # the start is 0
+    k = k-1
+    while n>0:
+        part_length = fact[n]//n
+        i= k//part_length
+        permutation.append(unused[i])
+        unused.pop(i)
+        print("part_length = {},i={},permuatation ={},unused = {}".format(part_length,i,permutation,unused))
+        n = n-1
+        k = k%part_length
+    return "".join(map(str,permutation))
+print("the {}th of {} numbers permutation is {}".format(k,n,kth_permutation(4,16)))
+
+print("------------------Minimal Window Substring -----------------------------")
+print("Regular Function")
+def mini_window_regular(s,t):
+    n,m = len(s),len(t)
+    if n<m or m==0:
+        return ""
+    freqt =Counter(t)
+    # create initial shortest substring
+    shortest = " "*(n-1)
+    for length in range(1,n+1):
+        for i in range(n-length+1):
+            sub= s[i:i+length]
+            freqs = Counter(sub)
+            if contain_all(freqs,freqt) and length <len(shortest):
+                shortest= sub
+    return shortest if len(shortest)<=n else " "
+def contain_all(freq1,freq2):
+    for ch in freq2:
+        if freq1[ch]<freq2[ch]:
+            return False
+    return True
+s= "ADCFEBECEABEBADFCDFCBFCBEAD"
+t= "ABCA"
+print("The shortest substring is of {} based on the {} is {}".format(t,s,mini_window_regular(s,t)))
+print("Advanced Function (without extracting and storing substring, store the start and end index --sliding window )")
+def min_window_slid_window(s,t):
+    n,m = len(s),len(t)
+    if n<m or t=="":
+        return ""
+    freqt = Counter(t)
+    start,end = 0,n+1
+    for length in range(1,n+1):
+        freqs=Counter()
+        satisfied  =0
+        for ch in s[:length]:
+            freqs[ch] = freqs[ch]+1
+            if ch in freqt and freqt[ch]==freqs[ch]:
+                satisfied = satisfied+1
+        # find the first matched substring
+        if satisfied==len(freqt) and length < end-start:
+        # store the start and end index and then move to next character
+            start,end = 0,length
+        # move to next character one by one
+        for i in range(1,n-length+1):
+            # for the new move in item
+            freqs[s[i+length-1]]= freqs[s[i+length-1]]+1
+            if s[i+length-1] in freqt and freqs[s[i+length-1]]==freqt[s[i+length-1]]:
+                satisfied = satisfied+1
+            # for the new move out item
+            if s[i-1] in freqt and freqs[s[i-1]]==freqt[s[i-1]]:
+                satisfied = satisfied-1
+            freqs[s[i-1]] = freqs[s[i-1]]-1
+            if satisfied==len(freqt) and length<end-start:
+                start,end = i,i+length
+    return s[start:end] if end-start<=n else ""
+print("The shortest substring is of {} based on the {} is {} with Sliding Windows".format(t,s,min_window_slid_window(s,t)))
+print("Imporved Slinding Window")
+def min_window(s,t):
+    n,m = len(s),len(t)
+    if n<m or m=="":
+        return ""
+    freqt = Counter(t)
+    start,end = 0,n
+    satisfied = 0
+    freqs = Counter()
+    left = 0
+    for right in range(n):
+        freqs[s[right]]=freqs[s[right]]+1
+        if s[right] in freqt and freqs[s[right]]==freqt[s[right]]:
+            satisfied=satisfied+1
+        # first the first satisfied substring
+        if satisfied==len(freqt):
+            while s[left] not in freqt or freqs[s[left]]>freqt[s[left]]:
+                freqs[s[left]] = freqs[s[left]]-1
+                left = left +1
+            if right-left+1<end-start+1:
+                start,end = left,right
+    # the index starts from 0, so must add 1 to make sure it is the substring
+    return s[start:end] if end-start+1<=n else""
+print("The shortest substring is of {} based on the {} is {} with Improvving Sliding Windows".format(t, s,min_window(s, t)))
+
+print("------------------Largest Rectangle Area -----------------------------")
+heights = [3,2,4,5,7,6,1,3,8,9,11,10,7,5,2,6]
+def largest_rectangle(heights):
+    max_area=0
+    for i in range(len(heights)):
+        # find the left
+        left = i
+        while left-1>0 and heights[left-1]>=heights[i]:
+            left = left-1
+        # find the right
+        right = i
+        while right+1<len(heights) and heights[right+1]>=heights[i]:
+            right = right+1
+        max_area = max(max_area,heights[i]*(right-left+1))
+    return max_area
+print("The Max Rectangle of {} is {}".format(heights,largest_rectangle(heights)))
+print("Recursive Method:")
+def rec(heights,low,high):
+    if low>high:
+        return 0
+    elif low==high:
+        return heights[low]
+    else:
+        minh = min(heights[low:high+1])
+        pos_min = heights.index(minh,low,high+1)
+        from_left = rec(heights,low,pos_min-1)
+        from_right = rec(heights,pos_min+1,high)
+        return max(from_left,from_right,minh*(high-low+1))
+def largest_rectangle_recurssive(heights):
+    return rec(heights,0,len(heights)-1)
+print("The Max Rectangle of {} is {}".format(heights,largest_rectangle_recurssive(heights)))
+print("Left and Right stack Method:")
+def largest_rectangle_stack(heights):
+    # add left and right point
+    heights=[-1]+heights+[-1]
+    from_left = [0]*len(heights)
+    stack=[0]
+    for i in range(1,len(heights)-1):
+        while heights[stack[-1]]>=heights[i]:
+            stack.pop()
+        from_left[i] = stack[-1]
+        stack.append(i)
+    from_right = [0]*len(heights)
+    stack = [len(heights)-1]
+    for i in range(1,len(heights)-1)[::-1]:
+        while heights[stack[-1]]>=heights[i]:
+            stack.pop()
+        from_right[i] = stack[-1]
+        stack.append(i)
+    max_area = 0
+    for i in range(1,len(heights)-1):
+        max_area = max(max_area,heights[i]*(from_right[i]-from_left[i]-1))
+    return max_area
+print("The Max Rectangle of {} is {}".format(heights,largest_rectangle_stack(heights)))
+
+print("With Tuple Stack Method:")
+def largest_rectangle_Tuple_Stack(heights):
+    heights = [-1]+heights+[-1]
+    max_area= 0
+    # initial the start stack, (index, height)
+    stack = [(0,-1)]
+    for i in range(1,len(heights)):
+        start=i
+        while stack[-1][1]>heights[i]:
+            top_index,top_height = stack.pop()
+            max_area = max(max_area,top_height*(i-top_index))
+            start=top_index
+        stack.append((start,heights[i]))
+    return max_area
+print("The Max Rectangle of {} is {}".format(heights,largest_rectangle_Tuple_Stack(heights)))
