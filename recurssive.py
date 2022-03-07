@@ -238,6 +238,80 @@ def create_bst(list):
     node.left = create_bst(list[:mid])
     node.right = create_bst(list[mid+1:])
     return node
-print("Create the Balanced Binary Search Tree:")
+print("########Create the Balanced Binary Search Tree:########")
 root = create_bst(random_list)
+print(root)
+
+print("########Insert a node to BST########")
+node_value = int(input("please input the value of the node needed to be insert into the BST:"))
+def insert_bst(root,node_value):
+    if root is None:
+        root = tree_node(node_value)
+        return root
+    if root.value ==node_value:
+        print("Node {} existed!".format(root.value))
+        return root
+    if node_value<root.value:
+        root.left = insert_bst(root.left,node_value)
+    else:
+        root.right = insert_bst(root.right,node_value)
+    return root
+
+insert_bst(root,node_value)
+print(root)
+print("########Search the node########")
+def search_node(root,node_value):
+    if root is None:
+        return False
+    if root.value>node_value:
+        return search_node(root.left,node_value)
+    elif root.value<node_value:
+        return search_node(root.right,node_value)
+    else:
+        return True
+    return False
+
+find_node_value = int(input("please input the value of the node needed to be search into the BST:"))
+
+find=search_node(root,find_node_value)
+if find:
+    print("Find the node {} in this BST".format(find_node_value))
+else:
+    print("The node {} is not in the BST ".format(node_value))
+print("########Delete node########")
+def delete_node(root,node_value):
+    if not search_node(root,node_value):
+        print("Node {} not in the BST")
+        return root
+    if root is None:
+        return root
+    if root.value>node_value:
+        root.left = delete_node(root.left,node_value)
+    elif root.value<node_value:
+        root.right = delete_node(root.right,node_value)
+    else:
+        # find the root
+        #left is None
+        if root.left is None:
+            temp = root.right
+            root=None
+            return temp
+        #right is None
+        elif root.right is None:
+            temp=root.left
+            root=None
+            return temp
+        # has both children tree
+        temp = find_max(root.right)
+        root.value = temp.value
+        root.right = delete_node(root.right,temp.value)
+    return root
+def find_max(root):
+    if root is None:
+        return None
+    while root.left is not None:
+        root = root.left
+    return root
+delete_node_value = int(input("please input the value of the node needed to be delete into the BST:"))
+root = delete_node(root,delete_node_value)
 print(root)
