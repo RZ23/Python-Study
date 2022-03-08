@@ -9,7 +9,27 @@ list3 = list(range(20))
 list4 = list(range(20))
 random.shuffle(list1)
 list_for_test = list1
+# Selection Sort: Find the index of the smallest item for the rest of the list and exchange with the current item
+# list has two sections, sorted and unsorted.find the smallest item and keep its index, exchange it with the current item
+print("Selection Sort")
+def selection_sort(list):
+    for i in range(len(list)-1):
+        min_index=i
+        min_value = list[i]
+        for j in range(i+1,len(list)):
+            if list[j]<min_value:
+                min_value=list[j]
+                min_index = j
+        if min_index!=i:
+            list[i],list[min_index]=list[min_index],list[i]
+    return list
+print("Before Selection Sort:")
+print_a_list(list_for_test)
+print("After Selection Sort:")
+print_a_list(selection_sort(list_for_test))
 print("Before Bubble Sort")
+random.shuffle(list1)
+list_for_test=list1
 print_a_list(list_for_test)
 def Bubble_Sort(list):
     for j in range(0,len(list)):
