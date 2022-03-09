@@ -123,3 +123,130 @@ def Partition(list,low,high):
     return (i+1)
 print("After the Quick Sort")
 print_a_list(QuickSort(list4))
+# print("Heap Sort")
+random.shuffle(list1)
+print("Before Heap List (Recurssive)")
+print_a_list(list1)
+# create the max heap
+def heapfiy_Recurssive(list,n,i):
+    largest = i
+    left = 2*i+1
+    right = 2*i+2
+    if left<n and list[i]<list[left]:
+        largest = left
+    if right<n and list[largest]<list[right]:
+        largest = right
+    if largest!=i:
+        list[i],list[largest] = list[largest],list[i]
+        heapfiy_Recurssive(list,n,largest)
+def heap_sort_recurssive(list):
+    n = len(list)
+    for i in range(n//2-1,-1,-1):
+        heapfiy_Recurssive(list,n,i)
+    for i in range(n-1,0,-1):
+        list[i],list[0]=list[0],list[i]
+        heapfiy_Recurssive(list,i,0)
+    return list
+print("After Heap Sort:")
+list1 = heap_sort_recurssive(list1)
+print_a_list(list1)
+print("Before Heap Sort (Iteration)")
+random.shuffle(list4)
+print_a_list(list4)
+# create max heap
+def sifdown(lst,i,upper):
+    while (True):
+        left,right = i*2+1,i*2+2
+        # both in the range
+        if max(left,right)<upper:
+            if lst[i]>max(lst[left],lst[right]):
+                break
+            elif lst[left]<lst[right]:
+                lst[right],lst[i] = lst[i],lst[right]
+                i = right
+            else:
+                lst[left],lst[i]=lst[i],lst[left]
+                i=left
+        elif left <upper:
+            if lst[left]>lst[i]:
+                lst[left],lst[i]=lst[i],lst[left]
+                i=left
+            else:
+                break
+        elif right<upper:
+            if lst[right]<lst[i]:
+                lst[right],lst[i]=lst[i],lst[right]
+                i = right
+            else: break
+        else:
+            break
+def heap_sort(lst):
+    for j in range((len(lst)-2)//2,-1,-1):
+        # create the heap
+        sifdown(lst,j,len(lst))
+    for end in range(len(lst)-1,0,-1):
+        lst[0],lst[end] = lst[end],lst[0]
+        sifdown(lst,0,end)
+    return lst
+list4 = heap_sort(list4)
+print("After Heap Sort")
+print_a_list(heap_sort(list4))
+# For the Heap, Left Child = 2*i+1
+#               Right Child = 2*i+2
+#               Parent = (i-1)/2
+print("Create the Min Heap Class <the min number is on the top>")
+class MinHeap():
+    def __init__ (self,arc = None):
+        # self.heap = lst.copy()
+        self.heap = []
+        if type(arc) is list:
+            self.heap = arc.copy()
+        for i in range(len(self.heap))[::-1]:
+            self._siftdown(i)
+    def _siftup(self,i):
+        parent = (i-1)//2
+        while i!=0 and self.heap[i]<self.heap[parent]:
+            self.heap[i],self.heap[parent] = self.heap[parent],self.heap[i]
+            i=parent
+            parent = (i-1)//2
+    def _siftdown(self,i):
+        left = 2*i+1
+        right = 2*i+2
+        while (left<len(self.heap) and self.heap[i]>self.heap[left]) or (right<len(self.heap) and self.heap[i]>self.heap[right]):
+            smallest = left if (right>=len(self.heap) or self.heap[left]<self.heap[right]) else right
+            self.heap[i],self.heap[smallest]=self.heap[smallest],self.heap[i]
+            i =smallest
+            left = 2*i+1
+            right = 2*i+2
+    def insert(self,element):
+        self.heap.append(element)
+        self._sifftup(len(self.heap)-1)
+    def get_min(self):
+        return self.heap[0] if len(self.heap)>0 else None
+    def extract_min(self):
+        if len(self.heap)==0:
+            return None
+        minval = self.heap[0]
+        self.heap[0],self.heap[-1] = self.heap[-1],self.heap[0]
+        self.heap.pop()
+        self._siftdown(0)
+        return minval
+    def update_by_index(self,i,new):
+        old = self.heap[i]
+        self.heap[i]=new
+        if new>old:
+            self._siftup(i)
+        else:
+            self._siftdown(i)
+    def update(self,old,new):
+        if old in self.heap:
+            self.update_by_index(self.index(old),new)
+def heap_sort_with_heap_class(lst):
+    heap = MinHeap(lst)
+    return [heap.extract_min() for i in range(len(heap.heap))]
+random.shuffle(list4)
+list4 = list4
+print_a_list(list4)
+print_a_list(heap_sort_with_heap_class(list4))
+
+
