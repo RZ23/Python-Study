@@ -196,13 +196,20 @@ print_a_list(heap_sort(list4))
 #               Parent = (i-1)/2
 print("Create the Min Heap Class <the min number is on the top>")
 class MinHeap():
-    def __init__ (self,arc = None):
+    def __init__ (self,lst):
+        # def __init__(self, arc=None):
         # self.heap = lst.copy()
-        self.heap = []
-        if type(arc) is list:
-            self.heap = arc.copy()
-        for i in range(len(self.heap))[::-1]:
+        # self.heap = []
+        # if type(arc) is list:
+        #     self.heap = arc.copy()
+    # for i in range(len(self.heap))[::-1]:
+    #     self._siftdown(i)
+        self.heap = lst
+        # use len(list-2)//2 to get the first parent node
+        # right child is 2*i+2, so the parent node is (i-2)/2
+        for i in range((len(self.heap)-2)//2)[::-1]:
             self._siftdown(i)
+
     def _siftup(self,i):
         parent = (i-1)//2
         while i!=0 and self.heap[i]<self.heap[parent]:
