@@ -256,4 +256,22 @@ list4 = list4
 print_a_list(list4)
 print_a_list(heap_sort_with_heap_class(list4))
 
-
+# Another Quick Sort
+print("Quick Sort")
+lst5 = [i for i in range(0,20)]
+random.shuffle(lst5)
+lst5 = lst5
+print_a_list(lst5)
+def Quick_Sort2(lst):
+    if len(lst)<=1:
+        return lst
+    left =[]
+    right = []
+    pivot = lst[-1]
+    for i in range(len(lst)-1):
+        if lst[i]<=pivot:
+            left.append(lst[i])
+        else:
+            right.append(lst[i])
+    return Quick_Sort2(left)+[pivot]+Quick_Sort2(right)
+print_a_list(Quick_Sort2(lst5))
