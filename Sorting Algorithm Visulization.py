@@ -13,7 +13,12 @@ class DrawInformation:
     BACKGROUND_COLOR = WHITE
 
     # Set bar grey color
-    GRADIENTS=[(128,128,128),(160,160,160),(192,192,192)]
+    # GRADIENTS=[(128,128,128),(160,160,160),(192,192,192)]
+    GRADIENTS = [
+        (128, 128, 128),
+        (160, 160, 160),
+        (192, 192, 192)
+    ]
     #Set Font type  and size (the height of the font)
     FONT = pygame.font.SysFont('comicsans',30)
     LARGE_FONT = pygame.font.SysFont('cosmics',40)
@@ -73,16 +78,16 @@ def draw_list(draw_info,color_positions = {},clear_bg = False):
         clear_rect = (draw_info.SIDE_PAD//2, draw_info.TOP_PAD,draw_info.width-draw_info.SIDE_PAD, draw_info.height - draw_info.TOP_PAD)
         # Draws a rectangle on the given surface.
         # rect(surface, color, rect) -> Rect
-        pygame.draw.rect(draw_info.window,draw_info.BACKGOUND_COLOR,clear_rect)
+        pygame.draw.rect(draw_info.window,draw_info.BACKGROUND_COLOR,clear_rect)
     # Draw Block (Bar) for each item in the list
     for i,val in enumerate(lst):
         x = draw_info.start_x+i*draw_info.block_width
         y = draw_info.height - (val-draw_info.min_val)*draw_info.block_height
 
-        color = draw_info.GRADIENTS[i%3]
+        color = draw_info.GRADIENTS[i % 3]
         if i in color_positions:
             color = color_positions[i]
-        pygame.draw.rect(draw_info.window,color,(x,y,draw_info.block_width,draw_info.block_height))
+        pygame.draw.rect(draw_info.window,color,(x,y,draw_info.block_width,draw_info.height))
 
     if clear_bg:
         pygame.display.update()
@@ -92,7 +97,7 @@ def generate_starting_list(n,min_val,max_val):
         val = random.randint(min_val,max_val)
         lst.append(val)
     return lst
-def buble_sort(draw_info,ascending = True):
+def bubble_sort(draw_info,ascending = True):
     lst = draw_info.lst
     for i in range(len(lst)-1):
         for j in range(len(lst)-1-i):
@@ -116,6 +121,38 @@ def insertion_sort(draw_info,ascending = True):
             draw_list(draw_info,{i-1:draw_info.GREEN,i:draw_info.RED},True)
             yield True
     return lst
+def selection_sort(draw_info,ascending = True):
+    lst = draw_info.lst
+    if ascending:
+        for i in range(len(lst)-1):
+            min = i
+            min_val = lst[i]
+            for j in range(i+1,len(lst)):
+                if lst[j]<min_val:
+                    min_val = lst[j]
+                    min = j
+            draw_list(draw_info, {i: draw_info.GREEN, j: draw_info.RED}, True)
+            yield True
+            if min!=i:
+                lst[min],lst[i] = lst[i],lst[min]
+            draw_list(draw_info, {i: draw_info.GREEN, min: draw_info.RED}, True)
+            yield True
+        return lst
+    if not ascending:
+        for i in range(len(lst)-1):
+            max = i
+            max_val = lst[i]
+            for j in range(i+1, len(lst)):
+                if lst[j] > max_val:
+                    max_val = lst[j]
+                    max = j
+            draw_list(draw_info, {i: draw_info.GREEN, j: draw_info.RED}, True)
+            yield True
+            if max != i:
+                lst[max], lst[i] = lst[i], lst[max]
+            draw_list(draw_info, {i: draw_info.GREEN, max: draw_info.RED}, True)
+            yield True
+        return lst
 
 def main():
     run = True
@@ -128,7 +165,7 @@ def main():
     draw_info = DrawInformation(800, 600, lst)
     sorting = False
     ascending = True
-    sorting_algorithm = buble_sort
+    sorting_algorithm = bubble_sort
     sorting_algo_name = "Bubble Sort"
     sorting_algorithm_generator = None
 
@@ -137,14 +174,14 @@ def main():
         # If you pass the optional framerate argument the function will delay to keep the game running slower
         # than the given ticks per second. This can be used to help limit the runtime speed of a game.
         # By calling Clock.tick(40) once per frame, the program will never run at more than 40 frames per second.
-        clock.tick(60)
+        clock.tick(120)
         if sorting:
             try:
                 next(sorting_algorithm_generator)
             except StopIteration:
                 sorting = False
         else:
-            draw(draw_info,sorting_algo_name,ascending)
+            draw(draw_info, sorting_algo_name, ascending)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -166,9 +203,11 @@ def main():
                 sorting_algorithm = insertion_sort
                 sorting_algo_name = "Insertion Sort"
             elif event.key==pygame.K_b and not sorting:
-                sorting_algorithm = buble_sort
+                sorting_algorithm = bubble_sort
                 sorting_algo_name = "Buble Sort"
+            elif event.key == pygame.K_s and not sorting:
+                sorting_algorithm = selection_sort
+                sorting_algo_name = "Selection Sort"
     pygame.quit()
-if __name__ =="_main_":
+if __name__ =="__main__":
     main()
-
