@@ -10,6 +10,7 @@ class DrawInformation:
     WHITE = 255,255,255
     RED = 255,0,0
     GREEN = 0,255,0
+    YELLOW = 0,0,255
     BACKGROUND_COLOR = WHITE
 
     # Set bar grey color
@@ -60,7 +61,7 @@ def draw(draw_info,algo_name,ascending):
     controls = draw_info.FONT.render("R -Reset | SPACE - Start Sorting | A - Ascending | D - Descending",1,draw_info.BLACK)
     draw_info.window.blit(controls,(draw_info.width/2-controls.get_width()/2,45))
 
-    sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort | S - Selection Sort",1,draw_info.BLACK)
+    sorting = draw_info.FONT.render("I - Insertion Sort | B - Bubble Sort | S - Selection Sort | M - Merge Sort | Q - Quick Sort ",1,draw_info.BLACK)
     draw_info.window.blit(sorting,(draw_info.width/2-sorting.get_width()/2,75))
 
     draw_list(draw_info)
@@ -121,6 +122,50 @@ def insertion_sort(draw_info,ascending = True):
             draw_list(draw_info,{i-1:draw_info.GREEN,i:draw_info.RED},True)
             yield True
     return lst
+def merge_sort_paten(draw_info,ascending = True):
+    lst = draw_info.lst
+    mid = len(lst)//2
+    low = 0
+    high = len(lst)-1
+    draw_list(draw_info, {mid: draw_info.GREEN, low: draw_info.RED, high: draw_info.YELLOW}, True)
+    draw_info.lst = merge_sort(lst,ascending)
+    draw_list(draw_info,{mid:draw_info.GREEN,low:draw_info.RED,high:draw_info.YELLOW}, True)
+    yield True
+    return draw_info.lst
+def merge_sort(lst,ascending):
+    if len(lst)<=1:
+        return lst
+    mid = len(lst)//2
+    left = merge_sort(lst[:mid],ascending)
+    right = merge_sort(lst[mid:],ascending)
+    sorted_lst = merge(left,right,ascending)
+    return sorted_lst
+def merge(left,right,ascending=True):
+    sorted_list = []
+    i = 0
+    j= 0
+    if ascending:
+        while i<len(left) and j<len(right):
+            if left[i]<right[j]:
+                sorted_list.append(left[i])
+                i=i+1
+            else:
+                sorted_list.append(right[j])
+                j=j+1
+        left_left = left[i:]
+        right_left = right[j:]
+        return sorted_list+left_left+right_left
+    if not ascending:
+        while i<len(left) and j<len(right):
+            if left[i]>right[j]:
+                sorted_list.append(left[i])
+                i=i+1
+            else:
+                sorted_list.append(right[j])
+                j=j+1
+        left_left = left[i:]
+        right_left = right[j:]
+        return sorted_list+left_left+right_left
 def selection_sort(draw_info,ascending = True):
     lst = draw_info.lst
     if ascending:
@@ -153,16 +198,45 @@ def selection_sort(draw_info,ascending = True):
             draw_list(draw_info, {i: draw_info.GREEN, max: draw_info.RED}, True)
             yield True
         return lst
+def quick_sort_patern(draw_info,ascending = True):
+    lst = draw_info.lst
+    print(lst)
+    draw_info.lst = quick_sort(lst,ascending)
+    draw_list(draw_info,{},True)
+    yield True
+    print(draw_info.lst)
+    return draw_info.lst
+
+def quick_sort(lst,ascending = True):
+    if len(lst)<=1:
+        return lst
+    pivot = lst[-1]
+    left = []
+    right = []
+    if ascending:
+        for i in range(len(lst)-1):
+            if lst[i]<=pivot:
+                left.append(lst[i])
+            else:
+                right.append(lst[i])
+        return quick_sort(left,ascending)+[pivot]+quick_sort(right,ascending)
+    else:
+        for i in range(len(lst)-1):
+            if lst[i]>pivot:
+                left.append(lst[i])
+            else:
+                right.append(lst[i])
+        return quick_sort(left,ascending)+[pivot]+quick_sort(right,ascending)
 
 def main():
     run = True
     # create an object to help track time
     clock = pygame.time.Clock()
-    n = 50
+    n = 25
     min_val = 0
     max_val = 100
     lst = generate_starting_list(n,min_val,max_val)
-    draw_info = DrawInformation(800, 600, lst)
+    draw_info = DrawInformation(1500, 800, lst)
     sorting = False
     ascending = True
     sorting_algorithm = bubble_sort
@@ -208,6 +282,12 @@ def main():
             elif event.key == pygame.K_s and not sorting:
                 sorting_algorithm = selection_sort
                 sorting_algo_name = "Selection Sort"
+            elif event.key == pygame.K_m and not sorting:
+                sorting_algorithm = merge_sort_paten
+                sorting_algo_name = "Merge Sort"
+            elif event.key == pygame.K_q and not sorting:
+                sorting_algorithm = quick_sort_patern
+                sorting_algo_name = "Quick Sort"
     pygame.quit()
 if __name__ =="__main__":
     main()
