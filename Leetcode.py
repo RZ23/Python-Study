@@ -1,4 +1,6 @@
-# Roman to Int
+from binarytree import Node,tree
+from binarytree import Node, tree
+#Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
     dict = {"I": 1, "V": 5, "X": 10, "L": 50, "C": 100, "D": 500, "M": 1000}
@@ -166,14 +168,15 @@ test_case = [([2,4,3],[5,6,4]),([0],[0]),([9,9,9,9,9,9,9],[9,9,9,9])]
 for item in test_case:
     print("the sum of linked list {} and {} is {}".format(item[0],item[1],print_linkList(addTwoNumbers(item[0],item[1]))))
 
-class Node():
+print("---------------------Reversal Linked List -------------------------")
+class LinkedListNode():
     def __init__(self,value,next = None):
         self.value = value
         self.next = next
 head = [1,2,3,4,5]
 linked_list = []
 for item in head:
-    linked_list.append(Node(item))
+    linked_list.append(LinkedListNode(item))
 for i in range(len(linked_list)-1):
     linked_list[i].next = linked_list[i+1]
 def reverse_linked_list(node):
@@ -199,3 +202,55 @@ def print_linked_list(node):
     print(print_out_list)
 print_linked_list(reverse_linked_list(linked_list[0]))
 print_linked_list(reverse_linked_list_recurssive(linked_list[-1]))
+print("---------------------Right Side View the Binary Tree -------------------------")
+
+# root = [1,2,3,None,5,None,4]
+# root = [1,None,3]
+root = [0,1,2,3,None,None,None,4]
+# root = [None]
+# Generate the Node
+node_list = []
+for i in range(len(root)):
+    if root[i] is not None:
+        node_list.append(Node(root[i]))
+    else:
+        node_list.append(None)
+# Set the Left/Right child for each node
+for i in range(len(node_list)//2):
+    if node_list[i] is not None:
+        left_child =2*i+1
+        right_child = 2*i+2
+        if left_child<len(node_list):
+            node_list[i].left = node_list[left_child]
+        if right_child<len(node_list):
+            node_list[i].right = node_list[right_child]
+# Print the tree for the refrence
+print(node_list[0])
+print("Method One: With recurssive")
+def rightSideView(node,result_list=[],level=1):
+    if not node:
+        return
+    if level > len(result_list):
+        result_list.append(node.value)
+    rightSideView(node.right,result_list,level+1)
+    rightSideView(node.left,result_list,level+1)
+    return result_list
+print(rightSideView(node_list[0]))
+
+print("Method Two: using the while loop")
+def rightSideView_Iteration(root):
+    if root is None:
+        return []
+    result,current = [],[root]
+    while current:
+        next_level = []
+        for node in current:
+            if node.left:
+                next_level.append(node.left)
+            if node.right:
+                next_level.append(node.right)
+        result.append(node.value)
+        current = next_level
+    return result
+print(rightSideView_Iteration(node_list[0]))
+
