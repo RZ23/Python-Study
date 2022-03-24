@@ -27,8 +27,8 @@ def romanToInt(s):
             i=i+1
             # print(sum)
     return sum
-str= ["III","LVIII","MCMXCIV"]
-for item in str:
+str_list= ["III","LVIII","MCMXCIV"]
+for item in str_list:
     print("Translate {} to int is {}".format(item, romanToInt(item)))
 import random
 # Int to Roman with calc
@@ -272,3 +272,41 @@ def isBalanced(node):
     # must check both the left subtree and right subtree are balanced Binary Tree
     return abs(max_depth(node.left)-max_depth(node.right))<=1 and isBalanced(node.left) and isBalanced(node.right)
 print("The tree is the balanced binary tree:{}".format(isBalanced(node_list[0])))
+
+print("---------------------Palindrome Number-------------------------")
+def Palindrome_Number(num):
+    if num<0:
+        return False
+    else:
+        num_str = str(num)
+        last_index = -1
+        for i in range(len(num_str)//2):
+            if num_str[i]!=num_str[last_index-i]:
+                return False
+    return True
+num_list = [121,-121,10]
+for num in num_list:
+    print("the number {} is Palindrome Number:{}".format(num,Palindrome_Number(num)))
+
+print("---------------------Longest Common Prefix-------------------------")
+def longestCommonPrefix(lst):
+    result = lst[0]
+    for i in range(1,len(lst)):
+        result_size = len(result)
+        current=lst[i]
+        boundry = min(result_size,len(current))
+        s = ""
+        for j in range(boundry):
+            if result[j]==current[j]:
+                s =s+result[j]
+            else:
+                break
+        result = s
+    if result=="":
+        return ""
+    else:
+        return result
+lst = ["flower","flow","flight"]
+# lst = ["dog","racecar","car"]
+lst = ["cir","car"]
+print("The Longest Common Prefix of {} is {}".format(lst,longestCommonPrefix(lst)))
