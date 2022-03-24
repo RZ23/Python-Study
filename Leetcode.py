@@ -206,7 +206,10 @@ print("---------------------Right Side View the Binary Tree --------------------
 
 # root = [1,2,3,None,5,None,4]
 # root = [1,None,3]
-root = [0,1,2,3,None,None,None,4]
+# root = [0,1,2,3,None,None,None,4]
+# root = [1,2,2,3,3,None,None,4,4]
+# root = [3,9,20,None,None,15,7]
+root = [1,2,2,3,None,None,3,4,None,None,4]
 # root = [None]
 # Generate the Node
 node_list = []
@@ -254,3 +257,18 @@ def rightSideView_Iteration(root):
     return result
 print(rightSideView_Iteration(node_list[0]))
 
+print("---------------------Maximum Depth of Binary Tree-------------------------")
+def max_depth(node):
+    if node is None:
+        return 0
+    else:
+        return max(max_depth(node.left),max_depth(node.right))+1
+print("The depth of the tree is {}".format(max_depth(node_list[0])))
+
+print("---------------------Balanced Binary Tree-------------------------")
+def isBalanced(node):
+    if node is None:
+        return True
+    # must check both the left subtree and right subtree are balanced Binary Tree
+    return abs(max_depth(node.left)-max_depth(node.right))<=1 and isBalanced(node.left) and isBalanced(node.right)
+print("The tree is the balanced binary tree:{}".format(isBalanced(node_list[0])))
