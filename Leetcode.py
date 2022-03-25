@@ -1,5 +1,6 @@
 from binarytree import Node,tree
 from binarytree import Node, tree
+from collections import deque
 #Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
@@ -208,9 +209,12 @@ print("---------------------Right Side View the Binary Tree --------------------
 # root = [1,None,3]
 # root = [0,1,2,3,None,None,None,4]
 # root = [1,2,2,3,3,None,None,4,4]
-# root = [3,9,20,None,None,15,7]
-root = [1,2,2,3,None,None,3,4,None,None,4]
+root = [3,9,20,None,None,15,7]
+#root = [1,2,2,3,None,None,3,4,None,None,4]
 # root = [None]
+# root = [1]
+# root = []
+# root = [3,9,20,None,None,15,7]
 # Generate the Node
 node_list = []
 for i in range(len(root)):
@@ -310,3 +314,66 @@ lst = ["flower","flow","flight"]
 # lst = ["dog","racecar","car"]
 lst = ["cir","car"]
 print("The Longest Common Prefix of {} is {}".format(lst,longestCommonPrefix(lst)))
+print("---------------------Binary Tree Level Order Traversal-------------------------")
+def levelOrder(node):
+    if node is None:
+        return []
+    if node.left is None and node.right is None:
+        return [node.value]
+    dq = deque()
+    result = []
+    dq.append(node)
+    while dq:
+        level = len(dq)
+        current_node =dq.popleft()
+        result.append(current_node.value)
+        if current_node.left is not None:
+            dq.append(current_node.left)
+        if current_node.right is not None:
+            dq.append(current_node.right)
+
+    return result
+print(levelOrder(node_list[0]))
+
+def leverOrder_array(node):
+    if node is None:
+        return []
+    result=[]
+    result_dict= levelOrder_dictionary(node,1)
+    for i in result_dict.keys():
+        result.append(result_dict[i])
+    return result
+
+def levelOrder_dictionary(node,level,dict={}):
+    if level not in dict.keys():
+        dict[level] = [node.value]
+    else:
+        dict[level].append(node.value)
+    if node.left is not None:
+        levelOrder_dictionary(node.left,level+1,dict)
+    if node.right is not None:
+        levelOrder_dictionary(node.right,level+1,dict)
+    return dict
+print(leverOrder_array(node_list[0]))
+def levelOrder_BFS(node):
+    if node is None:
+        return []
+    dq = deque()
+    result = []
+    if node:
+        dq.append(node)
+    while len(dq):
+        level = []
+        size_dq = len(dq)
+        for item in range(size_dq):
+            current_node = dq.popleft()
+            level.append(current_node.value)
+            if current_node.left:
+                dq.append(current_node.left)
+            if current_node.right:
+                dq.append(current_node.right)
+        result.append(level)
+    return result
+print(levelOrder_BFS(node_list[0]))
+
+
