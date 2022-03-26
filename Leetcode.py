@@ -217,20 +217,38 @@ root = [3,9,20,None,None,15,7]
 # root = [3,9,20,None,None,15,7]
 # Generate the Node
 node_list = []
-for i in range(len(root)):
-    if root[i] is not None:
-        node_list.append(Node(root[i]))
-    else:
-        node_list.append(None)
-# Set the Left/Right child for each node
-for i in range(len(node_list)//2):
-    if node_list[i] is not None:
-        left_child =2*i+1
-        right_child = 2*i+2
-        if left_child<len(node_list):
-            node_list[i].left = node_list[left_child]
-        if right_child<len(node_list):
-            node_list[i].right = node_list[right_child]
+def generate_tree_from_list(root):
+    node_list = []
+    for i in range(len(root)):
+        if root[i] is not None:
+            node_list.append(Node(root[i]))
+        else:
+            node_list.append(None)
+    # Set the Left/Right child for each node
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child =2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list
+node_list=generate_tree_from_list(root)
+# for i in range(len(root)):
+#     if root[i] is not None:
+#         node_list.append(Node(root[i]))
+#     else:
+#         node_list.append(None)
+# # Set the Left/Right child for each node
+# for i in range(len(node_list)//2):
+#     if node_list[i] is not None:
+#         left_child =2*i+1
+#         right_child = 2*i+2
+#         if left_child<len(node_list):
+#             node_list[i].left = node_list[left_child]
+#         if right_child<len(node_list):
+#             node_list[i].right = node_list[right_child]
 # Print the tree for the refrence
 print(node_list[0])
 print("Method One: With recurssive")
@@ -333,6 +351,7 @@ def levelOrder(node):
             dq.append(current_node.right)
 
     return result
+print("Without []")
 print(levelOrder(node_list[0]))
 
 def leverOrder_array(node):
@@ -354,6 +373,7 @@ def levelOrder_dictionary(node,level,dict={}):
     if node.right is not None:
         levelOrder_dictionary(node.right,level+1,dict)
     return dict
+print("Methond One: with Recurssive")
 print(leverOrder_array(node_list[0]))
 def levelOrder_BFS(node):
     if node is None:
@@ -374,6 +394,30 @@ def levelOrder_BFS(node):
                 dq.append(current_node.right)
         result.append(level)
     return result
+print("Method Two: While Loop")
 print(levelOrder_BFS(node_list[0]))
 
 
+print("---------------------Flip Equivalent Binary Trees-------------------------")
+root1 = [1,2,3,4,5,6,None,None,None,7,8]
+root2 = [1,3,2,None,6,4,5,None,None,None,None,None,None,8,7]
+root1_tree = generate_tree_from_list(root1)
+root2_tree=generate_tree_from_list(root2)
+print(root1_tree[0])
+print(root2_tree[0])
+
+def flipEquiv(node1,node2):
+    # if node1==node2:
+    #     return True
+    if not node1 and not node2:
+        return True
+    if not node1 or not node2:
+        return False
+    if node1.value!=node2.value:
+        return False
+    return (flipEquiv(node1.left,node2.right) and
+            flipEquiv(node1.right,node2.left)) or \
+            (flipEquiv(node1.left,node2.left)
+             and flipEquiv(node1.right,node2.right))
+
+print(flipEquiv(root1_tree[0],root2_tree[0]))
