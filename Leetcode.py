@@ -421,3 +421,50 @@ def flipEquiv(node1,node2):
              and flipEquiv(node1.right,node2.right))
 
 print(flipEquiv(root1_tree[0],root2_tree[0]))
+
+print("---------------------Longest Substring Without Repeating Characters-------------------------")
+
+def lengthOfLongestSubstring(s):
+    result = []
+    result_dict={}
+    if len(s)==1:
+        return 1
+    max =0
+    for i in range(len(s)):
+        if s[i] not in result:
+            result.append(s[i])
+            if len(result)>max:
+                max=len(result)
+        else:
+            repeat_index = result.index(s[i])
+            new_result = result[repeat_index+1:]
+            if len(result)>max:
+                max = len(result)
+            result = new_result
+            result.append(s[i])
+    return max
+s_list= ["abcabcbb","bbbbb","pwwkew","au","dvdf"]
+for s in s_list:
+    print("the size of longest substring without repeating character of {} is {}".format(s,str(lengthOfLongestSubstring(s))))
+
+print("---------------------Longest Palindromic Substring-------------------------")
+
+string_list = ['babad',"cbbd"]
+def longestPalindrome(s):
+    longest = ""
+    for i in range(len(s)):
+        s1 = findlongest(s,i,i)
+        if len(s1)>len(longest):
+            longest = s1
+        s2 = findlongest(s,i,i+1)
+        if len(s2)>len(longest):
+            longest = s2
+    return longest
+
+def findlongest(s,l,r):
+    while l>=0 and r<len(s) and s[l]==s[r]:
+        l = l-1
+        r = r+1
+    return s[l+1:r]
+for item in string_list:
+    print("The Longest Palindromic Substring of {} is {}".format(item,longestPalindrome(item)))
