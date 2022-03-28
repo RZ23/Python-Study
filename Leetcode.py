@@ -468,3 +468,27 @@ def findlongest(s,l,r):
     return s[l+1:r]
 for item in string_list:
     print("The Longest Palindromic Substring of {} is {}".format(item,longestPalindrome(item)))
+
+print("---------------------Valid Parentheses-------------------------")
+
+def isValid_1(s):
+    if len(s)%2!=0:
+        return False
+    symbol_list = []
+    dict_map={'{':'}','[':']','(':')'}
+    for item in s:
+        if item in dict_map.keys():
+            symbol_list.append(item)
+        else:
+            if symbol_list==[]:
+                return False
+            a = symbol_list.pop()
+            if item !=dict_map[a]:
+                return False
+    return symbol_list==[]
+s_list = ["()","()[]{}","(]"]
+for item in s_list:
+    print("The string {} is {}".format(item,isValid_1(item)))
+
+
+
