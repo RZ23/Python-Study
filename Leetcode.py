@@ -491,4 +491,42 @@ for item in s_list:
     print("The string {} is {}".format(item,isValid_1(item)))
 
 
+print("---------------------Merge Two Sorted Lists-------------------------")
+class linkedNonde():
+    def __init__(self,value = 0,next =None ):
+        self.value = value
+        self.next = next
+
+lst1 = [1,2,4]
+lst2 = [1,3,4]
+def generate_linked_list(lst):
+    linked_list = []
+    for i in range(len(lst)):
+        linked_list.append(LinkedListNode(lst[i]))
+    for i in range(len(lst)-1):
+        linked_list[i].next = linked_list[i+1]
+    return linked_list[0]
+LinkedList1= generate_linked_list(lst1)
+LinkedList2 = generate_linked_list(lst2)
+def  mergeTwoLists(node1,node2):
+    head = LinkedListNode(0)
+    current = head
+    while node1 is not None and node2 is not None:
+        if node1.value<node2.value:
+            current.next= node1
+            node1 = node1.next
+        else:
+            current.next = node2
+            node2=node2.next
+        current = current.next
+    if node1 is not None:
+        current.next = node1
+    else:
+        current.next = node2
+    return head.next
+def display_linked_list(node):
+    while node is not None:
+        print(node.value,end = " ")
+        node = node.next
+display_linked_list(mergeTwoLists(LinkedList1,LinkedList2))
 
