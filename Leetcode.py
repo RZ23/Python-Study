@@ -529,4 +529,24 @@ def display_linked_list(node):
         print(node.value,end = " ")
         node = node.next
 display_linked_list(mergeTwoLists(LinkedList1,LinkedList2))
-
+print()
+print("---------------------Zigzag Conversion-------------------------")
+def Zigzag_convert(s,n):
+    if n==1:
+        return s
+    result = [""] * n
+    direct = 1
+    rowNumber = 0
+    for i in range(len(s)):
+        result[rowNumber] = result[rowNumber]+s[i]
+        if rowNumber<n-1 and direct ==1:
+            rowNumber=rowNumber+1
+        elif rowNumber>0 and direct==-1:
+            rowNumber = rowNumber-1
+        else:
+            direct = direct*-1
+            rowNumber=rowNumber+direct
+    return ''.join(result)
+input_list = {"s":"PAYPALISHIRING", "n":3},{"s":"PAYPALISHIRING","n":4}
+for item in input_list:
+    print("The Zigzag Convert of {} with {} rows is {}".format(item["s"],item["n"],Zigzag_convert(item["s"],item["n"])))
