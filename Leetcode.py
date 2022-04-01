@@ -550,3 +550,114 @@ def Zigzag_convert(s,n):
 input_list = {"s":"PAYPALISHIRING", "n":3},{"s":"PAYPALISHIRING","n":4}
 for item in input_list:
     print("The Zigzag Convert of {} with {} rows is {}".format(item["s"],item["n"],Zigzag_convert(item["s"],item["n"])))
+
+print("---------------------Median of Two Sorted Arrays-------------------------")
+print("O(n+m)")
+def findMedianSortedArrays_1(lst1,lst2):
+    i = 0
+    j = 0
+    result = []
+    while i<len(lst1) and j<len(lst2):
+        if lst1[i]<=lst2[j]:
+            result.append(lst1[i])
+            i = i+1
+        else:
+            result.append(lst2[j])
+            j = j+1
+    result = result+lst1[i:]+lst2[j:]
+    result_len = len(result)
+    if result_len%2==1:
+        index = result_len//2
+        median = result[index]
+    else:
+        index = result_len//2
+        index_1 = index-1
+        median = (result[index_1]+result[index])/2
+    return median
+test_list=[{"lst1":[1,3], "lst2" :[2]},{"lst1":[1,2],"lst2":[3,4]},{"lst1":[-5, 3, 6, 12, 15],
+        "lst2":[-12, -10, -6, -3, 4, 10]},{"lst1":[2,3,5,8],
+        "lst2":[10, 12, 14, 16, 18, 20]}]
+for item in test_list:
+    print("The median of two sorted array {} and {} is {}".format(item["lst1"],item["lst2"],findMedianSortedArrays_1(item["lst1"],item["lst2"])))
+
+print("O(log(n+m)): with binary search")
+def findMedianSortedArrays_2(lst1,lst2):
+    if len(lst1)>len(lst2):
+        return findMedianSortedArrays_2(lst2,lst1)
+    array_1 = lst1
+    array_2 = lst2
+    start = 0
+    end = len(array_1)
+    X = len(array_1)
+    Y =len(array_2)
+    while (start<=end):
+        partitionX = int((start+end)/2)
+        partitionY = int((X+Y+1)/2-partitionX)
+        if(partitionX==0):
+            X1 = float('-inf')
+        else:
+            X1 = array_1[partitionX-1]
+        if(partitionX==len(array_1)):
+            X2 = float('inf')
+        else:
+            X2 = array_1[partitionX]
+        if partitionY==0:
+            Y1 = float("-inf")
+        else:
+            Y1 =array_2[partitionY-1]
+        if partitionY==len(array_2):
+            Y2=float("-inf")
+        else:
+            Y2 = array_2[partitionY]
+        if((X1<=Y2) and (Y1<=X2)):
+            if((X+Y)%2==0):
+                median = ((max(X1,Y1)+min(X2,Y2))/2)
+                return median
+            else:
+                median = max(X1,Y1)
+                return median
+        elif(Y1>X2):
+            start = partitionX+1
+        else:
+            end = partitionX-1
+for item in test_list:
+    print("The median of two sorted array {} and {} is {}".format(item["lst1"],item["lst2"],findMedianSortedArrays_2(item["lst1"],item["lst2"])))
+
+print("---------------------Reverse Integer-------------------------")
+print("Method One: Transfer to String")
+def reverse_ingeter_to_string(num):
+    if num<0:
+        direct = -1
+    else:
+        direct = 1
+    change_str = str(abs(num))
+    order = []
+    for char in change_str:
+        order.append(char)
+    s = ""
+    for i in range(len(order)):
+        char = order.pop()
+        s= s+char
+    final = int(s)
+    final = final*direct
+    return final
+test_list=[123,-123,120,4002]
+for item in test_list:
+    print("Reverse the Interger {} is {}".format(item,reverse_ingeter_to_string(item)))
+print("Method Two: Divide and Mode")
+def reverse_ingeter_by_math(num):
+    if num<0:
+        direct = -1
+    else:
+        direct = 1
+    result = 0
+    while num:
+        result = 10*result+num%10
+        num = num/10
+    if num<pow(2,31)-1 and num>-1*pow(2,31):
+        return direct*result
+    else:
+        return 0
+for item in test_list:
+    print("Reverse the Interger {} is {}".format(item,reverse_ingeter_to_string(item)))
+
