@@ -661,3 +661,82 @@ def reverse_ingeter_by_math(num):
 for item in test_list:
     print("Reverse the Interger {} is {}".format(item,reverse_ingeter_to_string(item)))
 
+print("---------------------Remove Duplicates from Sorted Array-------------------------")
+def removeDuplicates(lst):
+    cur = 0
+    pre = lst[0]
+    k=0
+    for i in range(1,len(lst)):
+        while lst[i]!=pre and i <len(lst):
+            # print("lst[{}]:{} is not equal {}".format(i, lst[i], pre))
+            original_lst = lst.copy()
+            new_index = cur + 1
+            lst[new_index] = lst[i]
+            pre = lst[i]
+            cur = cur + 1
+            # print(original_lst)
+            # print(lst, cur, lst[cur])
+        i = i+1
+    return lst,cur+1
+lst = [[0,0,1,1,1,2,2,3,3,4],[1,1,2]]
+for item in lst:
+    print(item)
+    lst_ori=item.copy()
+    print("The result of remove the duplicate sorted array {} is {}".format(lst_ori,removeDuplicates(item)))
+
+print("---------------------String to Integer (atoi)-------------------------")
+def myAtoi(s):
+    direct = 1
+    result = 0
+    num_lst = ['1','2','3','4','5','6','7','8','9','0']
+    last_digit = 0
+    postive=False
+    negative=False
+    s = s.lstrip()
+    for index in range(len(s)):
+        while index<len(s) and s[index]=="+" and not postive:
+            if negative:
+                return 0
+            if postive:
+                return 0
+            if s[index]=="+":
+                postive = True
+            index =index+1
+        if index<len(s) and s[index]=="-" and not negative:
+            if postive:
+                return 0
+            if negative:
+                return 0
+            else:
+                direct = -1
+                index = index+1
+                negative = True
+        if index<len(s) and not s[index] in num_lst:
+            return 0
+        if index<len(s) and s[index] in num_lst:
+            while (index<len(s)) and (s[index] in num_lst):
+                result = result*10
+                result = result+int(s[index])
+                index=index+1
+            break
+    result = result*direct
+    if result<-pow(2,31):
+        result = -pow(2,31)
+    elif result>pow(2,31)-1:
+        result = pow(2,31)-1
+    return result
+test_case = ["4193 with words","   -42","42","abc","Words and 987","-91283472332",
+"+-12",".123","+",". ","+- "," ++1"]
+for item in test_case:
+    print("String {} to Int is {}".format(item,myAtoi(item)))
+
+
+
+
+
+
+
+
+
+
+
