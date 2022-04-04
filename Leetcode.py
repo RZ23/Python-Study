@@ -731,9 +731,50 @@ for item in test_case:
     print("String {} to Int is {}".format(item,myAtoi(item)))
 
 
-
-
-
+print("---------------------3Sum-------------------------")
+print("Methond One: 3 loop")
+def threeSum(lst):
+    if len(lst)<=2:
+        return []
+    result = []
+    for i in range(len(lst)-2):
+        for j in range(i+1,len(lst)-1):
+            for k in range(j+1,len(lst)):
+                if lst[i]+lst[j]+lst[k]==0:
+                    tup = [lst[i],lst[j],lst[k]]
+                    result.append(tup)
+    final_result = []
+    dup_check=[]
+    for item in result:
+        temp_item = sorted(item)
+        # print(item,temp_item)
+        if temp_item not in dup_check:
+            final_result.append(item)
+            dup_check.append(temp_item)
+    return final_result
+test_case = [[-1,0,1,2,-1,-4],[],[0]]
+for item in test_case:
+    print("the 3 sum of list {} is {}".format(item,threeSum(item)))
+print("Method Two: 2 loops and Direct")
+def threeSum_2(lst):
+    if len(lst)<=2:
+        return []
+    lst.sort()
+    dict = {}
+    for i in range(len(lst)):
+        dict[lst[i]] = i
+    result = set()
+    for i in range(len(lst)):
+        if i!=0 and lst[i]==lst[i-1]:
+            continue
+        twoSum = -lst[i]
+        for j in range(i+1,len(lst)):
+            target = twoSum-lst[j]
+            if target in dict and dict[target]>j:
+                result.add((-twoSum,lst[j],target))
+    return result
+for item in test_case:
+    print("the 3 sum of list {} is {}".format(item,threeSum_2(item)))
 
 
 
