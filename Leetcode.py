@@ -737,6 +737,7 @@ def threeSum(lst):
     if len(lst)<=2:
         return []
     result = []
+    dict = {}
     for i in range(len(lst)-2):
         for j in range(i+1,len(lst)-1):
             for k in range(j+1,len(lst)):
@@ -776,8 +777,52 @@ def threeSum_2(lst):
 for item in test_case:
     print("the 3 sum of list {} is {}".format(item,threeSum_2(item)))
 
+print("---------------------3Sum Closed-------------------------")
+print("Method One: 3 Nest For Loop")
+def threeSumClosest(lst,target):
+    if len(lst)<3 or len(lst)>1000:
+        return False
+    diff = pow(10,4)
+    result = []
+    for i in range(len(lst)-2):
+        for j in range(i+1,len(lst)-1):
+            for k in range(j+1,len(lst)):
+                if abs((lst[i]+lst[j]+lst[k])-target)<diff:
+                    diff = abs((lst[i]+lst[j]+lst[k])-target)
+                    tup = (i,j,k)
+                    result.append(tup)
+    a = result[-1][0]
+    b=result[-1][1]
+    c=result[-1][2]
+    return lst[a]+lst[b]+lst[c]
 
+test_case = [[[-1,2,1,-4],1],[[0,0,0],1],[[84,49,-47,-56,13,-3,62,-95,23,38,-97,92,34,68,30,90,41,24,-58,83,96,-99,-40,28,-18,-69,-78,95,-62,45,-66,-71,5,94,-42,-66,27,60,-90,-62,87,-22,56,7,-11,75,53,-16,-7,-19,17,18,-14,43,98,-11,0,80,-82,40,5,37,-94,-14,-62,-82,84,23,-9,-68,37,-23,10,26,-22,-52,14,18,-40,-74,-32,47,-87,-81,-68,34,60,75,93,-28,100,-42,0,-87,60,75,-47,7,-57,-61,-2,-96,-18,-98,-3,25,38,-83,60,-12,-62,78,-41,75,-5,89,-97,-1,87,92,57,93,-83,-67,-76,28,-98,-12,22,-2,54,-67,7,99,100,50,5,84,49,-96,-61,-62,-61,29,-59,43,55,30,-10,-22,50,-32,-81,-42,32,55,-94,84,-90,-71,-10,61,56,94,51,8,54,22,22,31],
+82]]
+for item in test_case:
+    print(threeSumClosest(item[0],item[1]))
 
+print("Method Two: For loop and While Loop")
 
+def threeSumClosest_1(num,target):
+    if len(num)<3:
+        return False
+    num.sort()
+    print(num)
+    diff = float("infinity")
+    for i in range(len(num)-2):
+        begin = i+1
+        end = len(num)-1
+        while begin<end:
+            if abs(num[i]+num[begin]+num[end]-target)<diff:
+                diff = abs(num[i]+num[begin]+num[end]-target)
+                result = num[i]+num[begin]+num[end]
+            if num[i]+num[begin]+num[end]>target:
+                end = end-1
+            else:
+                begin = begin+1
+    return result
+test_case = [[[-1,2,1,-4],1]]
+for item in test_case:
+    print(threeSumClosest_1(item[0],item[1]))
 
 
