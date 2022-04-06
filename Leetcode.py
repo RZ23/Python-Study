@@ -825,4 +825,88 @@ test_case = [[[-1,2,1,-4],1]]
 for item in test_case:
     print(threeSumClosest_1(item[0],item[1]))
 
+print("---------------------1008. Construct Binary Search Tree from Preorder Traversal-------------------------")
+print("print the tree by level")
+def print_tree_by_level(node):
+    if node is None:
+        return None
+    dq = deque()
+    dq.append(node)
+    result = []
+    while len(dq)>0:
+        # print(dq)
+        current_node = dq.popleft()
+        if current_node is None:
+            result.append(None)
+            current_node = dq.popleft()
+            result.append(current_node.value)
+        else:
+            result.append(current_node.value)
+        if current_node.left is not None:
+            dq.append(current_node.left)
+        if current_node.left is None and current_node.right is not None:
+            dq.append(None)
+        if current_node.right is not None:
+            dq.append(current_node.right)
+    return result
+node_list = [8,5,10,1,7,None,2]
+root = generate_tree_from_list(node_list)
+print(root[0])
+print(print_tree_by_level(root[0]))
+print("Construct Binary Search Tree from Preorder Traversal")
+def bstFromPreorder(lst):
+    if lst is None:
+        return None
+    elif len(lst)==0:
+        return None
+    elif len(lst)==1:
+        return Node(lst[0])
+    else:
+        left = []
+        right=[]
+        node = Node(lst[0])
+        for i in range(1,len(lst)):
+            if lst[i]<lst[0]:
+                left.append(lst[i])
+            else:
+                right.append(lst[i])
+        node.left=bstFromPreorder(left)
+        node.right=bstFromPreorder(right)
+        # print(node)
+    return node
+preorder = [8,5,1,7,10,12]
+print(bstFromPreorder(preorder))
+print(print_tree_by_level(bstFromPreorder(preorder)))
 
+print("---------------------18. 4Sum-------------------------")
+def fourSum(lst,target):
+    dict = {}
+    lst.sort()
+    for i in range(len(lst)-1):
+        for j in range(i+1,len(lst)):
+            sum = lst[i]+lst[j]
+            if sum not in dict.keys():
+                dict[sum] =[[i,j]]
+            else:
+                dict[sum].append([i,j])
+    # print(dict)
+    result_set = set()
+    for x in range(len(lst)-3):
+        for y in range(x+1,len(lst)-2):
+            dif = target - (lst[x]+lst[y])
+            # print("dif:{}".format(dif))
+            if dif in dict.keys():
+                for item in dict[dif]:
+                    # print(lst[x],lst[y],item)
+                    if y<item[0]:
+                        result_set.add((lst[x],lst[y],lst[item[0]],lst[item[1]]))
+    # print(result_set)
+    final_result = []
+    for item in result_set:
+        if item not in final_result:
+            final_result.append(item)
+    return final_result
+test_case = [[[1,0,-1,0,-2,2],0],[[2,2,2,2,2],8],[[-5,5,4,-3,0,0,4,-2],4]]
+for item in test_case:
+    # print(item[0],item[1])
+    print(fourSum(item[0],item[1]))
