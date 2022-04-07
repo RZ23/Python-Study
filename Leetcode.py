@@ -910,3 +910,17 @@ test_case = [[[1,0,-1,0,-2,2],0],[[2,2,2,2,2],8],[[-5,5,4,-3,0,0,4,-2],4]]
 for item in test_case:
     # print(item[0],item[1])
     print(fourSum(item[0],item[1]))
+print("---------------------27. Remove Element-------------------------")
+def removeElement(lst,val):
+    count = 0
+    for i in range(len(lst)):
+        if lst[i]!=val:
+            lst[count] = lst[i]
+            count = count+1
+    print(lst[:count])
+    return count
+test_case = [[[3,2,2,3],3],[[0,1,2,2,3,0,4,2],2],[[1,1,1],1]]
+for item in test_case:
+    print("the length of list {} after remove element {} is {}".format(item[0],item[1],removeElement(item[0],item[1])))
+# print("the length of list {} after remove element {} is {}".format([0,1,2,2,3,0,4,2],2,removeElement([0,1,2,2,3,0,4,2],2)))
+
