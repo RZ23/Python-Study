@@ -924,3 +924,15 @@ for item in test_case:
     print("the length of list {} after remove element {} is {}".format(item[0],item[1],removeElement(item[0],item[1])))
 # print("the length of list {} after remove element {} is {}".format([0,1,2,2,3,0,4,2],2,removeElement([0,1,2,2,3,0,4,2],2)))
 
+print("---------------------28. Implement strStr()-------------------------")
+def strStr(lst1,lst2):
+    lst2_size = len(lst2)
+    if len(lst1)<len(lst2):
+        return -1
+    for i in range(0,len(lst1)-lst2_size+1):
+        if lst1[i:i+lst2_size]==lst2:
+            return i
+    return -1
+test_case = [["hello","ll"],["aaaaa","bba"],["a","a"]]
+for item in test_case:
+    print("the index of string {} in string {} is {}".format(item[1],item[0],strStr(item[0],item[1])))
