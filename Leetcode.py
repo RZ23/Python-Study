@@ -1,6 +1,8 @@
 from binarytree import Node,tree
 from binarytree import Node, tree
 from collections import deque
+from collections import Counter
+
 #Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
@@ -936,3 +938,42 @@ def strStr(lst1,lst2):
 test_case = [["hello","ll"],["aaaaa","bba"],["a","a"]]
 for item in test_case:
     print("the index of string {} in string {} is {}".format(item[1],item[0],strStr(item[0],item[1])))
+
+print("---------------------136. Single Number-------------------------")
+print("*** Method One: Sort and Compare ***")
+def singleNumber_sort_compare(nums):
+    if len(nums)==1:
+        return nums[0]
+    nums.sort()
+    # print(nums)
+    p = 0
+    c =1
+    while c<(len(nums)):
+        if c<len(nums) and nums[c]!=nums[p] :
+            return nums[p]
+        c= c+2
+        p=p+2
+        # print("c:{},p:{}".format(c,p))
+        if p==len(nums)-1:
+            return nums[p]
+        if c>len(nums):
+            return nums[p]
+test_case = [[2,2,1],[4,1,2,1,2],[1],[-336,513,-560,-481,-174,101,-997,40,-527,-784,-283,-336,513,-560,-481,-174,101,-997,40,-527,-784,-283,354]]
+for item in test_case:
+    print("the unduplicated item in array {} is {}".format(item,singleNumber_sort_compare(item)))
+
+print("*** Method Two: Python Build_In Counter ***")
+def singleNumber_counter(nums):
+    counter_result = Counter(nums)
+    # print(counter_result)
+    for item in counter_result:
+        if counter_result[item]==1:
+            return item
+for item in test_case:
+    print("the unduplicated item in array {} is {}".format(item,singleNumber_counter(item)))
+
+print("*** Method Three: Math ***")
+def singleNumber_counter_math(nums):
+    return 2*sum(set(nums))-sum(nums)
+for item in test_case:
+    print("the unduplicated item in array {} is {}".format(item,singleNumber_counter_math(item)))
