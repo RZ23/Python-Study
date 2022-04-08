@@ -203,6 +203,12 @@ def print_linked_list(node):
         print_out_list.append(node.value)
         node = node.next
     print(print_out_list)
+def print_linked_list_with_return(node):
+    print_out_list = []
+    while node is not None:
+        print_out_list.append(node.value)
+        node = node.next
+    return print_out_list
 print_linked_list(reverse_linked_list(linked_list[0]))
 print_linked_list(reverse_linked_list_recurssive(linked_list[-1]))
 print("---------------------Right Side View the Binary Tree -------------------------")
@@ -502,6 +508,10 @@ class linkedNonde():
 lst1 = [1,2,4]
 lst2 = [1,3,4]
 def generate_linked_list(lst):
+    if len(lst)==0:
+        return None
+    if len(lst)==1:
+        return LinkedListNode(lst[0])
     linked_list = []
     for i in range(len(lst)):
         linked_list.append(LinkedListNode(lst[i]))
@@ -977,3 +987,41 @@ def singleNumber_counter_math(nums):
     return 2*sum(set(nums))-sum(nums)
 for item in test_case:
     print("the unduplicated item in array {} is {}".format(item,singleNumber_counter_math(item)))
+
+print("---------------------1046. Last Stone Weight-------------------------")
+def lastStoneWeight(stones):
+    if len(stones)==0:
+        return 0
+    elif len(stones)==1:
+        return stones[0]
+    else:
+        stones.sort()
+        x = stones[-1]
+        y = stones[-2]
+        stones = stones[:-2]
+        if x-y>0:
+            new_weight = x-y
+            stones.append(new_weight)
+        return lastStoneWeight(stones)
+stones_list = [[2,7,4,1,8,1],[1]]
+for stones in stones_list:
+    print("the last Stone Weight of {} is {}".format(stones,lastStoneWeight(stones)))
+
+print("---------------------24. Swap Nodes in Pairs-------------------------")
+def swapPairs(head):
+    dummy = ListNode(0)
+    dummy.next = head
+    current = dummy
+    while current.next is not None and current.next.next is not None:
+        first = current.next
+        second  = current.next.next
+        first.next = second.next
+        current.next = second
+        current.next.next=first
+        current=current.next.next
+    return dummy.next
+test_case = [[1,2,3,4],[],[1]]
+for case in test_case:
+    node_list = generate_linked_list(case)
+    # print_linked_list(node_list)
+    print("The result of Swap linked List: {} is {}".format(print_linked_list_with_return(node_list),print_linked_list_with_return(swapPairs(node_list))))
