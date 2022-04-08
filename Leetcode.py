@@ -1025,3 +1025,34 @@ for case in test_case:
     node_list = generate_linked_list(case)
     # print_linked_list(node_list)
     print("The result of Swap linked List: {} is {}".format(print_linked_list_with_return(node_list),print_linked_list_with_return(swapPairs(node_list))))
+
+print("---------------------29. Divide Two Integers-------------------------")
+def divide(dividend,divisor):
+    negative = True
+    if divisor ==0:
+        return False
+    if dividend>pow(2,31) or dividend<0-pow(2,31) or divisor>pow(2,31) or divisor<0-pow(2,31):
+        return False
+    if dividend==0:
+        return 0
+    if (abs(dividend)!=dividend and abs(divisor)!=divisor) or (abs(dividend)==dividend and abs(divisor)==divisor):
+        negative = False
+    dividend = abs(dividend)
+    divisor =abs(divisor)
+    count = -1
+    while dividend>=0:
+        dividend = dividend-divisor
+        count = count+1
+    if negative:
+        count = 0-count
+    if count>pow(2,31)-1:
+        count = pow(2,31)-1
+    if count<0-pow(2,31):
+        count = 0-pow(2,31)
+    return count
+test_case = [{"dividend":10,"divisor":3},{"dividend":7,"divisor":-3},{"dividend":7,"divisor":0},{"dividend":1,"divisor":1},{"dividend":0,"divisor":12}]
+for item in test_case:
+    # print(item['dividend'],item["divisor"])
+    print("The result of {} divide {} is {}".format(item['dividend'],item["divisor"],divide(item['dividend'],item["divisor"])))
+
+
