@@ -1055,4 +1055,22 @@ for item in test_case:
     # print(item['dividend'],item["divisor"])
     print("The result of {} divide {} is {}".format(item['dividend'],item["divisor"],divide(item['dividend'],item["divisor"])))
 
+print("---------------------35. Search Insert Position-------------------------")
+def searchInsert(nums,target):
+    if len(nums)==0:
+        return False
+    low = 0
+    high = len(nums)-1
+    while low<=high:
+        mid = (low+high)//2
+        if nums[mid]==target:
+            return mid
+        if nums[mid]<target:
+            low = mid+1
+        else:
+            high = mid-1
+    return low
 
+test_case = [[[1,3,5,6],5],[[1,3,5,6],2],[[1,3,5,6],7]]
+for item in test_case:
+    print("The index of target {} in the sorted list {} should be {}".format(item[1],item[0],searchInsert(item[0],item[1])))
