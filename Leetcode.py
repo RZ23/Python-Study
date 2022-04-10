@@ -1109,3 +1109,19 @@ def maxArea_for_while_loop(height):
 for height in height_list:
     print("The Maxium Area of list {} is {} ".format(height,maxArea(height)))
 
+print("---------------------17. Letter Combinations of a Phone Number-------------------------")
+def letterCombinations(digits):
+    if len(digits)==0:
+        return []
+    map ={"1":"","2":"abc","3":"def","4":"ghi","5":"jkl",
+          "6":"mno","7":"pqrs","8":"tuv","9":"wxyz"}
+    cur = ['']
+    for d in digits:
+        temp = []
+        for c in map[d]:
+            temp = temp+[r+c for r in cur]
+        cur = temp
+    return cur
+test_case=["23","","2"]
+for digits in test_case:
+    print("The Combinations of {} are {}".format(digits,letterCombinations(digits)))
