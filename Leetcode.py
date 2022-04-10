@@ -1074,3 +1074,38 @@ def searchInsert(nums,target):
 test_case = [[[1,3,5,6],5],[[1,3,5,6],2],[[1,3,5,6],7]]
 for item in test_case:
     print("The index of target {} in the sorted list {} should be {}".format(item[1],item[0],searchInsert(item[0],item[1])))
+
+print("---------------------11. Container With Most Water-------------------------")
+print("Method One: Two For Loops")
+def maxArea(height):
+    max = 0
+    for i in range(len(height)-1):
+        left_bound = i
+        for j in range(i+1,len(height)):
+            wide = j-i
+            high = min(height[i],height[j])
+            area = wide*high
+            # print("wide={},high = {},area ={}".format(wide,high,area))
+            if area > max:
+                max = area
+    return max
+height_list = [[1,8,6,2,5,4,8,3,7],[1,1]]
+for height in height_list:
+    print("The Maxium Area of list {} is {} ".format(height,maxArea(height)))
+print("Method Two: For Loop and While Loop ")
+
+def maxArea_for_while_loop(height):
+    max_area = 0
+    left = 0
+    right = len(height)-1
+    while left<right:
+        short_line = min(height[left],height[right])
+        max_area = max(max_area,short_line*(right-left))
+        if height[left]<height[right]:
+            left = left+1
+        else:
+            right = right+1
+    return max_area
+for height in height_list:
+    print("The Maxium Area of list {} is {} ".format(height,maxArea(height)))
+
