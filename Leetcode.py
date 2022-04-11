@@ -1173,3 +1173,36 @@ for linked_list in test_case:
     linked_lst=generate_linked_list(linked_list[0])
     print(print_linked_list_with_return(removeNthFromEnd_two_pointers(linked_lst,linked_list[1])))
 
+print("---------------------31. Next Permutation-------------------------")
+def nextPermutation(nums):
+    n = len(nums)
+    # index of first element that smaller than the element to its right
+    index = -1
+    for i in range(n-1,0,-1):
+        if nums[i]>nums[i-1]:
+            index = i-1
+            break
+    # base condition
+    if index==-1:
+        reverse(nums,0,n-1)
+        return nums
+    j = n-1
+    #swap from right to leef to find the first element
+    #that is greater the above find element
+    for i in range(n-1,index,-1):
+        if nums[i]>nums[index]:
+            j = i
+            break
+    nums[index],nums[j] = nums[j],nums[index]
+    reverse(nums,index+1,n-1)
+    return nums
+
+def reverse(nums,i,j):
+    while i<j:
+        nums[i],nums[j]=nums[j],nums[i]
+        i=i+1
+        j=j-1
+test_case_nums= [[1,2,3],[1,3,2],[4,3,2,1],[1,1,5]]
+for nums in test_case_nums:
+    original_num = nums.copy()
+    print("The Next Permutation of {} is {}".format(original_num,nextPermutation(nums)))
