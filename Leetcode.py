@@ -1125,3 +1125,51 @@ def letterCombinations(digits):
 test_case=["23","","2"]
 for digits in test_case:
     print("The Combinations of {} are {}".format(digits,letterCombinations(digits)))
+
+print("---------------------19. Remove Nth Node From End of List-------------------------")
+print("Method One: Reverse, Remove and Reversed again")
+def removeNthFromEnd(head,n):
+    if head.next is None:
+        return None
+    revered_node = reverse_linked_list(head)
+    revered_head = revered_node
+    i = 1
+    while i+1<n:
+        revered_node.next = revered_node
+        i = i+1
+    revered_node.next=revered_node.next.next
+    new_head = reverse_linked_list(revered_head)
+    return new_head
+test_case=[[[1,2,3,4,5],2],[[1,2],1],[[1],1]]
+for linked_list in test_case:
+    linked_lst=generate_linked_list(linked_list[0])
+    print(print_linked_list_with_return(removeNthFromEnd(linked_lst,linked_list[1])))
+
+print("Method Two: Two Pointers - Faster and Slower pointer")
+def removeNthFromEnd_two_pointers(head,n):
+    # Two Pointers, Fast and Slow
+    fast = head
+    slow = head
+    # Move the faster pointer n steps ahead
+    for i in range(n):
+        if fast.next is None:
+            # if n is equal to the number of the nodes, delete the head node
+            if i==n-1:
+                head = head.next
+            return head
+        fast = fast.next
+        # loop until the Fast node reach the end
+        # move both the fast and slow node
+    while fast.next is not None:
+        slow = slow.next
+        fast = fast.next
+    # find the nth node, and delink it
+    if slow.next is not None:
+        slow.next = slow.next.next
+    return head
+
+test_case=[[[1,2,3,4,5],2],[[1,2],1],[[1],1]]
+for linked_list in test_case:
+    linked_lst=generate_linked_list(linked_list[0])
+    print(print_linked_list_with_return(removeNthFromEnd_two_pointers(linked_lst,linked_list[1])))
+
