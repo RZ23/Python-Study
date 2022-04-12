@@ -1206,3 +1206,37 @@ test_case_nums= [[1,2,3],[1,3,2],[4,3,2,1],[1,1,5]]
 for nums in test_case_nums:
     original_num = nums.copy()
     print("The Next Permutation of {} is {}".format(original_num,nextPermutation(nums)))
+
+print("---------------------33. Search in Rotated Sorted Array-------------------------")
+def search(nums,target):
+    if nums is None or len(nums)==0:
+        return -1
+    left,right = 0,len(nums)-1
+    # find the pivot
+    while left<right:
+        # mid = left+(right-left)//2
+        mid = (left+right)// 2
+        if nums[mid]>nums[right]:
+            left = mid+1
+        else:
+            right = mid
+    # afte the loop, left will point to the pivot
+    pivot = left
+    left,right = 0,len(nums)-1
+    if nums[pivot]<=target<=nums[right]:
+        left = pivot
+    else:
+        right = pivot
+    while left<=right:
+        mid = (left+right)//2
+        if nums[mid]==target:
+            return mid
+        elif nums[mid]<target:
+            left = mid+1
+        else:
+            right = mid-1
+    return -1
+nums_test = [[[4,5,6,7,0,1,2],0],[[1,2,3,4,5,6,0],0],[[4,5,6,7,0,1,2],3],[[1],0],[[1,3],1],[[5,1,3],5]]
+for test in nums_test:
+    print("The index of {} in {} is {}".format(test[1],test[0],search(test[0],test[1])))
+
