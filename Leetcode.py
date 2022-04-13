@@ -1240,3 +1240,35 @@ nums_test = [[[4,5,6,7,0,1,2],0],[[1,2,3,4,5,6,0],0],[[4,5,6,7,0,1,2],3],[[1],0]
 for test in nums_test:
     print("The index of {} in {} is {}".format(test[1],test[0],search(test[0],test[1])))
 
+print("---------------------34. Find First and Last Position of Element in Sorted Array-------------------------")
+
+def searchRange(nums,target):
+    result = [-1,-1]
+    low = 0
+    high = len(nums)
+    while low<high:
+        mid = (high+low)//2
+        if nums[mid]==target:
+            result[0]=mid
+            result[1]=mid
+            high = mid
+        elif nums[mid]<target:
+            low = mid+1
+        else:
+            high = mid
+    if result[0]==-1:
+        return result
+    low = result[0]+1
+    high = len(nums)
+    while low<high:
+        mid = (low+high)//2
+        if nums[mid]==target:
+            result[1]=mid
+            low = mid+1
+        elif nums[mid]>target:
+            high = mid
+    return result
+
+test_case = [[[5,7,7,8,8,10],8],[[5,7,7,8,8,10],6],[[],0],[[2,2,2,3,3,4,4,4,4,5,5,6],4],[[1,3],1]]
+for item in test_case:
+    print("the range of target number {} in sorted array {} is {}".format(item[1],item[0],searchRange(item[0],item[1])))
