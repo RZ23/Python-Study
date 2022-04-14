@@ -1336,4 +1336,4 @@ test_board = [[["5","3",".",".","7",".",".",".","."]
 ,[".","2",".","9",".",".",".",".","."]
 ,[".",".","4",".",".",".",".",".","."]]]
 for board in test_board:
-    print(isValidSudoku(board))
+    print("the Sudoku Board {} is {}".format(board,isValidSudoku(board)))
