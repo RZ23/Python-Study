@@ -1272,3 +1272,68 @@ def searchRange(nums,target):
 test_case = [[[5,7,7,8,8,10],8],[[5,7,7,8,8,10],6],[[],0],[[2,2,2,3,3,4,4,4,4,5,5,6],4],[[1,3],1]]
 for item in test_case:
     print("the range of target number {} in sorted array {} is {}".format(item[1],item[0],searchRange(item[0],item[1])))
+
+print("---------------------36. Valid Sudoku-------------------------")
+def isValidSudoku(board):
+    result = True
+    for i in range(len(board)):
+        result = checkrow(board,i) and result
+    for j in range(len(board)):
+        result = checkcol(board,j) and result
+    for i in range(0,len(board),3):
+        for j in range(0,len(board[i]),3):
+            # print("new subsquare,i and j is {},{}".format(i,j))
+            result = checksquare(board,i,j) and result
+    return result
+def checkrow(board,i):
+    dict = {}
+    for j in range(len(board[i])):
+        if board[i][j]==".":
+            continue
+        elif board[i][j] not in dict.keys():
+                dict[board[i][j]]=board[i][j]
+        else:
+                return False
+    return True
+def checkcol(board,j):
+    dict = {}
+    for i in range(len(board)):
+        if board[i][j]==".":
+            continue
+        elif board[i][j] not in dict.keys():
+            dict[board[i][j]] = board[i][j]
+        else:
+            return False
+    return True
+def checksquare(board,i,j):
+    dict = {}
+    for x in range(i,i+3):
+        for y in range(j,j+3):
+            # print("x = {},y={}".format(x,y))
+            if board[x][y]==".":
+                continue
+            elif board[x][y] not in dict.keys():
+                dict[board[x][y]]=board[x][y]
+            else:
+                return False
+    return True
+test_board = [[["5","3",".",".","7",".",".",".","."]
+,["6",".",".","1","9","5",".",".","."]
+,[".","9","8",".",".",".",".","6","."]
+,["8",".",".",".","6",".",".",".","3"]
+,["4",".",".","8",".","3",".",".","1"]
+,["7",".",".",".","2",".",".",".","6"]
+,[".","6",".",".",".",".","2","8","."]
+,[".",".",".","4","1","9",".",".","5"]
+,[".",".",".",".","8",".",".","7","9"]]
+,[[".",".",".",".","5",".",".","1","."]
+,[".","4",".","3",".",".",".",".","."]
+,[".",".",".",".",".","3",".",".","1"]
+,["8",".",".",".",".",".",".","2","."]
+,[".",".","2",".","7",".",".",".","."]
+,[".","1","5",".",".",".",".",".","."]
+,[".",".",".",".",".","2",".",".","."]
+,[".","2",".","9",".",".",".",".","."]
+,[".",".","4",".",".",".",".",".","."]]]
+for board in test_board:
+    print(isValidSudoku(board))
