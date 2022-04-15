@@ -1379,3 +1379,28 @@ def combinationSum(candidates, target):
 test_list = [[[2,3,6,7],7],[[2,3,5],8],[[2],1]]
 for candidates,target in test_list:
     print("the combination of {} to get target number {} are {}".format(candidates,target,combinationSum(candidates,target)))
+
+print("---------------------43. Multiply Strings-------------------------")
+def multiply(num1,num2):
+    # base condition if one of element is equal to 0
+    if num1=="0" or num2=="0":
+        return "0"
+    # allocate a array for the result and set the size to len(num1+num2)
+    result = [0]*(len(num1)+len(num2))
+    # rverse the num1 and num2
+    num1,num2 = num1[::-1],num2[::-1]
+    for i in range(len(num1)):
+        for j in range(len(num2)):
+            digit = int(num1[i])*int(num2[j])
+            result[i+j] = digit+result[i+j]
+            result[i+j+1] = result[i+j+1]+(result[i+j])//10
+            result[i+j] = result[i+j]% 10
+    result = result[::-1]
+    beg = 0
+    while beg<len(result) and result[beg]==0:
+        beg = beg+1
+    result = map(str,result[beg:])
+    return "".join(result)
+test_case = [["2","3"],["123","456"]]
+for num1,num2 in test_case:
+    print("The result of multiply {} and {} is {}".format(num1,num2,multiply(num1,num2)))
