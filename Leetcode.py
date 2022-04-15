@@ -1337,3 +1337,25 @@ test_board = [[["5","3",".",".","7",".",".",".","."]
 ,[".",".","4",".",".",".",".",".","."]]]
 for board in test_board:
     print("the Sudoku Board {} is {}".format(board,isValidSudoku(board)))
+
+print("---------------------38. Count and Say-------------------------")
+def countAndSay(n):
+    if n==1:
+        s= "1"
+    else:
+        item = countAndSay(n-1)
+        s = ""
+        i=0
+        while i<len(item):
+            count = 1
+            while (i+1)<len(item) and item[i]==item[i+1]:
+                count = count+1
+                i = i+1
+            #     print("i:{},count:{}".format(i,count))
+            # print("i = {}".format(i))
+            # print("s = {}".format(str(count)+item[i]))
+            s = s+str(count)+item[i]
+            i = i+1
+    return s
+for i in range(1,11):
+    print(countAndSay(i))
