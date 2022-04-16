@@ -1404,3 +1404,29 @@ def multiply(num1,num2):
 test_case = [["2","3"],["123","456"]]
 for num1,num2 in test_case:
     print("The result of multiply {} and {} is {}".format(num1,num2,multiply(num1,num2)))
+
+print("---------------------40. Combination Sum II-------------------------")
+
+def combinationSum2(candidates,target):
+    # sort the array to help avoid the duplicated items
+    candidates.sort()
+    result = []
+    def backtrack(cur,pos,target):
+        if target==0:
+            result.append(cur.copy())
+        if target<=0:
+            return
+        prev = -1
+        for i in range(pos,len(candidates)):
+            if candidates[i]==prev:
+                continue
+            cur.append(candidates[i])
+            backtrack(cur,i+1,target-candidates[i])
+            cur.pop()
+            prev = candidates[i]
+    backtrack([],0,target)
+    return result
+test_case = [[[10,1,2,7,6,1,5],8],[[2,5,2,1,2],5]]
+for candidates, target in test_case:
+    print("the combination of {} to get target number {} are {}".format(candidates,target,combinationSum2(candidates,target)))
+
