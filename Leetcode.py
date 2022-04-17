@@ -1429,4 +1429,66 @@ def combinationSum2(candidates,target):
 test_case = [[[10,1,2,7,6,1,5],8],[[2,5,2,1,2],5]]
 for candidates, target in test_case:
     print("the combination of {} to get target number {} are {}".format(candidates,target,combinationSum2(candidates,target)))
+print("---------------------423. Reconstruct Original Digits from English-------------------------")
+print("**** Method One: By Myself ****")
+def originalDigits(s):
+    letter_dict = {}
+    for letter in s:
+        if letter not in letter_dict.keys():
+            letter_dict[letter] = 1
+        else:
+            letter_dict[letter]=letter_dict[letter]+1
+    # print(letter_dict)
+    num_list = ["zero","one","two","three","four","five","six","seven","eight","nine"]
+    num_str_int_map={"zero":"0","one":"1","two":"2","three":"3","four":"4",
+                     "five":"5","six":"6","seven":"7","eight":"8","nine":"9"}
+    s = ""
+    while bool(letter_dict):
+        for num in num_list:
+            temp_letter_dict = letter_dict.copy()
+            # print(type(temp_letter_dict))
+            # print(temp_letter_dict)
+            for i in range(len(num)):
+                # print(i,num,num[i])
+                if num[i] not in temp_letter_dict.keys() or temp_letter_dict[num[i]]==0:
+                    break
+                elif num[i] in temp_letter_dict.keys():
+                    temp_letter_dict[num[i]] = temp_letter_dict[num[i]]-1
+                    if temp_letter_dict[num[i]]==0:
+                        del temp_letter_dict[num[i]]
+                if i==len(num)-1:
+                    num=num_str_int_map[num]
+                    # s.append(num)
+                    s = s+num
+                    letter_dict = temp_letter_dict.copy()
+        # result = set(s)
+        # return "".join(result)
+    return s
 
+
+test_case = ["owoztneoer","fviefuro","zero","one","two","three","four","five","six","seven","eight","nine","zerozero"]
+for test_str in test_case:
+    print("the number(s) in the string {} are :{}".format(test_str,originalDigits(test_str)))
+print()
+print("**** Method One: Using Frequency ****")
+def originalDigits_wt_fre(s):
+    cnts = [Counter(_) for _ in ["zero","one","two","three","four","five",
+                                "six","seven","eight","nine"]]
+    # print(cnts)
+    order = [0,2,4,6,8,1,3,5,7,9]
+    unique_chars = ['z','o','w','t','u',
+                    'f','x','s','g','n']
+    cnt = Counter(list(s))
+    # print(cnt)
+    res = []
+    for i in order:
+        # print("cnt[unique_chars[i]]={}".format(cnt[unique_chars[i]]))
+        while cnt[unique_chars[i]]>0:
+            cnt -= cnts[i]
+            # print(cnt)
+            res.append(i)
+    res.sort()
+    return "".join(map(str,res))
+# for str in test_case:
+#     print("the number(s) in the string {} are :{}".format(str,originalDigits_wt_fre(str)))
+print(originalDigits_wt_fre("owoztneoer"))
