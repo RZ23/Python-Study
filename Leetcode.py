@@ -1492,3 +1492,29 @@ def originalDigits_wt_fre(s):
 # for str in test_case:
 #     print("the number(s) in the string {} are :{}".format(str,originalDigits_wt_fre(str)))
 print(originalDigits_wt_fre("owoztneoer"))
+
+print("---------------------22. Generate Parentheses-------------------------")
+def generateParenthesis(n):
+    # only add open parenthesis if open<n
+    # only add close parenthesis if close<open
+    # valid if open==close==n
+    stack= []
+    res = []
+
+    def backtrack(openN,closedN):
+        if openN==closedN==n:
+            res.append("".join(stack))
+            return
+        if openN<n:
+            stack.append("(")
+            backtrack(openN+1,closedN)
+            stack.pop()
+        if closedN<openN:
+            stack.append(")")
+            backtrack(openN,closedN+1)
+            stack.pop()
+    backtrack(0,0)
+    return res
+test_case=[3,1]
+for n in test_case:
+    print("All the combination of {} parenthesis are {}".format(n,generateParenthesis(n)))
