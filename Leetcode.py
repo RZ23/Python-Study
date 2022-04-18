@@ -1518,3 +1518,91 @@ def generateParenthesis(n):
 test_case=[3,1]
 for n in test_case:
     print("All the combination of {} parenthesis are {}".format(n,generateParenthesis(n)))
+
+print("---------------------51. N-Queens-------------------------")
+class solveNQueens():
+    """
+    since no queen could at the same row or column
+    using the 1d array instead of the 2d array.
+    for example the solution(s)
+    [1,3,0,2] presents
+    [. Q . .]
+    [. . . Q]
+    [Q . . .]
+    [. . Q .]
+    or
+    [2,0,3,1] presents
+    [. . Q .]
+    [Q . .  ]
+    [. . . Q]
+    [. Q . .]
+    """
+    # BACKTRACKING TEMPLATE
+    # def is_valid_state(state):
+    #     # CHECK if it is a valid solution
+    #     return True
+    # def get_candidates(state):
+    #     return []
+    # def search(state,solution):
+    #     if is_valid_state(state):
+    #         solution.append(state.copy())
+    #         # return
+    #     for candidate in get_candidates(state):
+    #         state.add(candidate)
+    #         search(state,solution)
+    #         state.remove(candidate)
+    # def solve():
+    #     solution = []
+    #     state = set()
+    #     search(state,solution)
+    #     return solution
+    def solveNQueens(self,n):
+        solutions= []
+        state=[]
+        self.search(state,solutions,n)
+        return solutions
+
+    def is_valid_state(self,state,n):
+        # check if it is a valid solution
+        # all the n queens placed on the board
+        return len(state)==n
+    def get_candidates(self,state,n):
+        # if there is no queen on the board
+        # placed it on all the possible positions
+        if not state:
+            return range(n)
+        # find the next position in the state tp populate
+        position = len(state)
+        candidates = set(range(n))
+        # prune down candidates that place the queen into attacks
+        for row,col in enumerate(state):
+            # discard the column index if it's occupied
+            candidates.discard(col)
+            dist = position-row
+            # discard diagonals
+            candidates.discard(col+dist)
+            candidates.discard(col-dist)
+        return candidates
+    def search(self,state,solution,n):
+        if self.is_valid_state(state,n):
+            state_string = self.state_to_string(state,n)
+            solution.append(state_string)
+            return
+        for candidate in self.get_candidates(state,n):
+            # recursive
+            state.append(candidate)
+            self.search(state,solution,n)
+            state.pop()
+    def state_to_string(self,state,n):
+        # ex. change [1,3,0,2]
+        # output: [".Q..","...Q","Q...","..Q."]
+        ret = []
+        for i in state:
+            string = '.'*i+'Q'+'.'*(n-i-1)
+            ret.append(string)
+        return ret
+
+test_case = [4,1]
+for n in test_case:
+    s = solveNQueens()
+    print(s.solveNQueens(n))
