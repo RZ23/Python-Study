@@ -1716,3 +1716,21 @@ def jump(nums):
 test_case=[[2,3,1,1,4],[2,3,0,1,4]]
 for nums in test_case:
     print("The Minimum Steps for Array {} from 1st to last item is {} ".format(nums,jump(nums)))
+
+print("---------------------55. Jump Game-------------------------")
+def canJump(nums):
+    l = r = 0
+    farthest = 0
+    while r<len(nums)-1:
+        for i in range(l,r+1):
+            farthest = max(farthest,i+nums[i])
+        if farthest==r:
+            return False
+        else:
+            l = r
+            r = farthest
+    return True
+
+test_case=[[2,3,1,1,4],[3,2,1,0,4]]
+for nums in test_case:
+    print("Is there a way for Array {} from 1st to last item? {} ".format(nums,canJump(nums)))
