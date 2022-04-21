@@ -1696,3 +1696,23 @@ board = [["5","3",".",".","7",".",".",".","."],["6",".",".","1","9","5",".",".",
 solu = solution()
 solu.solveSudoku(board)
 print(solu.Return_Board())
+
+print("---------------------45. Jump Game II-------------------------")
+def jump(nums):
+    '''
+    using the BFS and each level of the tree is
+    the items could arrival from the current item
+    '''
+    res =0
+    l=r=0
+    while r<len(nums)-1:
+        farthest = 0
+        for i in range(l,r+1):
+            farthest = max(farthest,i+nums[i])
+        l = r+1
+        r = farthest
+        res = res+1
+    return res
+test_case=[[2,3,1,1,4],[2,3,0,1,4]]
+for nums in test_case:
+    print("The Minimum Steps for Array {} from 1st to last item is {} ".format(nums,jump(nums)))
