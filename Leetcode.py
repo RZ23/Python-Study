@@ -1734,3 +1734,41 @@ def canJump(nums):
 test_case=[[2,3,1,1,4],[3,2,1,0,4]]
 for nums in test_case:
     print("Is there a way for Array {} from 1st to last item? {} ".format(nums,canJump(nums)))
+
+print("---------------------46. Permutations-------------------------")
+print("***** Method One: Recursive *****")
+def permute(nums):
+    result = []
+    if (len(nums)==1):
+        # print(nums[:])
+        return [nums[:]]
+    for i in range(len(nums)):
+        n = nums.pop(0)
+        perms= permute(nums)
+        for perm in perms:
+            perm.append(n)
+            # print("perm={}".format(perm))
+        result.extend(perms)
+        # print("nums={},n={}".format(nums,n))
+        nums.append(n)
+    # print("result = {}".format(result))
+    return result
+test_case=[[1,2,3],[0,1],[1]]
+for nums in test_case:
+     print("The Permute of array {} are {} ".format(nums,permute(nums)))
+print("***** Method One: Recursive and Backtracking *****")
+def permute_backtracking(nums):
+    result = []
+    len_n = len(nums)
+    def backtracking(my_nums,use_nums):
+        if len(my_nums)==len_n:
+            result.append(my_nums)
+            return
+        for i in range(len(use_nums)):
+            x = my_nums.copy()
+            x.append(use_nums[i])
+            backtracking(x,use_nums[:i]+use_nums[i+1:])
+    backtracking(result,nums)
+    return result
+for nums in test_case:
+     print("The Permute of array {} are {} ".format(nums,permute_backtracking(nums)))
