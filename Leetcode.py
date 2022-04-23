@@ -1810,3 +1810,18 @@ def plusOne(digits):
 test_case = [[1,2,3],[4,3,2,1]]
 for digits in test_case:
     print("the PlusOne result of {} is {}".format(digits,plusOne(digits)))
+
+print("---------------------58. Length of Last Word-------------------------")
+def lengthOfLastWord(s):
+   len_s = len(s)
+   last_char = len(s)-1
+   while s[last_char]==' ':
+       last_char = last_char-1
+   # print(last_char)
+   search_index = last_char
+   while search_index>=0 and s[search_index]!=' ':
+       search_index = search_index-1
+   return last_char-search_index
+test_case = ["Hello World","   fly me   to   the moon  ","luffy is still joyboy"," i i  i ","a"," a"]
+for s in test_case:
+    print("the length of {}'s last word is {}".format(s,lengthOfLastWord(s)))
