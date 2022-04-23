@@ -1772,3 +1772,28 @@ def permute_backtracking(nums):
     return result
 for nums in test_case:
      print("The Permute of array {} are {} ".format(nums,permute_backtracking(nums)))
+
+print("---------------------78. Subsets-------------------------")
+def subsets(nums):
+    result = []
+    subset = []
+    def dfs(i):
+        if i>=len(nums):
+            result.append(subset.copy())
+            return
+        # include the num[i]
+        # print("i={},subset={}".format(i, subset))
+        subset.append(nums[i])
+        # print("i={},subset={}".format(i, subset))
+        dfs(i+1)
+        # exclude the num[i]
+        # print("i={},subset={}".format(i, subset))
+        subset.pop()
+        # print("i={},subset={}".format(i,subset))
+        dfs(i+1)
+    dfs(0)
+    return result
+
+test_case=[[1,2,3],[0]]
+for nums in test_case:
+     print("The subset of array {} are {} ".format(nums,subsets(nums)))
