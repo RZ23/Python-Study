@@ -1797,3 +1797,16 @@ def subsets(nums):
 test_case=[[1,2,3],[0]]
 for nums in test_case:
      print("The subset of array {} are {} ".format(nums,subsets(nums)))
+
+print("---------------------66. Plus One-------------------------")
+def plusOne(digits):
+    sum = 0
+    len_digits = len(digits)-1
+    for i in range(len(digits)):
+        sum = sum+digits[i]*pow(10,len_digits)
+        len_digits=len_digits-1
+    result = sum+1
+    return list(str(result))
+test_case = [[1,2,3],[4,3,2,1]]
+for digits in test_case:
+    print("the PlusOne result of {} is {}".format(digits,plusOne(digits)))
