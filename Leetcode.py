@@ -1883,3 +1883,39 @@ def permuteUnique_hashmap(nums):
     return result
 for nums in test_case:
     print("the Permutation of {} are {}".format(nums,permuteUnique_hashmap(nums)))
+print("---------------------50. Pow(x, n)-------------------------")
+print("***** Method One: While Loop")
+def myPow(x,n):
+    if abs(x)>=100 or abs(n)>pow(2,31):
+        return False
+    integar=True
+    if n<0:
+        integar = False
+        n=abs(n)
+    result = 1
+    while n>0:
+        # print("result:{},x:{}".format(result,x))
+        result = result*x
+        n = n-1
+    if integar:
+        return result
+    else:
+        return 1/result
+test_case =[(2.00000,10),(2.10000,3),(2.00000,-10),(23,0),(0,23)]
+for x,n in test_case:
+    print("the power of {} to {} is {}".format(x,n,myPow(x,n)))
+
+print("***** Method Two: Divide and Conquer--Recuirsive")
+def myPow_dq(x,n):
+    def helper(x,n):
+        if x==0:
+            return 0
+        if n==0:
+            return 1
+        result = helper(x,n//2)
+        result = result*result
+        return x*result if n%2 else result
+    result = helper(x,abs(n))
+    return result if n>=0 else 1/result
+for x,n in test_case:
+    print("the power of {} to {} is {}".format(x,n,myPow_dq(x,n)))
