@@ -1768,7 +1768,7 @@ def permute_backtracking(nums):
             x = my_nums.copy()
             x.append(use_nums[i])
             backtracking(x,use_nums[:i]+use_nums[i+1:])
-    backtracking(result,nums)
+    backtracking([],nums)
     return result
 for nums in test_case:
      print("The Permute of array {} are {} ".format(nums,permute_backtracking(nums)))
@@ -1825,3 +1825,61 @@ def lengthOfLastWord(s):
 test_case = ["Hello World","   fly me   to   the moon  ","luffy is still joyboy"," i i  i ","a"," a"]
 for s in test_case:
     print("the length of {}'s last word is {}".format(s,lengthOfLastWord(s)))
+
+print("---------------------47. Permutations II-------------------------")
+print("***** Method One: Generate all the Permutation and remove the duplicated")
+def permuteUnique(nums):
+   result_set = set()
+   subset = []
+   result = []
+   len_num = len(nums)
+   def backtracking(my_num,use_num):
+       if len(my_num)==len_num:
+           result.append(my_num)
+           return
+       for i in range(len(use_num)):
+           x = my_num.copy()
+           x.append(use_num[i])
+           backtracking(x,use_num[:i]+use_num[i+1:])
+
+   backtracking([],nums)
+   result_copy = []
+   for item in result:
+       # print(item)
+       if item not in result_copy:
+           result_copy.append(item)
+   return result_copy
+test_case = [[1,1,2],[1,2,3]]
+for nums in test_case:
+    print("the Permutation of {} are {}".format(nums,permuteUnique(nums)))
+print("***** Method Two: Using hashing map")
+def permuteUnique_hashmap(nums):
+    result = []
+    sub_perm = []
+    count = {item:0 for item in nums}
+    for item in nums:
+        count[item] = count[item]+1
+    def backtracking():
+        # if the length of permutation equals to the length of nums
+        # means find a avaliable permutation
+        if len(sub_perm)==len(nums):
+            result.append(sub_perm.copy())
+            return
+        # check all the items in the count
+        for item in count:
+            # the item is avaliable
+            if count[item]>0:
+                # brust force: include the current item
+                sub_perm.append(item)
+                count[item]=count[item]-1
+                # print("count:{},sub_perm:{}".format(count, sub_perm))
+                backtracking()
+                # burst force: exclude the current item
+                # print("after item {}".format(item))
+                count[item] = count[item]+1
+                sub_perm.pop()
+                # print("after pop:count:{},sub_perm:{}".format(count,sub_perm))
+    backtracking()
+    return result
+for nums in test_case:
+    print("the Permutation of {} are {}".format(nums,permuteUnique_hashmap(nums)))
