@@ -1827,7 +1827,7 @@ for s in test_case:
     print("the length of {}'s last word is {}".format(s,lengthOfLastWord(s)))
 
 print("---------------------47. Permutations II-------------------------")
-print("***** Method One: Generate all the Permutation and remove the duplicated")
+print("***** Method One: Generate all the Permutation and remove the duplicated *****")
 def permuteUnique(nums):
    result_set = set()
    subset = []
@@ -1852,7 +1852,7 @@ def permuteUnique(nums):
 test_case = [[1,1,2],[1,2,3]]
 for nums in test_case:
     print("the Permutation of {} are {}".format(nums,permuteUnique(nums)))
-print("***** Method Two: Using hashing map")
+print("***** Method Two: Using hashing map *****")
 def permuteUnique_hashmap(nums):
     result = []
     sub_perm = []
@@ -1883,6 +1883,23 @@ def permuteUnique_hashmap(nums):
     return result
 for nums in test_case:
     print("the Permutation of {} are {}".format(nums,permuteUnique_hashmap(nums)))
+print("***** Method Three: Using backtracking and visted array*****")
+def permuteUnique_backtracking_visted(nums):
+    result =[]
+    visted = [0] *len(nums)
+    def backtracking_path(sub_perm):
+        if len(sub_perm)==len(nums):
+            result.append(sub_perm)
+        else:
+            for i in range(len(nums)):
+                if not visted[i]:
+                    visted[i]=1
+                    backtracking_path(sub_perm+[nums[i]])
+                    visted[i]=0
+    backtracking_path([])
+    return result
+for nums in test_case:
+    print("the Permutation of {} are {}".format(nums,permuteUnique_backtracking_visted(nums)))
 print("---------------------50. Pow(x, n)-------------------------")
 print("***** Method One: While Loop")
 def myPow(x,n):
