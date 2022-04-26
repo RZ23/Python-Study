@@ -1936,3 +1936,71 @@ def myPow_dq(x,n):
     return result if n>=0 else 1/result
 for x,n in test_case:
     print("the power of {} to {} is {}".format(x,n,myPow_dq(x,n)))
+
+print("---------------------215. Kth Largest Element in an Array-------------------------")
+print("***** Merge Sort and Find the Kth Largest Element")
+def findKthLargest(nums,k):
+    if len(nums)<1 or len(nums)>pow(10,4):
+        return False
+    def merge_sort(nums):
+        if len(nums)<=1:
+            return nums
+        mid = len(nums)//2
+        left = nums[:mid]
+        right = nums[mid:]
+        left_sorted = merge_sort(left)
+        right_sorted = merge_sort(right)
+        sorted_list = merge(left_sorted,right_sorted)
+        return sorted_list
+    def merge(left,right):
+        merge_result = []
+        i=0
+        j=0
+        while i<len(left) and j<len(right):
+            if left[i]<right[j]:
+                merge_result.append(left[i])
+                i=i+1
+            else:
+                merge_result.append(right[j])
+                j = j+1
+        merge_result=merge_result+left[i:]+right[j:]
+        return merge_result
+    sorted_list = merge_sort(nums)
+    print(sorted_list)
+    return sorted_list[len(sorted_list)-k]
+test_case = [[[3,2,1,5,6,4], 2],[[3,2,3,1,2,4,5,5,6],4],[[1],1]]
+for nums,k in test_case:
+    dict = {1: "st", 2: "nd", 3: "th", 4: "th", 5: "th", 6: "th", 7: "th", 8: "th", 9: "th", 0: "th"}
+    print("The {} Largest Element in {} is {}".format(str(k) + dict[k % 10], nums,
+                                                      findKthLargest(nums, k)))
+print()
+print("***** Using Quick Sort and Find the Kth Largest Element")
+def findKthLargest_quick_sort(nums,k):
+    if len(nums)<1 or len(nums)>pow(10,4):
+        return False
+    def quick_sort(nums):
+        if len(nums)<=1:
+            return nums
+        left = []
+        right = []
+        pivot = nums[-1]
+        for i in range(len(nums)-1):
+            if nums[i]<pivot:
+                left.append(nums[i])
+            else:
+                right.append(nums[i])
+        return quick_sort(left)+[pivot]+quick_sort(right)
+    sorted_list = quick_sort(nums)
+    return sorted_list[len(sorted_list)-k]
+for nums, k in test_case:
+    dict = {1: "st", 2: "nd", 3: "th", 4: "th", 5: "th", 6: "th", 7: "th", 8: "th", 9: "th", 0: "th"}
+    print("The {} Largest Element in {} is {}".format(str(k) + dict[k % 10], nums,
+                                                      findKthLargest_quick_sort(nums, k)))
+print()
+print("***** Using Build-In Sort and Find the Kth Largest Element")
+def findKthLargest_build_in_sorted(nums,k):
+    sorted_nums =sorted(nums)
+    return sorted_nums[len(sorted_nums)-k]
+for nums,k in test_case:
+    dict = {1:"st",2:"nd",3:"th",4:"th",5:"th",6:"th",7:"th",8:"th",9:"th",0:"th"}
+    print("The {} Largest Element in {} is {}".format(str(k)+dict[k%10],nums,findKthLargest_build_in_sorted(nums,k)))
