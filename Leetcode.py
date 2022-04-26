@@ -1973,7 +1973,6 @@ for nums,k in test_case:
     dict = {1: "st", 2: "nd", 3: "th", 4: "th", 5: "th", 6: "th", 7: "th", 8: "th", 9: "th", 0: "th"}
     print("The {} Largest Element in {} is {}".format(str(k) + dict[k % 10], nums,
                                                       findKthLargest(nums, k)))
-print()
 print("***** Using Quick Sort and Find the Kth Largest Element")
 def findKthLargest_quick_sort(nums,k):
     if len(nums)<1 or len(nums)>pow(10,4):
@@ -1996,7 +1995,6 @@ for nums, k in test_case:
     dict = {1: "st", 2: "nd", 3: "th", 4: "th", 5: "th", 6: "th", 7: "th", 8: "th", 9: "th", 0: "th"}
     print("The {} Largest Element in {} is {}".format(str(k) + dict[k % 10], nums,
                                                       findKthLargest_quick_sort(nums, k)))
-print()
 print("***** Using Build-In Sort and Find the Kth Largest Element")
 def findKthLargest_build_in_sorted(nums,k):
     sorted_nums =sorted(nums)
@@ -2004,3 +2002,16 @@ def findKthLargest_build_in_sorted(nums,k):
 for nums,k in test_case:
     dict = {1:"st",2:"nd",3:"th",4:"th",5:"th",6:"th",7:"th",8:"th",9:"th",0:"th"}
     print("The {} Largest Element in {} is {}".format(str(k)+dict[k%10],nums,findKthLargest_build_in_sorted(nums,k)))
+
+print("---------------------1985. Find the Kth Largest Integer in the Array-------------------------")
+def kthLargestNumber(nums,k):
+    num_list = []
+    for item in nums:
+        num_list.append(int(item))
+    sorted_list = sorted(num_list)
+    return str(sorted_list[len(nums)-k])
+test_case = [[["3","6","7","10"], 4],[["2","21","12","1"],3],[["0","0"],2]]
+for nums,k in test_case:
+    dict = {1: "st", 2: "nd", 3: "th", 4: "th", 5: "th", 6: "th", 7: "th", 8: "th", 9: "th", 0: "th"}
+    print("The {} Largest Element in {} is {}".format(str(k) + dict[k % 10], nums,
+                                                      kthLargestNumber(nums, k)))
