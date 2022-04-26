@@ -2015,3 +2015,22 @@ for nums,k in test_case:
     dict = {1: "st", 2: "nd", 3: "th", 4: "th", 5: "th", 6: "th", 7: "th", 8: "th", 9: "th", 0: "th"}
     print("The {} Largest Element in {} is {}".format(str(k) + dict[k % 10], nums,
                                                       kthLargestNumber(nums, k)))
+
+print("---------------------1945. Sum of Digits of String After Convert-------------------------")
+def getLucky(s,k):
+    string = ""
+    for letter in s:
+        string = string+str(ord(letter)-96)
+    def letter_shift(st):
+        temp = 0
+        for letter in st:
+            temp = temp+int(letter)
+        return str(temp)
+    while k>1:
+        string = letter_shift(string)
+        k = k-1
+    string = int(letter_shift(string))
+    return string
+test_case = [["leetcode",2],["iiii",1],["zbax",2]]
+for s,k in test_case:
+    print("The result of transfer {} to numbers and shift {} times is {}".format(s,k,getLucky(s,k)))
