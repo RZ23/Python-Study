@@ -2034,3 +2034,27 @@ def getLucky(s,k):
 test_case = [["leetcode",2],["iiii",1],["zbax",2]]
 for s,k in test_case:
     print("The result of transfer {} to numbers and shift {} times is {}".format(s,k,getLucky(s,k)))
+
+print("---------------------48. Rotate Image-------------------------")
+def rotate(matrix):
+    left,right = 0,len(matrix)-1
+    while left<right:
+        for i in range(right-left):
+            top,bottom = left,right
+            # save the topleft
+            topleft = matrix[top][left+i]
+            # move the bottom left into top left
+            matrix[top][left+i]=matrix[bottom-i][left]
+            # move the bottom right into bottom left
+            matrix[bottom-i][left] = matrix[bottom][right-i]
+            # move the top right into bottom right
+            matrix[bottom][right-i] = matrix[top+i][right]
+            # move the top left into top right
+            matrix[top+i][right] = topleft
+        left = left+1
+        right = right-1
+        return matrix
+test_case=[[[1,2,3],[4,5,6],[7,8,9]],[[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]]
+for matrix in test_case:
+    print(matrix)
+    print("The Result of rotate is {} ".format(rotate(matrix)))
