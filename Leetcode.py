@@ -2,7 +2,14 @@ from binarytree import Node,tree
 from binarytree import Node, tree
 from collections import deque
 from collections import Counter
-
+# Helper Function
+def print_matrix(matrix):
+    row = len(matrix)
+    col = len(matrix[0])
+    for r in range(row):
+        for c in range(col):
+            print(matrix[r][c],end = "|")
+        print()
 #Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
@@ -2056,5 +2063,71 @@ def rotate(matrix):
         return matrix
 test_case=[[[1,2,3],[4,5,6],[7,8,9]],[[5,1,9,11],[2,4,8,10],[13,3,6,7],[15,14,12,16]]]
 for matrix in test_case:
-    print(matrix)
-    print("The Result of rotate is {} ".format(rotate(matrix)))
+    print("Original Image: {}".format(matrix))
+    print_matrix(matrix)
+    rotated_image = rotate(matrix)
+    print("The Result of rotate is {} ".format(rotated_image))
+    print_matrix(rotated_image)
+
+print("---------------------73. Set Matrix Zeroes-------------------------")
+print("***** Methond One: Using One Space *****")
+def setZeroes(matrix):
+    ROW,COL = len(matrix),len(matrix[0])
+    rowZero=False
+    for r in range(ROW):
+        for c in range(COL):
+            if matrix[r][c]==0:
+                matrix[0][c]=0
+                if r>0:
+                    matrix[r][0]=0
+                else:
+                    rowZero= True
+    for r in range(1,ROW):
+        for c in range(1,COL):
+            if matrix[0][c]==0 or matrix[r][0]==0:
+                matrix[r][c]=0
+    if matrix[0][0]==0:
+        for r in range(ROW):
+            matrix[r][0]=0
+    if rowZero:
+        for c in range(COL):
+            matrix[0][c]=0
+    return matrix
+
+
+test_case = [[[1,1,1],[1,0,1],[1,1,1]],[[0,1,2,0],[3,4,5,2],[1,3,1,5]]]
+for matrix in test_case:
+    orig_matrix = matrix.copy()
+    processed_matrix = matrix.copy()
+    print("Original Matrix:")
+    print_matrix(orig_matrix)
+    print("Processed Matrix:{}".format(setZeroes(processed_matrix)))
+    print_matrix(processed_matrix)
+    print()
+
+print("***** Methond Two: Using M+N Space *****")
+def setZeroes_mn_space(matrix):
+    col_index = [1 for _ in range(len(matrix[0]))]
+    row_index = [1 for _ in range(len(matrix))]
+    for row in range(len(matrix)):
+        for col in range(len(matrix[0])):
+            # print("row={},col ={},matrix = {}".format(row,col,matrix[row][col]))
+            if matrix[row][col]==0:
+                col_index[col]=0
+                row_index[row]=0
+                # print(col_index,row_index)
+    for row in range(len(matrix)):
+        for col in range(len(matrix[0])):
+            if col_index[col]==0 or row_index[row]==0:
+                matrix[row][col]=0
+
+    print_matrix(matrix)
+test_case = [[[1,1,1],[1,0,1],[1,1,1]],[[0,1,2,0],[3,4,5,2],[1,3,1,5]]]
+for matrix in test_case:
+    orig_matrix = matrix.copy()
+    processed_matrix = matrix.copy()
+    print("Original Matrix:")
+    print_matrix(orig_matrix)
+    print("Processed Matrix:")
+    setZeroes_mn_space(processed_matrix)
+    print()
