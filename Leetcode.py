@@ -2131,3 +2131,28 @@ for matrix in test_case:
     print("Processed Matrix:")
     setZeroes_mn_space(processed_matrix)
     print()
+
+print("---------------------75. Sort Colors-------------------------")
+def sortColors(nums):
+    left,right = 0,len(nums)-1
+    def swap_by_index(i,j):
+        temp = nums[i]
+        nums[i]=nums[j]
+        nums[j]=temp
+    i=0
+    while i<=right:
+        if nums[i]==0:
+            swap_by_index(left,i)
+            left = left+1
+            i=i+1
+        elif nums[i]==2:
+            swap_by_index(right,i)
+            right = right-1
+        elif nums[i]==1:
+            i=i+1
+    return nums
+test_case = [[2,0,2,1,1,0],[2,0,1],[2,2,1,2,1,1,0,0,0,]]
+for nums in test_case:
+    orig_nums = nums.copy()
+    processed_nums = nums.copy()
+    print("The result of sort {} is {}".format(orig_nums,sortColors(processed_nums)))
