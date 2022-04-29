@@ -2157,6 +2157,22 @@ for nums in test_case:
     processed_nums = nums.copy()
     print("The result of sort {} is {}".format(orig_nums,sortColors(processed_nums)))
 
+
+
+print("---------------------49. Group Anagrams-------------------------")
+def groupAnagrams(strs):
+    dict = {}
+    for item in strs:
+        sorted_item= "".join(sorted(item))
+        if sorted_item not in dict.keys():
+            dict[sorted_item] = [item]
+        else:
+            dict[sorted_item].append(item)
+    return dict.values()
+test_case = [["eat","tea","tan","ate","nat","bat"],[""],["a"]]
+for strs in test_case:
+    print("The Anagrams of {} is {}".format(strs,groupAnagrams(strs)))
+
 print("---------------------77. Combinations-------------------------")
 def combine(n,k):
     result = []
@@ -2173,17 +2189,3 @@ def combine(n,k):
 test_case = [(4,2),(1,1),(5,3)]
 for n,k in test_case:
     print("The combination of {} for {} is {}".format(k,n,combine(n,k)))
-
-print("---------------------49. Group Anagrams-------------------------")
-def groupAnagrams(strs):
-    dict = {}
-    for item in strs:
-        sorted_item= "".join(sorted(item))
-        if sorted_item not in dict.keys():
-            dict[sorted_item] = [item]
-        else:
-            dict[sorted_item].append(item)
-    return dict.values()
-test_case = [["eat","tea","tan","ate","nat","bat"],[""],["a"]]
-for strs in test_case:
-    print("The Anagrams of {} is {}".format(strs,groupAnagrams(strs)))
