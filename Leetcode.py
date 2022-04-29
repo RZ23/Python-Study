@@ -2156,3 +2156,34 @@ for nums in test_case:
     orig_nums = nums.copy()
     processed_nums = nums.copy()
     print("The result of sort {} is {}".format(orig_nums,sortColors(processed_nums)))
+
+print("---------------------77. Combinations-------------------------")
+def combine(n,k):
+    result = []
+    def backtracking(start,comb):
+        if len(comb)==k:
+            result.append(comb.copy())
+            return
+        for i in range(start,n+1):
+            comb.append(i)
+            backtracking(i+1,comb)
+            comb.pop()
+    backtracking(1,[])
+    return result
+test_case = [(4,2),(1,1),(5,3)]
+for n,k in test_case:
+    print("The combination of {} for {} is {}".format(k,n,combine(n,k)))
+
+print("---------------------49. Group Anagrams-------------------------")
+def groupAnagrams(strs):
+    dict = {}
+    for item in strs:
+        sorted_item= "".join(sorted(item))
+        if sorted_item not in dict.keys():
+            dict[sorted_item] = [item]
+        else:
+            dict[sorted_item].append(item)
+    return dict.values()
+test_case = [["eat","tea","tan","ate","nat","bat"],[""],["a"]]
+for strs in test_case:
+    print("The Anagrams of {} is {}".format(strs,groupAnagrams(strs)))
