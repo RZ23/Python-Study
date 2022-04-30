@@ -2189,3 +2189,40 @@ def combine(n,k):
 test_case = [(4,2),(1,1),(5,3)]
 for n,k in test_case:
     print("The combination of {} for {} is {}".format(k,n,combine(n,k)))
+
+print("---------------------42. Trapping Rain Water-------------------------")
+print("***** Method One: With Extra Array")
+def trap_with_extra_array(height):
+    water_trap = []
+    for i in range(1,len(height)-1):
+        leftMax = max(height[:i])
+        rightMax = max(height[i+1:])
+        min_height = min(leftMax,rightMax)
+        water = min_height-height[i]
+        if water>0:
+            water_trap.append(water)
+        else:
+            water_trap.append(0)
+    result = sum(water_trap)
+    return result
+test_case = [[4,2,0,3,2,5],[0,1,0,2,1,0,1,3,2,1,2,1]]
+for height in test_case:
+    print("The Trap of water in {} is {}".format(height,trap_with_extra_array(height)))
+print("***** Method Two: In Place Calculate")
+def trap(height):
+    left,right = 0,len(height)-1
+    leftMax, rightMax = height[left],height[right]
+    result = 0
+    while left<right:
+        if leftMax<rightMax:
+            left = left+1
+            leftMax = max(leftMax,height[left])
+            result = result+ (leftMax-height[left])
+        else:
+            right = right-1
+            rightMax=max(rightMax,height[right])
+            result = result+(rightMax-height[right])
+    return result
+test_case = [[4,2,0,3,2,5],[0,1,0,2,1,0,1,3,2,1,2,1]]
+for height in test_case:
+    print("The Trap of water in {} is {}".format(height,trap(height)))
