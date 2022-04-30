@@ -2226,3 +2226,33 @@ def trap(height):
 test_case = [[4,2,0,3,2,5],[0,1,0,2,1,0,1,3,2,1,2,1]]
 for height in test_case:
     print("The Trap of water in {} is {}".format(height,trap(height)))
+
+print("---------------------54. Spiral Matrix-------------------------")
+def spiralOrder(matrix):
+    result = []
+    left,right = 0,len(matrix[0])
+    top,bottom = 0,len(matrix)
+    while left<right and top<bottom:
+        # get evey i in the top row
+        for i in range(left,right):
+            result.append(matrix[top][i])
+        top = top+1
+        # get evey i n the right col
+        for i in range(top,bottom):
+            result.append(matrix[i][right-1])
+        right = right-1
+        if not (left<right and top<bottom):
+            break
+        # get every i in the bottom row:
+        for i in range(right-1,left-1,-1):
+            result.append(matrix[bottom-1][i])
+        bottom = bottom-1
+        # get every i in the left col
+        for i in range(bottom-1,top-1,-1):
+            result.append(matrix[i][left])
+        left = left+1
+    return result
+test_case= [[[1,2,3],[4,5,6],[7,8,9]],[[1,2,3,4],[5,6,7,8],[9,10,11,12]]]
+for matrix in test_case:
+    print_matrix(matrix)
+    print("The Spiral Order is {}".format(spiralOrder(matrix)))
