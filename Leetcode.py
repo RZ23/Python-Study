@@ -2256,3 +2256,60 @@ test_case= [[[1,2,3],[4,5,6],[7,8,9]],[[1,2,3,4],[5,6,7,8],[9,10,11,12]]]
 for matrix in test_case:
     print_matrix(matrix)
     print("The Spiral Order is {}".format(spiralOrder(matrix)))
+import sys
+print("---------------------53. Maximum Subarray-------------------------")
+print("***** Method One: One Loop")
+def maxSubArray(nums):
+    maxSub = nums[0]
+    cursum = 0
+    for n in nums:
+        if cursum<0:
+            cursum = 0
+        cursum = cursum+n
+        maxSub = max(maxSub,cursum)
+    return maxSub
+test_case=[[-2,1,-3,4,-1,2,1,-5,4],[1],[5,4,-1,7,8]]
+for nums in test_case:
+    print("The Maximum Sum of {} is {}".format(nums,maxSubArray(nums)))
+print("***** Method Two: Two Loops")
+def maxSubArray_two_loops(nums):
+    maxSum = -sys.maxsize
+    for i in range(len(nums)):
+        total = 0
+        for j in range(i,len(nums)):
+            total = total+nums[j]
+            if total>maxSum:
+                maxSum = total
+    return maxSum
+for nums in test_case:
+    print("The Maximum Sum of {} is {}".format(nums,maxSubArray_two_loops(nums)))
+
+print("***** Method Three: Divide and Conquer")
+def findmaxSubarray(nums,left=None,right=None):
+    if not nums:
+        return 0
+    if left is None and right is None:
+        left,right =0,len(nums)-1
+    # the nums contains 0 or 1 element:
+    if right==left:
+        return nums[left]
+    #find the mid element
+    mid = (left+right)//2
+    # find max sublist for the left
+    leftMax = -sys.maxsize
+    total = 0
+    for i in range(mid,left-1,-1):
+        total = total+nums[i]
+        if total>leftMax:
+            leftMax = total
+    # find max sublist from right
+    rightMax = -sys.maxsize
+    total = 0
+    for i in range(mid+1,right+1):
+        total = total+nums[i]
+        if total>rightMax:
+            rightMax = total
+    maxLeftRight = max(findmaxSubarray(nums,left,mid),findmaxSubarray(nums,mid+1,right))
+    return max(maxLeftRight,leftMax+rightMax)
+for nums in test_case:
+    print("The Maximum Sum of {} is {}".format(nums,findmaxSubarray(nums)))
