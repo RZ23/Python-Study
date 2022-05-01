@@ -2388,3 +2388,54 @@ def findTargetSumWays(nums,target):
 test_case = [[[1,1,1,1,1],3],[[1],1]]
 for nums, target in test_case:
     print("There are {} ways for {} to get sum result {}".format(findTargetSumWays(nums,target),nums,target))
+print("---------------------41. First Missing Positive-------------------------")
+print("***** Method One: Loops *****")
+def firstMissingPositive(nums):
+    for i in range(len(nums)):
+        if nums[i] < 0:
+            nums[i] = 0
+    for i in range(1, len(nums)+1):
+        if i not in nums:
+            return i
+    if i == max(nums):
+        return i + 1
+test_case = [[1,2,0],[3,4,-1,1],[7,8,9,11,12]]
+for nums in test_case:
+    print("The First Missing Positive in {} is {}".format(nums,firstMissingPositive(nums)))
+print("***** Method Two: Using array as Cashing *****")
+def firstMissingPositive_array_as_caching(nums):
+    for i in range(len(nums)):
+        if nums[i]<0:
+            nums[i]=0
+    for i in range(len(nums)):
+        val = abs(nums[i])
+        # if the val is greated than 0, set the index value to negative
+        if 1<=val<=len(nums):
+            if nums[val-1]>0:
+                nums[val-1] = nums[val-1]*-1
+             # if the item's index value is 0, set to a default value, since -1*0=0
+            elif nums[val-1]==0:
+                nums[val-1] = -1*(len(nums)+1)
+    for i in range(1,len(nums)+1):
+        if nums[i-1]>=0:
+            return i
+    return len(nums)+1
+test_case = [[1,2,0],[3,4,-1,1],[7,8,9,11,12]]
+for nums in test_case:
+    print("The First Missing Positive in {} is {}".format(nums,firstMissingPositive_array_as_caching(nums)))
+print("***** Method Three: Hash Mapping *****")
+def firstMissingPositive_hashing_mapping(nums):
+    dict = {}
+    for i in range(len(nums)):
+        if nums[i]<0:
+            nums[i]=0
+    for i in range(len(nums)):
+        if nums[i]>0:
+            dict[nums[i]]=1
+    for i in range(1,len(nums)+1):
+        if i not in dict.keys():
+            return i
+    return len(nums)+1
+test_case = [[1,2,0],[3,4,-1,1],[7,8,9,11,12]]
+for nums in test_case:
+    print("The First Missing Positive in {} is {}".format(nums,firstMissingPositive_hashing_mapping(nums)))
