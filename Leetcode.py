@@ -2325,7 +2325,9 @@ def insert(intervals,newInterval):
             result.append(intervals[i])
         else:
             newInterval = [min(intervals[i][0],newInterval[0]),max(intervals[i][1],newInterval[1])]
-test_case = [[[[1,3],[6,9]],[2,5]],[[[1,2],[3,5],[6,7],[8,10],[12,16]],[4,8]]]
+    result.append(newInterval)
+    return result
+test_case = [[[[1,3],[6,9]],[2,5]],[[[1,2],[3,5],[6,7],[8,10],[12,16]],[4,8]],[[],[5,7]]]
 for intervals,newInterval in test_case:
     print("The result of inser {} into {} is {}".format(newInterval,intervals,insert(intervals,newInterval)))
 
