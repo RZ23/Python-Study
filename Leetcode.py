@@ -2330,4 +2330,20 @@ def insert(intervals,newInterval):
 test_case = [[[[1,3],[6,9]],[2,5]],[[[1,2],[3,5],[6,7],[8,10],[12,16]],[4,8]],[[],[5,7]]]
 for intervals,newInterval in test_case:
     print("The result of inser {} into {} is {}".format(newInterval,intervals,insert(intervals,newInterval)))
-
+print("---------------------56. Merge Intervals-------------------------")
+def merge(intervals):
+    intervals.sort(key= lambda i:i[0])
+    result = [intervals[0]]
+    for start, end in intervals[1:]:
+        lastEnd = result[-1][1]
+        lastStart = result[-1][0]
+        if start<=lastEnd:
+            # result[-1][1]=max(lastEnd,end)
+            result.pop()
+            result.append([lastStart,max(lastEnd,end)])
+        else:
+            result.append([start,end])
+    return result
+test_case = [[[1,3],[2,6],[8,10],[15,18]],[[1,4],[4,5]]]
+for intervals in test_case:
+    print("The result of merge {} is {}".format(intervals,merge(intervals)))
