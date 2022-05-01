@@ -2347,3 +2347,29 @@ def merge(intervals):
 test_case = [[[1,3],[2,6],[8,10],[15,18]],[[1,4],[4,5]]]
 for intervals in test_case:
     print("The result of merge {} is {}".format(intervals,merge(intervals)))
+print("---------------------67. Add Binary-------------------------")
+print("***** Method One: Build-In Function *****")
+def addBinary(a,b):
+    int_a = int(a,2)
+    int_b = int(b,2)
+    # print(int_a,int_b)
+    return str(bin(int_a+int_b))[2:]
+test_case = [["11","1"],["1010","1011"]]
+for a,b in test_case:
+    print("The result of add {} and {} is {}".format(a,b,addBinary(a,b)))
+print("***** Method Two: with Loop *****")
+def addBinary_loop(a,b):
+    result = ""
+    carry = 0
+    final_len = max(len(a),len(b))
+    a = "0"*(final_len-len(a))+a
+    b = "0"*(final_len-len(b))+b
+    for i in range(final_len-1,-1,-1):
+        total = int(a[i])+int(b[i])+carry
+        carry = total//2
+        result = str(total%2)+result
+    if carry==1:
+        result = "1"+result
+    return result
+for a,b in test_case:
+    print("The result of add {} and {} is {}".format(a,b,addBinary_loop(a,b)))
