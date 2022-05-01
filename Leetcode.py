@@ -2373,3 +2373,18 @@ def addBinary_loop(a,b):
     return result
 for a,b in test_case:
     print("The result of add {} and {} is {}".format(a,b,addBinary_loop(a,b)))
+
+print("---------------------494. Target Sum-------------------------")
+def findTargetSumWays(nums,target):
+    dp= {}# (index, total) => # of ways
+    def backtracking(i,total):
+        if i==len(nums):
+            return 1 if total==target else 0
+        if (i,total) in dp:
+            return dp[(i,total)]
+        dp[(i,total)]=(backtracking(i+1,total+nums[i])+backtracking(i+1,total-nums[i]))
+        return dp[(i,total)]
+    return backtracking(0,0)
+test_case = [[[1,1,1,1,1],3],[[1],1]]
+for nums, target in test_case:
+    print("There are {} ways for {} to get sum result {}".format(findTargetSumWays(nums,target),nums,target))
