@@ -2313,3 +2313,19 @@ def findmaxSubarray(nums,left=None,right=None):
     return max(maxLeftRight,leftMax+rightMax)
 for nums in test_case:
     print("The Maximum Sum of {} is {}".format(nums,findmaxSubarray(nums)))
+
+print("---------------------57. Insert Interval-------------------------")
+def insert(intervals,newInterval):
+    result = []
+    for i in range(len(intervals)):
+        if newInterval[1]<intervals[i][0]:
+            result.append(newInterval)
+            return result+intervals[i:]
+        elif newInterval[0]>intervals[i][1]:
+            result.append(intervals[i])
+        else:
+            newInterval = [min(intervals[i][0],newInterval[0]),max(intervals[i][1],newInterval[1])]
+test_case = [[[[1,3],[6,9]],[2,5]],[[[1,2],[3,5],[6,7],[8,10],[12,16]],[4,8]]]
+for intervals,newInterval in test_case:
+    print("The result of inser {} into {} is {}".format(newInterval,intervals,insert(intervals,newInterval)))
+
