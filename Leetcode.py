@@ -2,6 +2,7 @@ from binarytree import Node,tree
 from binarytree import Node, tree
 from collections import deque
 from collections import Counter
+import collections
 # Helper Function
 def print_matrix(matrix):
     row = len(matrix)
@@ -2472,3 +2473,37 @@ for node_list in test_case:
     root = generate_tree_from_list(node_list)
     print(root[0])
     print("The Max Sum Path is {}".format(maxPathSum(root[0])))
+print("---------------------127. Word Ladder-------------------------")
+def ladderLength(beginWord,endWord,wordList):
+    if endWord not in wordList:
+        return 0
+    # create the dict for each word pattern
+    # like hot=> *ot,h*t,ho*
+    # using default dict => if no key, shows None
+    neighbor = collections.defaultdict(list)
+    wordList.append(beginWord)
+    for word in wordList:
+        for j in range(len(word)):
+            pattern = word[:j]+"*"+word[j+1:]
+            neighbor[pattern].append(word)
+    # using BFS algorith to find the path
+    visited = set([beginWord])
+    q= deque()
+    q.append(beginWord)
+    result = 1
+    while len(q)>0:
+        for i in range(len(q)):
+            word=q.popleft()
+            if word==endWord:
+                return result
+            for j in range(len(word)):
+                pattern = word[:j]+"*"+word[j+1:]
+                for neighbor_word in neighbor[pattern]:
+                    if neighbor_word not in visited:
+                        visited.add(neighbor_word)
+                        q.append(neighbor_word)
+        result = result+1
+    return 0
+test_case = [["hit", "cog", ["hot","dot","dog","lot","log","cog"]],["hit","cog",["hot","dot","dog","lot","log"]]]
+for beginWord, endWord,wordlist in test_case:
+    print("the word ladder from {} to {} is {}".format(beginWord,endWord,ladderLength(beginWord,endWord,wordlist)))
