@@ -234,6 +234,7 @@ root = [3,9,20,None,None,15,7]
 node_list = []
 def generate_tree_from_list(root):
     node_list = []
+    # generate node for each item in the list
     for i in range(len(root)):
         if root[i] is not None:
             node_list.append(Node(root[i]))
@@ -1149,8 +1150,14 @@ def removeNthFromEnd(head,n):
     return new_head
 test_case=[[[1,2,3,4,5],2],[[1,2],1],[[1],1]]
 for linked_list in test_case:
-    linked_lst=generate_linked_list(linked_list[0])
-    print(print_linked_list_with_return(removeNthFromEnd(linked_lst,linked_list[1])))
+    original_lst = linked_list.copy()
+    processed_lst = linked_list.copy()
+    linked_lst=generate_linked_list(original_lst[0])
+    original_lst = generate_linked_list(original_lst[0])
+    processed_lst = linked_lst=generate_linked_list(processed_lst[0])
+    # print("The original Linked list is {}".format(linked_lst))
+    # print(print_linked_list_with_return(removeNthFromEnd(linked_lst,linked_list[1])))
+    print("The resulf or remove the {}th node from end for the {} is {}".format(linked_list[1],print_linked_list_with_return(original_lst),print_linked_list_with_return(removeNthFromEnd(processed_lst,linked_list[1]))))
 
 print("Method Two: Two Pointers - Faster and Slower pointer")
 def removeNthFromEnd_two_pointers(head,n):
@@ -2439,3 +2446,29 @@ def firstMissingPositive_hashing_mapping(nums):
 test_case = [[1,2,0],[3,4,-1,1],[7,8,9,11,12]]
 for nums in test_case:
     print("The First Missing Positive in {} is {}".format(nums,firstMissingPositive_hashing_mapping(nums)))
+print("---------------------124. Binary Tree Maximum Path Sum-------------------------")
+def maxPathSum(root):
+    result = [root.val]
+    #return the max path sum without split
+    def dfs(root):
+        # if there is no node, means the sum will be 0
+        if not root:
+            return 0
+        leftMax = dfs(root.left)
+        rightMax = dfs(root.right)
+        # if the Max left sum or Max right sum is less then 0
+        # then choose not to include it
+        leftMax = max(leftMax,0)
+        rightMax = max(rightMax,0)
+
+        # compute max path sum with split, and store it to GLOBAL variable result
+        result[0] = max(result[0],leftMax+rightMax+root.val)
+        # return value for recursive dfs(), it shows the max sum for not split
+        return root.val+max(leftMax,rightMax)
+    dfs(root)
+    return result[0]
+test_case=[[1,2,3], [-10,9,20,None,None,15,7]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root[0])
+    print("The Max Sum Path is {}".format(maxPathSum(root[0])))
