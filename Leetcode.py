@@ -2621,3 +2621,28 @@ def maxProduct(nums):
 test_case=[[2,3,-2,4],[-2,0,-1],[-4,-3,-2]]
 for nums in test_case:
     print("The Max Product of {} is {} ".format(nums,maxProduct(nums)))
+print("---------------------153. Find Minimum in Rotated Sorted Array-------------------------")
+def findMin(nums):
+    l,r = 0,len(nums)-1
+    result = nums[0]
+    while l<=r:
+        # the array is sorted
+        if nums[l]<nums[r]:
+            result = min(nums[l],result)
+            break
+        # the array is rotated
+        mid = (l+r)//2
+        result = min(result,nums[mid])
+        if nums[mid]>=nums[l]:
+            l = mid+1
+        else:
+            r = mid-1
+    return result
+test_case = [[3,4,5,1,2],[4,5,6,7,0,1,2]]
+for nums in test_case:
+    print("The Minimun in Rotated Sorted Array {} is {}".format(nums,findMin(nums)))
+print("***** Method Two: min function, o(n) *****")
+def findMin_min_fund(nums):
+    return min(nums)
+for nums in test_case:
+    print("The Minimun in Rotated Sorted Array {} is {}".format(nums,findMin_min_fund(nums)))
