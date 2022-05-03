@@ -2605,3 +2605,19 @@ def productExceptSelf_two_pre_post(nums):
     return result
 for nums in test_case:
     print("The result of Product Except Self of {} is {}".format(nums,productExceptSelf_two_pre_post((nums))))
+print("---------------------152. Maximum Product Subarray-------------------------")
+def maxProduct(nums):
+    result = max(nums)
+    curMin,curMax = 1,1
+    for n in nums:
+        if n==0:
+            curMin,curMax = 1,1
+            continue
+        temp = curMax
+        curMax = max(n*curMax,n*curMin,n)
+        curMin = min(n*curMin,n*temp,n)
+        result = max(result,curMax)
+    return result
+test_case=[[2,3,-2,4],[-2,0,-1],[-4,-3,-2]]
+for nums in test_case:
+    print("The Max Product of {} is {} ".format(nums,maxProduct(nums)))
