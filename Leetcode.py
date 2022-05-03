@@ -2553,3 +2553,55 @@ def containsDuplicate_hashtable(nums):
     return False
 for nums in test_case:
     print("There has the duplicated numbers in {}:{}".format(nums,containsDuplicate_hashtable(nums)))
+print("---------------------238. Product of Array Except Self-------------------------")
+print("***** Method One: reconstruction list *****")
+def productExceptSelf(nums):
+    result =[]
+    def product_list(lst):
+        result = 1
+        for i in range(len(lst)):
+            result = result*lst[i]
+        return result
+    for i in range(len(nums)):
+        result.append(product_list(nums[:i]+nums[i+1:]))
+    return result
+test_case = [[1,2,3,4],[-1,1,0,-3,3]]
+for nums in test_case:
+    print("The result of Product Except Self of {} is {}".format(nums,productExceptSelf((nums))))
+
+print("***** Method Two : Store Pre an Post result in place *****")
+def productExceptSelf_pre_post(nums):
+    result = [1]*(len(nums))
+    prefix = 1
+    # store all the prefix result into the result list
+    for i in range(len(nums)):
+        result[i] = prefix
+        prefix = prefix*nums[i]
+    postfix = 1
+    # calculate the postfix result and multiple the prefix result and store to the result list
+    for i in range(len(nums)-1,-1,-1):
+        result[i] = postfix*result[i]
+        postfix = postfix*nums[i]
+    return result
+for nums in test_case:
+    print("The result of Product Except Self of {} is {}".format(nums,productExceptSelf_pre_post((nums))))
+print("***** Method Three : two additional list *****")
+def productExceptSelf_two_pre_post(nums):
+    prefix_result =[1]*(len(nums))
+    postfix_result = [1]*(len(nums))
+    result = []
+    prefix = 1
+    postfix = 1
+    # create prefix list
+    for i in range(len(nums)):
+        prefix_result[i]=prefix
+        prefix = prefix*nums[i]
+    # create postfix list
+    for i in range(len(nums)-1,-1,-1):
+        postfix_result[i]=postfix
+        postfix = postfix*nums[i]
+    for i in range(len(nums)):
+        result.append(prefix_result[i]*postfix_result[i])
+    return result
+for nums in test_case:
+    print("The result of Product Except Self of {} is {}".format(nums,productExceptSelf_two_pre_post((nums))))
