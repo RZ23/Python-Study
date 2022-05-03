@@ -2508,7 +2508,7 @@ test_case = [["hit", "cog", ["hot","dot","dog","lot","log","cog"]],["hit","cog",
 for beginWord, endWord,wordlist in test_case:
     print("the word ladder from {} to {} is {}".format(beginWord,endWord,ladderLength(beginWord,endWord,wordlist)))
 print("---------------------121. Best Time to Buy and Sell Stock-------------------------")
-print("***** Methood One: Using the Max function")
+print("***** Method One: Using the Max function *****")
 def maxProfit(prices):
     max_Profit = 0
     for i in range(len(prices)-1):
@@ -2518,7 +2518,7 @@ def maxProfit(prices):
 test_case = [[7,1,5,3,6,4],[[7,6,4,3,1]]]
 for prices in test_case:
     print("The max Profit of {} is {}".format(prices,maxProfit(prices)))
-print("***** Method Two: using left and right pointer")
+print("***** Method Two: using left and right pointer *****")
 def maxProfit_two_pointer(prices):
     left,right = 0,1
     max_Porfit = 0
@@ -2532,3 +2532,24 @@ def maxProfit_two_pointer(prices):
     return max_Porfit
 for prices in test_case:
     print("The max Profit of {} is {}".format(prices,maxProfit_two_pointer(prices)))
+print("---------------------217. Contains Duplicate-------------------------")
+print("***** Method One: Compare length of list and set *****")
+def containsDuplicate(nums):
+    nums_set = set(nums)
+    if len(nums_set)==len(nums):
+        return False
+    else:
+        return True
+test_case = [[1,2,3,1],[1,2,3,4],[1,1,1,3,3,4,3,2,4,2]]
+for nums in test_case:
+    print("There has the duplicated numbers in {}:{}".format(nums,containsDuplicate(nums)))
+print("***** Method One: Hashing Table *****")
+def containsDuplicate_hashtable(nums):
+    hash=set()
+    for item in nums:
+        if item in hash:
+            return True
+        hash.add(item)
+    return False
+for nums in test_case:
+    print("There has the duplicated numbers in {}:{}".format(nums,containsDuplicate_hashtable(nums)))
