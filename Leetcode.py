@@ -2507,3 +2507,28 @@ def ladderLength(beginWord,endWord,wordList):
 test_case = [["hit", "cog", ["hot","dot","dog","lot","log","cog"]],["hit","cog",["hot","dot","dog","lot","log"]]]
 for beginWord, endWord,wordlist in test_case:
     print("the word ladder from {} to {} is {}".format(beginWord,endWord,ladderLength(beginWord,endWord,wordlist)))
+print("---------------------121. Best Time to Buy and Sell Stock-------------------------")
+print("***** Methood One: Using the Max function")
+def maxProfit(prices):
+    max_Profit = 0
+    for i in range(len(prices)-1):
+        max_sale_price=max(prices[i+1:])
+        max_Profit = max(max_Profit,max_sale_price-prices[i])
+    return max_Profit
+test_case = [[7,1,5,3,6,4],[[7,6,4,3,1]]]
+for prices in test_case:
+    print("The max Profit of {} is {}".format(prices,maxProfit(prices)))
+print("***** Method Two: using left and right pointer")
+def maxProfit_two_pointer(prices):
+    left,right = 0,1
+    max_Porfit = 0
+    while right<len(prices):
+        if prices[left]<prices[right]:
+            profit = prices[right]-prices[left]
+            max_Porfit = max(max_Porfit,profit)
+        else:
+            left = right
+        right = right+1
+    return max_Porfit
+for prices in test_case:
+    print("The max Profit of {} is {}".format(prices,maxProfit_two_pointer(prices)))
