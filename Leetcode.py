@@ -2715,7 +2715,19 @@ def hammingWeight_substrac_and(n):
     return result
 for n in test_case:
     print("Thre are {}  bit 1 in the {}".format(hammingWeight_substrac_and(n),bin(n)))
+print("***** Method Three: Transfer to String and Count ")
+def hammingWeight_transfer_to_string(n):
+    bin_to_strig= str(bin(n))
+    cnt = 0
+    for c in bin_to_strig:
+        if c=='1':
+            cnt = cnt+1
+    return cnt
+for n in test_case:
+    print("Thre are {}  bit 1 in the {}".format(hammingWeight_transfer_to_string(n),bin(n)))
+
 print("---------------------190. Reverse Bits-------------------------")
+print("***** Method One: Shift and Using '&' to get the last bit and using '|' to reverse to corresponding location *****")
 def reverseBits(n):
     result = 0
     # there is 32 bit, so the loop should be 32
