@@ -2688,3 +2688,30 @@ def missingNumber_in_place(nums):
     return result
 for nums in test_case:
     print("The missing number in {} is {}".format(nums,missingNumber_in_place(nums)))
+print("---------------------191. Number of 1 Bits-------------------------")
+print("***** Method One: mode by 2 and shift *****")
+def hammingWeight(n):
+    result =0
+    while n>0:
+        result = result+(n%2)
+        n = n>>1
+    return result
+
+test_case = [0b00000000000000000000000000001011,0b00000000000000000000000010000000]
+for n in test_case:
+    print("Thre are {}  bit 1 in the {}".format(hammingWeight(n),bin(n)))
+print("***** Method Two: substract 1 and using '&' logic *****")
+'''
+101  101-1=100
+101&100 = 100 result+1
+100-1 = 011
+100&011 = 000 result+1
+'''
+def hammingWeight_substrac_and(n):
+    result = 0
+    while n>0:
+        n = n&(n-1)
+        result = result+1
+    return result
+for n in test_case:
+    print("Thre are {}  bit 1 in the {}".format(hammingWeight_substrac_and(n),bin(n)))
