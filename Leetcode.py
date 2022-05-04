@@ -2744,4 +2744,18 @@ def reverseBits(n):
     return result
 test_case = [0b00000010100101000001111010011100,0b11111111111111111111111111111101]
 for n in test_case:
-    print("The reverse of {} is {}".format(bin(n),bin(reverseBits(n))))
+    print("The reverse of {} is {} = {}".format(bin(n),bin(reverseBits(n)),reverseBits(n)))
+print("***** Method Two : Transfer to String *****")
+def reverseBits_transfer_to_string(n):
+    b_t_s = str(bin(n))
+    # remove the Ob
+    b_t_s = b_t_s[2:]
+    # make sure the length is 32
+    b_t_s = '0'*(32-len(b_t_s))+b_t_s
+    s=''
+    for i in range(len(b_t_s)-1,-1,-1):
+        s=s+b_t_s[i]
+    return int(s,2)
+test_case = [0b00000010100101000001111010011100,0b11111111111111111111111111111101]
+for n in test_case:
+    print("The reverse of {} is {} = {}".format(n,bin(reverseBits_transfer_to_string(n)),reverseBits_transfer_to_string(n)))
