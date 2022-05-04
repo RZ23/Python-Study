@@ -2646,3 +2646,27 @@ def findMin_min_fund(nums):
     return min(nums)
 for nums in test_case:
     print("The Minimun in Rotated Sorted Array {} is {}".format(nums,findMin_min_fund(nums)))
+
+print("---------------------338. Counting Bits-------------------------")
+def countBits(n):
+    # using dynamic programming.
+    '''
+    base:
+    offset =1, i = 0 dp[0] = 0
+    start loop:
+    i=1, offset = 1 dp[1] = 1+dp[1-1=0] = 1
+    i=2, offset*2 = i so dp[2] = 1+dp[2-offst=2-2=0]=1
+    i=3, offset = 2, dp[3] = 1+dp[i-offset=3-2=1]=1+1=2
+    i=4, offset*2 = 4, dp[4] = 1+dp[i-offset=4-4=0]=1
+    ...
+    '''
+    dp=[0]*(n+1)
+    offset = 1
+    for i in range(1,n+1):
+        if offset*2==i:
+            offset = i
+        dp[i] = 1+dp[i-offset]
+    return dp
+test_case=[2,5]
+for n in test_case:
+    print("The Counting Bit of {} is {}".format(n,countBits(n)))
