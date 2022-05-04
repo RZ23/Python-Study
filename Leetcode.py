@@ -2715,3 +2715,21 @@ def hammingWeight_substrac_and(n):
     return result
 for n in test_case:
     print("Thre are {}  bit 1 in the {}".format(hammingWeight_substrac_and(n),bin(n)))
+print("---------------------190. Reverse Bits-------------------------")
+def reverseBits(n):
+    result = 0
+    # there is 32 bit, so the loop should be 32
+    for i in range(32):
+        # get the bit of the last bit
+        # for example=> 3rd bit
+        # 10110: 10110>>3 = 101(00)
+        # 101 &1 = 1
+        # for example=> 2nd bit
+        # 10110: 10110>>4 = 10(110)
+        # 10&1 = 0
+        bit =(n>>i)&1
+        result =result|(bit<<(31-i))
+    return result
+test_case = [0b00000010100101000001111010011100,0b11111111111111111111111111111101]
+for n in test_case:
+    print("The reverse of {} is {}".format(bin(n),bin(reverseBits(n))))
