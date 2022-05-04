@@ -2759,3 +2759,31 @@ def reverseBits_transfer_to_string(n):
 test_case = [0b00000010100101000001111010011100,0b11111111111111111111111111111101]
 for n in test_case:
     print("The reverse of {} is {} = {}".format(n,bin(reverseBits_transfer_to_string(n)),reverseBits_transfer_to_string(n)))
+print("---------------------70. Climbing Stairs-------------------------")
+print("***** Method One: Consider to downstair *****")
+def climbStairs(n):
+    '''
+    consider climb to down from the nth floor
+    from the nth, the solution is 1
+    from the n-1th floor, the solution is 1
+    for the n-2th floor, the solution is solution of n-1th floor <1 step> + the solution of nth floor <2 steps>
+    '''
+    top_step,top_minus_step = 1,1
+    for i in range(n-1):
+        temp = top_minus_step
+        top_minus_step = top_minus_step+top_step
+        top_step=temp
+    return top_minus_step
+test_case = [2,3]
+for n in test_case:
+    print("There are {} ways to climb to floor {}".format(climbStairs(n),n))
+print("***** Method Two: Consider to downstair *****")
+def climbStairs_two_stair(n):
+    if n ==0:
+        return 0
+    elif n==1:
+        return 1
+    else:
+        return climbStairs_two_stair(n-1)+climbStairs_two_stair(n-2)
+for n in test_case:
+    print("There are {} ways to climb to floor {}".format(climbStairs_two_stair(n),n))
