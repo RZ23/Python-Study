@@ -2670,3 +2670,21 @@ def countBits(n):
 test_case=[2,5]
 for n in test_case:
     print("The Counting Bit of {} is {}".format(n,countBits(n)))
+print("---------------------268. Missing Number-------------------------")
+print("***** Method One: Sum of total -Sum of list *****")
+def missingNumber(nums):
+    total_sum = 0
+    for i in range(len(nums)+1):
+        total_sum = total_sum+i
+    return total_sum-sum(nums)
+test_case = [[3,0,1],[0,1],[9,6,4,2,3,5,7,0,1]]
+for nums in test_case:
+    print("The missing number in {} is {}".format(nums,missingNumber(nums)))
+print("***** Method Two: In Place Calculate *****")
+def missingNumber_in_place(nums):
+    result = len(nums)
+    for i in range(len(nums)):
+        result = result+(i-nums[i])
+    return result
+for nums in test_case:
+    print("The missing number in {} is {}".format(nums,missingNumber_in_place(nums)))
