@@ -2805,3 +2805,16 @@ def coinChange(coins,amount):
 test_case = [[[1,2,5],11],[[2],3],[[1],0]]
 for coins, amount in test_case:
     print("The minimum coins to get {} from {} is {}".format(amount,coins,coinChange(coins,amount)))
+
+print("---------------------300. Longest Increasing Subsequence-------------------------")
+def lengthOfLIS(nums):
+  LIS=[1]*len(nums)
+  # fill the dp list from back to head
+  for i in range(len(nums)-1,-1,-1):
+      for j in range(i+1,len(nums)):
+          if nums[i]<nums[j]:
+              LIS[i] = max(LIS[i],1+LIS[j])
+  return max(LIS)
+test_case = [[10,9,2,5,3,7,101,18],[0,1,0,3,2,3],[7,7,7,7,7,7,7]]
+for nums in test_case:
+    print("The length of longest Increasing Subsequence in the {} is {}".format(nums,lengthOfLIS(nums)))
