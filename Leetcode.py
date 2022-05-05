@@ -2777,13 +2777,31 @@ def climbStairs(n):
 test_case = [2,3]
 for n in test_case:
     print("There are {} ways to climb to floor {}".format(climbStairs(n),n))
-print("***** Method Two: Consider to downstair *****")
+print("***** Method Two: Consider to one step and two steps with Dynamic Programming *****")
 def climbStairs_two_stair(n):
-    if n ==0:
-        return 0
-    elif n==1:
-        return 1
-    else:
-        return climbStairs_two_stair(n-1)+climbStairs_two_stair(n-2)
+    step = []
+    step.append(1)
+    step.append(2)
+    for i in range(2,n):
+        step.append(step[i-1]+step[i-2])
+    return step[n-1]
 for n in test_case:
     print("There are {} ways to climb to floor {}".format(climbStairs_two_stair(n),n))
+
+print("---------------------322. Coin Change-------------------------")
+print("***** Using Dynamic Programming *****")
+def coinChange(coins,amount):
+    dp=[sys.maxsize]*(amount+1)
+    dp[0]=0
+    #Fill the dp list
+    for temp_amount in range(1,amount+1):
+        for coin in coins:
+            if temp_amount-coin>=0:
+                dp[temp_amount] = min(dp[temp_amount],1+dp[temp_amount-coin])
+    if dp[amount]<sys.maxsize:
+        return dp[amount]
+    else:
+        return -1
+test_case = [[[1,2,5],11],[[2],3],[[1],0]]
+for coins, amount in test_case:
+    print("The minimum coins to get {} from {} is {}".format(amount,coins,coinChange(coins,amount)))
