@@ -2818,3 +2818,35 @@ def lengthOfLIS(nums):
 test_case = [[10,9,2,5,3,7,101,18],[0,1,0,3,2,3],[7,7,7,7,7,7,7]]
 for nums in test_case:
     print("The length of longest Increasing Subsequence in the {} is {}".format(nums,lengthOfLIS(nums)))
+print("---------------------1143. Longest Common Subsequence-------------------------")
+print("***** Using Dynamic Programming and Create a n*m matrix *****")
+def longestCommonSubsequence(text1,text2):
+    dp =[[0 for j in range(len(text2)+1)] for i in range(len(text1)+1)]
+    '''
+    fill the matrix from right bottom to left top
+    if the character is equal, then dp[i][j] = 1+dp[i+1][j+1]
+    else dp[i][j] = max(dp[i+1][j],dp[i][j+1])
+    '''
+    for i in range(len(text1)-1,-1,-1):
+        for j in range(len(text2)-1,-1,-1):
+            if text1[i]==text2[j]:
+                dp[i][j]=1+dp[i+1][j+1]
+            else:
+                dp[i][j] = max(dp[i+1][j],dp[i][j+1])
+    result = dp[0][0]
+    def print_matrix(dp):
+        row = list(text1)+['*']
+        col = list(text2)+['*']
+        col = ['*']+col
+        for i in range(len(row)):
+            dp[i] = [row[i]]+dp[i]
+        dp = [col]+dp
+        for i in range(len(dp)):
+            for j in range(len(dp[0])):
+                print(dp[i][j],end = "|")
+            print()
+    print_matrix(dp)
+    return result
+test_case = [["abcde","ace"],["abc","abc"],["abc","def"]]
+for text1,text2 in test_case:
+    print("The longest common subsequence of {} and {} is {}".format(text1,text2,longestCommonSubsequence(text1,text2)))
