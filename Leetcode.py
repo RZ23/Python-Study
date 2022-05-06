@@ -2902,3 +2902,15 @@ def wordBreak(s,wordDict):
 test_case = [["leetcode",["leet","code"]],["applepenapple",["apple","pen"]],["catsandog",["cats","dog","sand","and","cat"]]]
 for s,wordDict in test_case:
     print("The word {} could be break by {} ? Answer: {}".format(s,wordDict,wordBreak(s,wordDict)))
+
+print("---------------------198. House Robber-------------------------")
+def rob(nums):
+    rob1,rob2 = 0,0
+    for i in nums:
+        newRob = max(rob1+i,rob2)
+        rob1 = rob2
+        rob2 = newRob
+    return rob2
+test_case = [[1,2,3,1],[2,7,9,3,1]]
+for nums in test_case:
+    print("The max profit in {} is {}".format(nums,rob(nums)))
