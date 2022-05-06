@@ -2850,3 +2850,40 @@ def longestCommonSubsequence(text1,text2):
 test_case = [["abcde","ace"],["abc","abc"],["abc","def"]]
 for text1,text2 in test_case:
     print("The longest common subsequence of {} and {} is {}".format(text1,text2,longestCommonSubsequence(text1,text2)))
+print("---------------------91. Decode Ways-------------------------")
+print("***** Method One: Using Dynamic Programming and Recursive *****")
+def numDecodings(s):
+    dp = {len(s):1}
+    def dfs(i):
+        if i in dp:
+            return dp[i]
+        if s[i]=="0":
+            return 0
+        res = dfs(i+1)
+        #if the s[i] and s[i+1] looks like 1* or 21-26
+        if (i+1<len(s) and (s[i]=="1" or s[i]=="2" and s[i+1] in "0123456")):
+            res = res+dfs(i+2)
+        dp[i] = res
+        return res
+    return dfs(0)
+test_case=["12","226","02","06","1201234"]
+for s in test_case:
+    print("There are {} ways to decoding the string {}".format(numDecodings(s),s))
+
+print("***** Method Two: Using Dynamic Programming and two variables *****")
+'''
+fill the dp from back to start 
+'''
+def numDecodings_two_var(s):
+    dp = {len(s):1}
+    for i in range(len(s)-1,-1,-1):
+        if s[i]=="0":
+            dp[i]=0
+        else:
+            dp[i] = dp[i+1]
+        # check if 1* or 20-26
+        if (i+1<len(s) and (s[i]=="1" or s[i]=="2" and s[i+1] in "0123456")):
+            dp[i] = dp[i]+dp[i+2]
+    return dp[0]
+for s in test_case:
+    print("Ther are {} ways to decoding the string {}".format(numDecodings(s),s))
