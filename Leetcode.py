@@ -2887,3 +2887,18 @@ def numDecodings_two_var(s):
     return dp[0]
 for s in test_case:
     print("Ther are {} ways to decoding the string {}".format(numDecodings(s),s))
+print("---------------------139. Word Break-------------------------")
+print("***** Method One: Using Dynamic Programming *****")
+def wordBreak(s,wordDict):
+    dp=[False]*(len(s)+1)
+    dp[len(s)]=True
+    for i in range(len(s)-1,-1,-1):
+        for word in wordDict:
+            if(i+len(word))<=len(s) and s[i:i+len(word)]==word:
+                dp[i] = dp[i+len(word)]
+            if dp[i] is True:
+                break
+    return dp[0]
+test_case = [["leetcode",["leet","code"]],["applepenapple",["apple","pen"]],["catsandog",["cats","dog","sand","and","cat"]]]
+for s,wordDict in test_case:
+    print("The word {} could be break by {} ? Answer: {}".format(s,wordDict,wordBreak(s,wordDict)))
