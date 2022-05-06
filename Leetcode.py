@@ -2914,3 +2914,16 @@ def rob(nums):
 test_case = [[1,2,3,1],[2,7,9,3,1]]
 for nums in test_case:
     print("The max profit in {} is {}".format(nums,rob(nums)))
+print("---------------------213. House Robber II-------------------------")
+def rob_circle(nums):
+    def linear_rob(nums):
+        rob1,rob2 = 0,0
+        for i in nums:
+            newRob = max(rob1+i,rob2)
+            rob1 = rob2
+            rob2 = newRob
+        return rob2
+    return max(nums[0],linear_rob(nums[1:]),linear_rob(nums[:-1]))
+test_case = [[2,3,2],[1,2,3,1]]
+for nums in test_case:
+    print("The max profit in {} is {}".format(nums,rob_circle(nums)))
