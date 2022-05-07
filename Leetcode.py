@@ -11,6 +11,24 @@ def print_matrix(matrix):
         for c in range(col):
             print(matrix[r][c],end = "|")
         print()
+def generate_tree_from_list(root):
+    node_list = []
+    # generate node for each item in the list
+    for i in range(len(root)):
+        if root[i] is not None:
+            node_list.append(Node(root[i]))
+        else:
+            node_list.append(None)
+    # Set the Left/Right child for each node
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child =2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list
 #Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
@@ -2543,7 +2561,7 @@ def containsDuplicate(nums):
 test_case = [[1,2,3,1],[1,2,3,4],[1,1,1,3,3,4,3,2,4,2]]
 for nums in test_case:
     print("There has the duplicated numbers in {}:{}".format(nums,containsDuplicate(nums)))
-print("***** Method One: Hashing Table *****")
+print("***** Method two: Hashing Table *****")
 def containsDuplicate_hashtable(nums):
     hash=set()
     for item in nums:
@@ -2927,3 +2945,23 @@ def rob_circle(nums):
 test_case = [[2,3,2],[1,2,3,1]]
 for nums in test_case:
     print("The max profit in {} is {}".format(nums,rob_circle(nums)))
+print("---------------------337. House Robber III-------------------------")
+def rob_binary_tree(root):
+    def dfs(root):
+        if root is None:
+            return [0,0]
+        leftPair = dfs(root.left)
+        rightPair = dfs(root.right)
+        '''
+        # for each node, there are two cases, so the return value will be [withNode, withoutNode]
+        # for the withNode,it includes the node and plue and value of left and right children tree's withoutNode value
+        # for the withOutNode, it euqals the max of left children plus the max of right children
+        '''
+        withRoot = root.value+leftPair[1]+rightPair[1]
+        withoutRoot = max(leftPair)+max(rightPair)
+        return [withRoot,withoutRoot]
+    return max(dfs(root))
+test_case = [[3,2,3,None,3,None,1],[3,4,5,1,3,None,1]]
+for node_list in test_case:
+    tree = generate_tree_from_list(node_list)
+    print("The Map of Houses is {} and The Maximum Profit is {}".format(tree[0],rob_binary_tree(tree[0])))
