@@ -3043,3 +3043,31 @@ for adjList in test_case:
     print(display_graph(node))
     print("The Result after Clone:")
     print(display_graph(cloneGraph(node)))
+
+print("---------------------207. Course Schedule -------------------------")
+def canFinish(numCourses,prerequisites):
+    # map each course to  prerequise list
+    Precours = {i:[] for i in range(numCourses)}
+    for course, precourse in prerequisites:
+        Precours[course].append(precourse)
+    # visitSet = all course along the current coure
+    visitSet =set()
+    def dfs(crs):
+        if crs in visitSet:
+            return False
+        if Precours[crs]==[]:
+            return True
+        visitSet.add(crs)
+        for pre in Precours[crs]:
+            if not dfs(pre):
+                return False
+        visitSet.remove(crs)
+        Precours[crs] = []
+        return True
+    for crs in range(numCourses):
+        if not dfs(crs):
+            return False
+    return True
+test_case = [2,[[1,0]]],[2,[[1,0],[0,1]]]
+for numCourses,prerequisites in test_case:
+    print("The available of {} course(s) with {} requirement is {} ".format(numCourses,prerequisites,canFinish(numCourses,prerequisites)))
