@@ -3164,3 +3164,38 @@ for grid in test_case:
     print_matrix(grid)
     print("There is(are) {} island(s) on the ocean ".format(numIslands(grid)))
 
+print("---------------------128. Longest Consecutive Sequence-------------------------")
+'''
+Using the DSF, after find the item, instead of put it in the set, just change it's value to "X"
+The next round will not count it as the new item since only the value "1" will be count as a new island 
+'''
+print("***** Method One: Sort and Count O(nlgn) *****")
+def longestConsecutive_nlgn(nums):
+   nums.sort()
+   max_count =1
+   sub_count=1
+   for i in range(len(nums)-1):
+       if nums[i+1]==nums[i]+1:
+           sub_count=sub_count+1
+           max_count = max(sub_count,max_count)
+       else:
+           sub_count=1
+   return max_count
+test_case = [[100,4,200,1,3,2],[0,3,7,2,5,8,4,6,0,1]]
+for nums in test_case:
+    print("The Length of the Longest Consecutive of {} is {} ".format(nums, longestConsecutive_nlgn(nums)))
+print("***** Method Two: Sort and Count O(n)*****")
+def longestConsecutive(nums):
+    numSet = set(nums)
+    longest = 0
+    for n in nums:
+        # check is it is the star of a sequence
+        if (n-1) not in numSet:
+            length = 0
+            while (n+length) in numSet:
+                length = length+1
+            longest = max(length,longest)
+    return longest
+for nums in test_case:
+    print("The Length of the Longest Consecutive of {} is {} ".format(nums, longestConsecutive(nums)))
+
