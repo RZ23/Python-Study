@@ -3121,3 +3121,46 @@ for heights in test_case:
     print("The Graphic:")
     print_matrix(heights)
     print("The list of water could flow to both Pacific and Atlantic is {} ".format(pacificAtlantic(heights)))
+print("---------------------200. Number of Islands-------------------------")
+'''
+Using the DSF, after find the item, instead of put it in the set, just change it's value to "X"
+The next round will not count it as the new item since only the value "1" will be count as a new island 
+'''
+def numIslands(grid):
+    def dfs(grid,row,col,r,c):
+        # if the item is out-of-boundary or not the island
+        # fiish the search
+        if (r<0 or c<0 or r>=row or c >=col or grid[r][c]!="1"):
+            return
+        grid[r][c]="X"
+        # search the items around the current item
+        dfs(grid,row,col, r-1,c)
+        dfs(grid,row,col,r+1,c)
+        dfs(grid,row,col,r,c-1)
+        dfs(grid,row,col,r,c+1)
+    if len(grid)==0 or len(grid[0]) ==0:
+        return 0
+    row,col = len(grid),len(grid[0])
+    count =0
+    for r in range(row):
+        for c in range(col):
+            if grid[r][c]=="1":
+                count = count+1
+                dfs(grid,row,col,r,c)
+    print("After the Search: ")
+    print_matrix(grid)
+    return count
+test_case =[[["1","1","1","1","0"],
+  ["1","1","0","1","0"],
+  ["1","1","0","0","0"],
+  ["0","0","0","0","0"]],[
+  ["1","1","0","0","0"],
+  ["1","1","0","0","0"],
+  ["0","0","1","0","0"],
+  ["0","0","0","1","1"]
+]]
+for grid in test_case:
+    print("The Graphic:")
+    print_matrix(grid)
+    print("There is(are) {} island(s) on the ocean ".format(numIslands(grid)))
+
