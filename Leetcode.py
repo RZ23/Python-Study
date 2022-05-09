@@ -3071,3 +3071,53 @@ def canFinish(numCourses,prerequisites):
 test_case = [2,[[1,0]]],[2,[[1,0],[0,1]]]
 for numCourses,prerequisites in test_case:
     print("The available of {} course(s) with {} requirement is {} ".format(numCourses,prerequisites,canFinish(numCourses,prerequisites)))
+print("---------------------417. Pacific Atlantic Water Flow -------------------------")
+def pacificAtlantic(heights):
+    ROWS,COLS = len(heights),len(heights[0])
+    pac,atl = set(),set()
+    def dfs(r,c,visit,preHeight):
+        # if the item is in the visit set
+        # or if the item is out of bounder
+        # or if the item is less than the previous height
+        # "calculate from low to high, so the new height should greater than previous height"
+        if (r,c) in visit or r<0 or c<0 or r==ROWS or c==COLS or heights[r][c]<preHeight:
+            return
+        # meet the requirement, add to visit set and using the dfs to search the round items
+        visit.add((r,c))
+        # down row
+        dfs(r+1,c,visit,heights[r][c])
+        # up row
+        dfs(r-1,c,visit,heights[r][c])
+        # left col
+        dfs(r,c-1,visit,heights[r][c])
+        # right col
+        dfs(r,c+1,visit,heights[r][c])
+    # create the visit set matrix
+    # search for each column
+    for c in range(COLS):
+        # search from the first row
+        # all the items on the top row could reach to the pacific
+        dfs(0,c,pac,heights[0][c])
+        # search for the bottom row
+        # all the item on the bottom row could reach to the atlantic
+        dfs(ROWS-1,c,atl,heights[ROWS-1][c])
+
+    for r in range(ROWS):
+        # search for the left column
+        # all the items on the left column could reach to pacific
+        dfs(r,0,pac,heights[r][0])
+        # search for the right column
+        # all the items on the right column could reach the atlantic
+        dfs(r,COLS-1,atl,heights[r][COLS-1])
+    result = []
+    # visit each item to find the final result
+    for r in range(ROWS):
+        for c in range(COLS):
+            if (r,c) in pac and (r,c) in atl:
+                result.append([r,c])
+    return result
+test_case =[[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]],[[2,1],[1,2]]]
+for heights in test_case:
+    print("The Graphic:")
+    print_matrix(heights)
+    print("The list of water could flow to both Pacific and Atlantic is {} ".format(pacificAtlantic(heights)))
