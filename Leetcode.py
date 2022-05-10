@@ -3248,4 +3248,33 @@ def alienOeder(words):
 test_case = [["caa", "aaa", "aab"],["wrt","wrf","er","ett","rftt"]]
 for words in test_case:
     print("Based on the {}, the order is {}".format(words,alienOeder(words)))
-
+print("---------------------261. Graph Valid Tree-------------------------")
+'''
+using postorder dfs and topologic
+'''
+def validTree(n,edges):
+    # if there is no node, still is the tree
+    if not n:
+        return True
+    adj={i:[] for i in range(n)}
+    for n1,n2 in edges:
+        adj[n1].append(n2)
+        adj[n2].append(n1)
+    visit = set()
+    # using two variables, current node and previous node
+    # if the node in the visit, not means there is a cycle
+    # it also means the node is on the path too
+    def dfs(i, prev):
+        if i in visit:
+            return False
+        visit.add(i)
+        for j in adj[i]:
+            if j==prev:
+                continue
+            if not dfs(j,i):
+                return False
+        return True
+    return dfs(0,-1) and n==len(visit)
+n=5
+edges = [[0,1],[0,2],[0,3],[1,4]]
+print("based on the edges {}, these {} node(s) is the tree: {}".format(edges, n, validTree(n,edges)))
