@@ -3199,3 +3199,53 @@ def longestConsecutive(nums):
 for nums in test_case:
     print("The Length of the Longest Consecutive of {} is {} ".format(nums, longestConsecutive(nums)))
 
+print("---------------------269. Alien Dictionary-------------------------")
+'''
+using postorder dfs and topologic
+'''
+def alienOeder(words):
+    # set the hashmap for each character
+    adj = {ch: set() for word in words for ch in word }
+    for i in range(len(words)-1):
+        w1,w2 = words[i],words[i+1]
+        min_len = min(len(w1),len(w2))
+        # if w1 = abc, w2 = ab, since the words are sorted
+        # in this case, return false
+        if len(w1)>len(w2) and w1[:min_len]==w2[:min_len]:
+            return ""
+        #fill the hashmap, by compare each character
+        # find the first different character, and
+        # append this character to first character's adj list
+        for j in range(min_len):
+            if w1[j]!=w2[j]:
+                adj[w1[j]].add(w2[j])
+                break
+        # after finish the hashmap, use the DFS to find the cycle
+        # if there is a cycle existed, reture " "
+        visit = {} # False=visted, True = current path
+        res = []
+    def dfs(c):
+        '''
+        if character is visited, return the visit[c]'s value
+        Ture:means character is on the current path, False: means character is just visited
+        example: ab, and abc, using postorder dfs, a->b and a->c, after mark c as visited,
+        when process the b->c, and found c in the visited, not means there is the cycle
+        '''
+        if c in visit:
+            return visit[c]
+        visit[c] = True
+        for neighbor in adj[c]:
+            if dfs(neighbor):
+                return True
+        visit[c] = False
+        res.append(c)
+    # get the result list
+    for c in adj:
+        if dfs(c):
+            return ""
+    res.reverse()
+    return "".join(res)
+test_case = [["caa", "aaa", "aab"],["wrt","wrf","er","ett","rftt"]]
+for words in test_case:
+    print("Based on the {}, the order is {}".format(words,alienOeder(words)))
+
