@@ -3337,3 +3337,19 @@ for n, edges in test_case:
     print("In this {} nodes graph with {} edges, there are {} Connected Components".format(n, edges,
                                                                                                countComponent_dfs(n,
                                                                                                               edges)))
+print("---------------------435. Non-overlapping Intervals-------------------------")
+def eraseOverlapIntervals(intervals):
+    intervals.sort()
+    # print(intervals)
+    count  = 0
+    PrevEnd = intervals[0][1]
+    for start,end in intervals[1:]:
+        if start>=PrevEnd:
+            PrevEnd = end
+        else:
+            count = count+1
+            PrevEnd = min(PrevEnd,end)
+    return count
+test_case = [[[1,2],[2,3],[3,4],[1,3]],[[1,2],[1,2],[1,2]],[[1,2],[2,3]]]
+for intervals in test_case:
+    print("There is(are) {} overlapping intervals need to be remove from the {}".format(eraseOverlapIntervals(intervals),intervals))
