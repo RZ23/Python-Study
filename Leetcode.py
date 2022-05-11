@@ -3307,6 +3307,33 @@ def countComponent(n,edges):
     for n1,n2 in edges:
         res = res-union(n1,n2)
     return res
-test_case = [[5,[[0,1],[1,2],[3,4]]]]
+test_case = [[5, [[0, 1], [1, 2], [3, 4]]],[5,[[0, 1], [1, 2], [2, 3], [3, 4]]]]
 for n,edges in test_case:
     print("In this {} nodes graph with {} edges, there are {} Connected Components".format(n,edges, countComponent(n,edges)))
+print("***** Method Two: Traditional DFS method *****")
+def countComponent_dfs(n,edges):
+    graph = {i:[] for i in range(n)}
+    for n1,n2 in edges:
+        graph[n1].append(n2)
+        graph[n2].append(n1)
+    visit = set()
+    count = 0
+    q = deque()
+    for i in range(n):
+        if i in visit:
+            continue
+        q.append(i)
+        while len(q)>0:
+            cur = q.popleft()
+            if cur in visit:
+                continue
+            visit.add(cur)
+            for nei in graph[cur]:
+                q.append(nei)
+        count = count+1
+    return count
+test_case = [[5, [[0, 1], [1, 2], [3, 4]]],[5,[[0, 1], [1, 2], [2, 3], [3, 4]]]]
+for n, edges in test_case:
+    print("In this {} nodes graph with {} edges, there are {} Connected Components".format(n, edges,
+                                                                                               countComponent_dfs(n,
+                                                                                                              edges)))
