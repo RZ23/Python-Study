@@ -3353,3 +3353,15 @@ def eraseOverlapIntervals(intervals):
 test_case = [[[1,2],[2,3],[3,4],[1,3]],[[1,2],[1,2],[1,2]],[[1,2],[2,3]]]
 for intervals in test_case:
     print("There is(are) {} overlapping intervals need to be remove from the {}".format(eraseOverlapIntervals(intervals),intervals))
+print("---------------------920 · Meeting Rooms-------------------------")
+def can_attend_meetings(intervals):
+    intervals.sort(key = lambda i: i[0])
+    for i in range(1,len(intervals)):
+        i1 = intervals[i-1]
+        i2 = intervals[i]
+        if i1[1]>i2[0]:
+            return False
+        return True
+test_case = [[(0,30),(5,10),(15,20)], [(5,8),(9,15)]]
+for intervals in test_case:
+    print("The meeting can be scheduled based on {}:{}".format(intervals,can_attend_meetings(intervals)))
