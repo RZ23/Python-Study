@@ -3384,3 +3384,25 @@ def min_meeting_rooms(intervals):
 test_case = [[(0,30),(5,10),(15,20)], [(2,7)]]
 for intervals in test_case:
     print("For the meeting schedule {}, need to have at least {} meeting rooms".format(intervals,min_meeting_rooms(intervals)))
+print("---------------------69. Sqrt(x)-------------------------")
+'''
+using binary search to find the y, where y*y ==x
+'''
+def mySqrt(x):
+    start = 0
+    end = x
+    while start+1<end:
+        mid = (start+end)//2
+        if mid*mid==x:
+            return mid
+        elif mid*mid>x:
+            end = mid
+        else:
+            start = mid
+    if end*end==x:
+        return end
+    else:
+        return start
+test_case = [4,8]
+for x in test_case:
+    print("The square root of {} is {}".format(x,mySqrt(x)))
