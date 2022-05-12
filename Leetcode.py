@@ -3365,3 +3365,22 @@ def can_attend_meetings(intervals):
 test_case = [[(0,30),(5,10),(15,20)], [(5,8),(9,15)]]
 for intervals in test_case:
     print("The meeting can be scheduled based on {}:{}".format(intervals,can_attend_meetings(intervals)))
+print("---------------------919 · Meeting Rooms II-------------------------")
+def min_meeting_rooms(intervals):
+    start = sorted([i[0] for i in intervals])
+    end = sorted([i[1] for i in intervals])
+    s,e = 0,0
+    count = 0
+    result =0
+    while s <len(start):
+        if start[s]<end[e]:
+            count = count+1
+            s= s+1
+        else:
+            count = count-1
+            e = e+1
+        result = max(result,count)
+    return result
+test_case = [[(0,30),(5,10),(15,20)], [(2,7)]]
+for intervals in test_case:
+    print("For the meeting schedule {}, need to have at least {} meeting rooms".format(intervals,min_meeting_rooms(intervals)))
