@@ -71,6 +71,28 @@ def generate_graph(graph_node_list):
         for adj in graph_node_list[i]:
             graph[i].neighbors.append(graph_map[str(adj)])
     return graph[0]
+class ListNode():
+    def __init__(self,val=0,next = None):
+        self.val = val
+        self.next = next
+def generate_linked_list_with_val(lst):
+    if len(lst)==0:
+        return None
+    if len(lst)==1:
+        return ListNode(lst[0])
+    linked_list = []
+    for i in range(len(lst)):
+        linked_list.append(ListNode(lst[i]))
+    for i in range(len(lst)-1):
+        linked_list[i].next = linked_list[i+1]
+    return linked_list[0]
+def display_linked_list_with_val(node):
+    if not node:
+        print("[]")
+    while node is not None:
+        print(node.val,end = " ")
+        node = node.next
+    print()
 #Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
@@ -183,10 +205,7 @@ for item in test_case:
     print("index numbers to get the target number {} within the list {} are {}".format(target,item[0],two_sum_iteration(item[0],item[1])))
 
 print("---------------------Add two linked list -------------------------")
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+
 
 def addTwoNumbers(l1,l2):
     i=0
@@ -3406,3 +3425,44 @@ def mySqrt(x):
 test_case = [4,8]
 for x in test_case:
     print("The square root of {} is {}".format(x,mySqrt(x)))
+
+print("---------------------23. Merge k Sorted Lists-------------------------")
+'''
+using merge method
+'''
+def mergeKLists(lists):
+    def mergeList(l1,l2):
+        dummy = ListNode()
+        tail = dummy
+        while l1 and l2:
+            if l1.val<l2.val:
+                tail.next = l1
+                l1 = l1.next
+            else:
+                tail.next = l2
+                l2 = l2.next
+            tail=tail.next
+        if l1:
+            tail.next = l1
+        if l2:
+            tail.next = l2
+        return dummy.next
+    if not lists or len(lists)==0:
+        return None
+    while len(lists)>1:
+        mergeLists=[]
+        for i in range(0,len(lists),2):
+            l1 = lists[i]
+            l2 = lists[i+1] if (i+1)<len(lists) else None
+            mergeLists.append(mergeList(l1,l2))
+        lists = mergeLists
+    return lists[0]
+
+test_case = [[[1,4,5],[1,3,4],[2,6]],[],[[]]]
+for linked_lists in test_case:
+    link_list = []
+    for lst in linked_lists:
+        link_list.append(generate_linked_list_with_val(lst))
+    print("The result of merger {} is:".format(linked_lists))
+    display_linked_list_with_val(mergeKLists(link_list))
+
