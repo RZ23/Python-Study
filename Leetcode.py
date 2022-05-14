@@ -93,6 +93,18 @@ def display_linked_list_with_val(node):
         print(node.val,end = " ")
         node = node.next
     print()
+
+def find_last_link_list(node):
+    while node.next:
+        node=node.next
+    return node
+def find_kth_linked_node(node,k):
+    if k<0:
+        return None
+    while k>0:
+        node = node.next
+        k =k-1
+    return node
 #Roman to Int
 print("---------------------Translate Roman Numbers to Integer Number -------------------------")
 def romanToInt(s):
@@ -3465,4 +3477,36 @@ for linked_lists in test_case:
         link_list.append(generate_linked_list_with_val(lst))
     print("The result of merger {} is:".format(linked_lists))
     display_linked_list_with_val(mergeKLists(link_list))
-
+print("---------------------141. Linked List Cycle-------------------------")
+print("***** Method One: Hashmap *****")
+def hasCycle(head):
+    hashmap = set()
+    while head:
+        if head in hashmap:
+            return True
+        else:
+            hashmap.add(head)
+            head = head.next
+    return False
+test_case = [[[3,2,0,-4],1],[[1,2],0],[[1],-1]]
+for linked_lists,pos in test_case:
+    head = generate_linked_list(linked_lists)
+    tail = find_last_link_list(head)
+    tail.next = find_kth_linked_node(head,pos)
+    print("Is there a cycle in the linked list {},{}:{}".format(linked_lists,pos,hasCycle(head)))
+print("***** Method Two: Tow pointer -> Fast Point and Slow Point ***** ")
+def hasCycle_fast_slow_point(head):
+    fast = head
+    slow = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow==fast:
+            return True
+    return False
+test_case = [[[3,2,0,-4],1],[[1,2],0],[[1],-1]]
+for linked_lists,pos in test_case:
+    head = generate_linked_list(linked_lists)
+    tail = find_last_link_list(head)
+    tail.next = find_kth_linked_node(head,pos)
+    print("Is there a cycle in the linked list {},{}:{}".format(linked_lists,pos,hasCycle_fast_slow_point(head)))
