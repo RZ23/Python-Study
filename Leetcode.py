@@ -90,9 +90,12 @@ def display_linked_list_with_val(node):
     if not node:
         print("[]")
     while node is not None:
-        print(node.val,end = " ")
+        if node.next:
+            print(node.val,end = "->")
+        else:
+            print(node.val)
         node = node.next
-    print()
+    # print()
 
 def find_last_link_list(node):
     while node.next:
@@ -3510,3 +3513,43 @@ for linked_lists,pos in test_case:
     tail = find_last_link_list(head)
     tail.next = find_kth_linked_node(head,pos)
     print("Is there a cycle in the linked list {},{}:{}".format(linked_lists,pos,hasCycle_fast_slow_point(head)))
+print("---------------------143. Reorder List-------------------------")
+
+def reorderList(head):
+    '''
+    using the fase and slow pointer to find the middle
+    divide the linked list from the middle
+    reversal the second half
+    merge the first and second half
+    '''
+    fast,slow = head,head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+    # slow will be the middle
+    # reverse the second half
+    second = slow.next
+    # break the linked list after slow
+    slow.next = None
+    # set prev as the None
+    prev = slow.next
+    while second:
+        temp = second.next
+        second.next = prev
+        prev = second
+        second = temp
+    # merge two list
+    first,second = head,prev
+    while second:
+        temp1,temp2 = first.next,second.next
+        first.next = second
+        second.next = temp1
+        first,second = temp1,temp2
+    return head
+test_case = [[1,2,3,4,5]]
+for linked_list in test_case:
+    head = generate_linked_list_with_val(linked_list)
+    print("Reoder the liked list:",end ="")
+    display_linked_list_with_val(head)
+    print("The result is:",end="")
+    display_linked_list_with_val(reorderList(head))
