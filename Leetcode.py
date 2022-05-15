@@ -3546,10 +3546,45 @@ def reorderList(head):
         second.next = temp1
         first,second = temp1,temp2
     return head
-test_case = [[1,2,3,4,5]]
+test_case = [[1,2,3,4,5],[1,2,3,4]]
 for linked_list in test_case:
     head = generate_linked_list_with_val(linked_list)
     print("Reoder the liked list:",end ="")
     display_linked_list_with_val(head)
     print("The result is:",end="")
     display_linked_list_with_val(reorderList(head))
+    print()
+
+print("---------------------79. Word Search-------------------------")
+
+def exist(board,word):
+    '''
+    using the backtracking method and DFS algortithm
+    '''
+    ROW,COLS = len(board),len(board[0])
+    path = set()
+    # r,c is the position and i is the index of the word
+    def dfs(r,c,i):
+        if i==len(word):
+            return True
+        if (r<0 or c<0 or r>=ROW or c>=COLS or word[i]!=board[r][c] or (r,c) in path):
+            return False
+        path.add((r,c))
+        # search for the neighbor characters
+        res= (dfs(r+1,c,i+1))or(dfs(r-1,c,i+1))or(dfs(r,c+1,i+1))or(dfs(r,c-1,i+1))
+        # after search, remove the (r,c) from the set
+        path.remove((r,c))
+        return res
+    for r in range(ROW):
+        for c in range(COLS):
+            if dfs(r,c,0):
+                return True
+    return False
+test_case = [
+[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCCED"],
+[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "SEE"],
+[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], "ABCB"],
+]
+for board, word in test_case:
+    print("There is the word {} exits in board {}: {}".format(word,board,exist(board,word)))
+
