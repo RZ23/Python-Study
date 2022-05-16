@@ -3588,3 +3588,44 @@ test_case = [
 for board, word in test_case:
     print("There is the word {} exits in board {}: {}".format(word,board,exist(board,word)))
 
+print("---------------------424. Longest Repeating Character Replacement-------------------------")
+print("***** Method One: Regular Sliding windows *****")
+def characterReplacement(s,k):
+    '''
+    using the sliding windows
+    '''
+    count = {}
+    res = 0
+    l = 0
+    for r in range(len(s)):
+        # length of the sliding window - max value of the letters > k
+        # then the window is valid
+        count[s[r]] = 1+count.get(s[r],0)
+        # if not meet the requirement, then update the count and
+        # and sliding the window
+        while (r-l+1)-max(count.values())>k:
+            count[s[l]]=count[s[l]]-1
+            l = l+1
+        res = max(res,r-l+1)
+    return res
+
+test_case = [["ABAB",2],["AABABBA",1]]
+for s,k in test_case:
+    print("The longest Repeating Character Replacement in {} with {} wide cards is {}".format(s,k,characterReplacement(s,k)))
+print("***** Method Two: Sliding windows but without substract the count dict *****")
+def characterReplacement_not_count_update(s,k):
+    count = {}
+    res = 0
+    l = 0
+    maxf = 0
+    for r in range(len(s)):
+        count[s[r]]=1+count.get(s[r],0)
+        maxf = max(maxf,count[s[r]])
+        while (r-l+1)-maxf>k:
+            count[s[l]] = count[s[l]]-1
+            l = l+1
+        res = max(res,r-l+1)
+    return res
+for s,k in test_case:
+    print("The longest Repeating Character Replacement in {} with {} wide cards is {}".format(s,k,characterReplacement_not_count_update(s,k)))
+
