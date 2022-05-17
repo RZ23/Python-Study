@@ -3629,3 +3629,44 @@ def characterReplacement_not_count_update(s,k):
 for s,k in test_case:
     print("The longest Repeating Character Replacement in {} with {} wide cards is {}".format(s,k,characterReplacement_not_count_update(s,k)))
 
+print("---------------------76. Minimum Window Substring-------------------------")
+def minWindow(s,t):
+    if t=="":
+        return ""
+    countT={}
+    window = {}
+    # set the target hashmap
+    for c in t:
+        countT[c]= 1+countT.get(c,0)
+    # current count
+    have = 0
+    # need to count (count in the string t)
+    need = len(countT)
+    # result start and end index
+    res=[-1,-1]
+    # length of the result
+    resLen = float("infinity")
+    # left point
+    l = 0
+    for r in range(len(s)):
+        c = s[r]
+        window[c] = 1+window.get(c,0)
+        if c in countT and window[c]==countT[c]:
+            # meet the requirement for this character
+            have = have+1
+        while have == need:
+            # update result, shrink the window to find the minimum length
+            if (r-l+1)<resLen:
+                resLen=(r-l+1)
+                res = [l,r]
+            # pop from the left of the window
+            window[s[l]] = window[s[l]]-1
+            if s[l] in countT and window[s[l]]<countT[s[l]]:
+                have = have-1
+            l = l+1
+    l,r = res
+    return s[l:r+1] if resLen!=float("infinity") else ""
+test_case = [["ADOBECODEBANC", "ABC"],[ "a","a"],["a",  "aa"]]
+for s,t in test_case:
+    print(f"the minimum window substring in {s} of {t} is {minWindow(s,t)}")
+
