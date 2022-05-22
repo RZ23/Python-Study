@@ -3738,3 +3738,40 @@ test_case = ['abc',"aaa"]
 for item in test_case:
     print(f"There is(are) {countSubstrings(item)} Palindromic Substrings in the {item}")
 
+print("---------------------271. Encode and Decode Strings-------------------------")
+print("***** Method One: Using List to store the count *****")
+def encode_edcode_count_list(s):
+    count_list = []
+    updated_string= ""
+    result = []
+    for ch in s:
+        count_list.append(len(ch))
+        updated_string =  updated_string+ch
+    j=0
+    for i in range(len(count_list)):
+        length = count_list[i]
+        result.append( updated_string[j:j+length])
+        j=j+length
+    return result
+test_case = [["lint","code","love","you"],["we", "say", ":", "yes"]]
+for s in test_case:
+    print(f"The encoding and decoing of {s} is {encode_edcode_count_list(s)}")
+print("***** Method Two: In-Place Count *****")
+def encode_edcode(s):
+    updated_string = ""
+    # add length and symbol for each item
+    for ch in s:
+        updated_string = updated_string+str(len(ch))+"#"
+    # decoding the updated string
+    result,i = [],0
+    while i <len(updated_string):
+        j = i
+        while updated_string[j]!="#":
+            j =j+1
+        length = int(updated_string[i:j])
+        result.append(updated_string[j+1:j+length+1])
+        i = j+1+length
+    return result
+for s in test_case:
+    print(f"The encoding and decoing of {s} is {encode_edcode_count_list(s)}")
+
