@@ -2,6 +2,7 @@ from binarytree import Node,tree
 from binarytree import Node, tree
 from collections import deque
 from collections import Counter
+from collections import defaultdict
 import collections
 # Helper Function
 def print_matrix(matrix):
@@ -2262,6 +2263,7 @@ for nums in test_case:
 
 
 print("---------------------49. Group Anagrams-------------------------")
+print("***** Method One: Sort and Dict")
 def groupAnagrams(strs):
     dict = {}
     for item in strs:
@@ -2274,7 +2276,17 @@ def groupAnagrams(strs):
 test_case = [["eat","tea","tan","ate","nat","bat"],[""],["a"]]
 for strs in test_case:
     print("The Anagrams of {} is {}".format(strs,groupAnagrams(strs)))
-
+print("***** Method Two: count and dict (O(m*n))*****")
+def groupAnagrams_count_dict(strs):
+    result = defaultdict(list)
+    for ch in strs:
+        count=[0]*26
+        for c in ch:
+            count[ord(c)-ord("a")] = count[ord(c)-ord("a")]+1
+        result[tuple(count)].append(ch)
+    return result.values()
+for strs in test_case:
+    print("The Anagrams of {} is {}".format(strs,groupAnagrams_count_dict(strs)))
 print("---------------------77. Combinations-------------------------")
 def combine(n,k):
     result = []
