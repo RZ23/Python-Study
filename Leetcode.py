@@ -3719,3 +3719,22 @@ test_case = ["A man, a plan, a canal: Panama", "race a car", " "]
 for s in test_case:
     print(f"The phrase\" {s} \" is a palindrome: {isPalindrome(s)}")
 
+print("---------------------647. Palindromic Substrings-------------------------")
+def countSubstrings(s):
+    result = 0
+    # helper function to find the palindromic
+    def countPali(l,r):
+        temp_result = 0
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            temp_result = temp_result+1
+            l = l-1
+            r= r+1
+        return temp_result
+    for i in range(len(s)):
+        result = result+countPali(i,i)
+        result = result+countPali(i,i+1)
+    return result
+test_case = ['abc',"aaa"]
+for item in test_case:
+    print(f"There is(are) {countSubstrings(item)} Palindromic Substrings in the {item}")
+
