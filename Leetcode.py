@@ -559,9 +559,8 @@ s_list= ["abcabcbb","bbbbb","pwwkew","au","dvdf"]
 for s in s_list:
     print("the size of longest substring without repeating character of {} is {}".format(s,str(lengthOfLongestSubstring(s))))
 
-print("---------------------Longest Palindromic Substring-------------------------")
-
-string_list = ['babad',"cbbd"]
+print("---------------------5.Longest Palindromic Substring-------------------------")
+print("***** Method One: Helper Function *****")
 def longestPalindrome(s):
     longest = ""
     for i in range(len(s)):
@@ -578,9 +577,34 @@ def findlongest(s,l,r):
         l = l-1
         r = r+1
     return s[l+1:r]
-for item in string_list:
+test_case = ['babad',"cbbd"]
+for item in test_case:
     print("The Longest Palindromic Substring of {} is {}".format(item,longestPalindrome(item)))
-
+print("***** Method Two: choose middle and search left and right (two pointers) *****")
+def longestPalindrome_two_pointers(s):
+    result = ""
+    resLen = 0
+    for i in range(len(s)):
+        # odd string
+        l,r = i,i
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            if(r-l+1)>resLen:
+                resLen = (r-l+1)
+                result = s[l:r+1]
+            l = l-1
+            r = r+1
+        # even string
+        l,r = i,i+1
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            if (r-l+1)>resLen:
+                resLen = (r-l+1)
+                result = s[l:r+1]
+            l = l-1
+            r = r+1
+    return result
+test_case = ['babad',"cbbd"]
+for item in test_case:
+    print("The Longest Palindromic Substring of {} is {}".format(item,longestPalindrome_two_pointers(item)))
 print("---------------------20 Valid Parentheses-------------------------")
 def isValid_1(s):
     if len(s)%2!=0:
