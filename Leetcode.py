@@ -581,8 +581,7 @@ def findlongest(s,l,r):
 for item in string_list:
     print("The Longest Palindromic Substring of {} is {}".format(item,longestPalindrome(item)))
 
-print("---------------------Valid Parentheses-------------------------")
-
+print("---------------------20 Valid Parentheses-------------------------")
 def isValid_1(s):
     if len(s)%2!=0:
         return False
@@ -3681,4 +3680,18 @@ def minWindow(s,t):
 test_case = [["ADOBECODEBANC", "ABC"],[ "a","a"],["a",  "aa"]]
 for s,t in test_case:
     print(f"the minimum window substring in {s} of {t} is {minWindow(s,t)}")
+
+print("---------------------125. Valid Palindrome-------------------------")
+def isPalindrome(s):
+    newStr = ""
+    for c in s:
+        if c.isalnum():
+            newStr = newStr+c.lower()
+    if newStr==newStr[::-1]:
+        return True
+    else:
+        return False
+test_case = ["A man, a plan, a canal: Panama", "race a car", " "]
+for s in test_case:
+    print(f"The phrase\" {s} \" is a palindrome: {isPalindrome(s)}")
 
