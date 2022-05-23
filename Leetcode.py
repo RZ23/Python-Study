@@ -3805,4 +3805,37 @@ def encode_edcode(s):
     return result
 for s in test_case:
     print(f"The encoding and decoing of {s} is {encode_edcode_count_list(s)}")
+print("---------------------100. Same Tree-------------------------")
+def generate_tree_from_list(root):
+    #
+    node_list = []
+    for i in range(len(root)):
+        if root[i] is not None:
+            node_list.append(Node(root[i]))
+        else:
+            node_list.append(None)
+    # Set the Left/Right child for each node
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child =2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list
+def isSameTree(p,q):
+    if not p and not q:
+        return True
+    if not p or not q or p.value!=q.value:
+        return False
+    return (isSameTree(p.left,q.left)) and (isSameTree(p.right,q.right))
+
+test_case = [[1,2,3], [1,2,3]],[[1,2], [1,None,2]],[[1,2,1], [1,1,2]]
+for tree1_list,tree2_list in test_case:
+    p = generate_tree_from_list(tree1_list)
+    q = generate_tree_from_list(tree2_list)
+    print(p[0],q[0])
+    print(f"The two trees is same: {isSameTree(p[0],q[0])}")
+
 
