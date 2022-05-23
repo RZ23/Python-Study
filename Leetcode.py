@@ -3838,4 +3838,44 @@ for tree1_list,tree2_list in test_case:
     print(p[0],q[0])
     print(f"The two trees is same: {isSameTree(p[0],q[0])}")
 
+print("---------------------226. Invert Binary Tree-------------------------")
+def generate_tree_from_list(root):
+    #
+    node_list = []
+    for i in range(len(root)):
+        if root[i] is not None:
+            node_list.append(Node(root[i]))
+        else:
+            node_list.append(None)
+    # Set the Left/Right child for each node
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child =2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list
+def invertTree(root):
+    if not root:
+        return None
+    temp_left = root.left
+    root.left = root.right
+    root.right = temp_left
+    invertTree(root.left)
+    invertTree(root.right)
+    return root
+test_case = [[4,2,7,1,3,6,9],[2,1,3],[]]
+for tree_list in test_case:
+    root = generate_tree_from_list(tree_list)
+    print(f"The list to formate the tree is {tree_list}")
+    if root:
+        print(root[0])
+        print("The result of Invert tree is: ")
+        print(invertTree(root[0]))
+    if not root:
+        print([])
+
+
 
