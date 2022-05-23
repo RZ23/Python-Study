@@ -391,14 +391,45 @@ def rightSideView_Iteration(root):
     return result
 print(rightSideView_Iteration(node_list[0]))
 
-print("---------------------Maximum Depth of Binary Tree-------------------------")
+print("---------------------104. Maximum Depth of Binary Tree-------------------------")
+print("***** Method One: Recursive *****")
 def max_depth(node):
     if node is None:
         return 0
     else:
         return max(max_depth(node.left),max_depth(node.right))+1
 print("The depth of the tree is {}".format(max_depth(node_list[0])))
-
+print("***** Method Two: Iterative and DFS *****")
+def max_depth_iterative(node):
+    if not node:
+        return 0
+    level = 0
+    q = deque()
+    q.append(node)
+    while len(q)>0:
+        for i in range(len(q)):
+            node = q.popleft()
+            if node.left:
+                q.append(node.left)
+            if node.right:
+                q.append(node.right)
+        level = level+1
+    return level
+print("The depth of the tree is {}".format(max_depth_iterative(node_list[0])))
+print("***** Method Three: BFS and Stack *****")
+def max_depth_bfs_stack(node):
+    if not node:
+        return None
+    stack = [[node,1]]
+    result = 0
+    while stack:
+        node,depth = stack.pop()
+        if node:
+            result = max(result,depth)
+            stack.append([node.left,depth+1])
+            stack.append([node.right,depth+1])
+    return result
+print("The depth of the tree is {}".format(max_depth_bfs_stack(node_list[0])))
 print("---------------------Balanced Binary Tree-------------------------")
 def isBalanced(node):
     if node is None:
