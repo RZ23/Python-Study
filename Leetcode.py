@@ -1,3 +1,4 @@
+import binarytree
 from binarytree import Node,tree
 from binarytree import Node, tree
 from collections import deque
@@ -3806,12 +3807,17 @@ def encode_edcode(s):
 for s in test_case:
     print(f"The encoding and decoing of {s} is {encode_edcode_count_list(s)}")
 print("---------------------100. Same Tree-------------------------")
+class TreeNode(binarytree.Node):
+    def __init__(self,value):
+        self.value = value
+        self.left = None
+        self.right = None
 def generate_tree_from_list(root):
     #
     node_list = []
     for i in range(len(root)):
         if root[i] is not None:
-            node_list.append(Node(root[i]))
+            node_list.append(TreeNode(root[i]))
         else:
             node_list.append(None)
     # Set the Left/Right child for each node
@@ -3823,7 +3829,7 @@ def generate_tree_from_list(root):
                 node_list[i].left = node_list[left_child]
             if right_child<len(node_list):
                 node_list[i].right = node_list[right_child]
-    return node_list
+    return node_list[0]
 def isSameTree(p,q):
     if not p and not q:
         return True
@@ -3835,28 +3841,28 @@ test_case = [[1,2,3], [1,2,3]],[[1,2], [1,None,2]],[[1,2,1], [1,1,2]]
 for tree1_list,tree2_list in test_case:
     p = generate_tree_from_list(tree1_list)
     q = generate_tree_from_list(tree2_list)
-    print(p[0],q[0])
-    print(f"The two trees is same: {isSameTree(p[0],q[0])}")
+    print(p,q)
+    print(f"The two trees is same: {isSameTree(p,q)}")
 
 print("---------------------226. Invert Binary Tree-------------------------")
-def generate_tree_from_list(root):
-    #
-    node_list = []
-    for i in range(len(root)):
-        if root[i] is not None:
-            node_list.append(Node(root[i]))
-        else:
-            node_list.append(None)
-    # Set the Left/Right child for each node
-    for i in range(len(node_list)//2):
-        if node_list[i] is not None:
-            left_child =2*i+1
-            right_child = 2*i+2
-            if left_child<len(node_list):
-                node_list[i].left = node_list[left_child]
-            if right_child<len(node_list):
-                node_list[i].right = node_list[right_child]
-    return node_list
+# def generate_tree_from_list(root):
+#     #
+#     node_list = []
+#     for i in range(len(root)):
+#         if root[i] is not None:
+#             node_list.append(Node(root[i]))
+#         else:
+#             node_list.append(None)
+#     # Set the Left/Right child for each node
+#     for i in range(len(node_list)//2):
+#         if node_list[i] is not None:
+#             left_child =2*i+1
+#             right_child = 2*i+2
+#             if left_child<len(node_list):
+#                 node_list[i].left = node_list[left_child]
+#             if right_child<len(node_list):
+#                 node_list[i].right = node_list[right_child]
+#     return node_list
 def invertTree(root):
     if not root:
         return None
@@ -3868,14 +3874,115 @@ def invertTree(root):
     return root
 test_case = [[4,2,7,1,3,6,9],[2,1,3],[]]
 for tree_list in test_case:
+    if len(tree_list)==0:
+        print(None)
+        break
     root = generate_tree_from_list(tree_list)
     print(f"The list to formate the tree is {tree_list}")
     if root:
-        print(root[0])
+        print(root)
         print("The result of Invert tree is: ")
-        print(invertTree(root[0]))
+        print(invertTree(root))
     if not root:
         print([])
+print("---------------------297. Serialize and Deserialize Binary Tree-------------------------")
+print("***** Method One: BFS and level scan *****")
+def serialize(root):
+    result = []
+    q = deque()
+    q.append(root)
+    while len(q)>0:
+        current = q.popleft()
+        # if not isinstance(current,binarytree.Node):
+        #     result.append(current)
+        # else:
+        #     result.append(current.values)
+        result.append(current)
+        if current:
+            if current and current.left:
+                q.append(current.left)
+            else:
+                q.append(None)
+            if current.right:
+                q.append(current.right)
+            else:
+                q.append(None)
+    final_result =[]
+    for i in range(len(result)):
+        if isinstance(result[i],binarytree.Node):
+            final_result.append(result[i].value)
+        else:
+            final_result.append(result[i])
+    index = len(final_result)-1
+    while final_result[index] is None:
+        index = index-1
+    return final_result[:index+1]
+def deserialize(data):
+    # return generate_tree_from_list(data)
+    tree_node_list = []
+    for i in range(len(data)):
+        if data[i]==None:
+            tree_node_list.append(None)
+        else:
+            tree_node_list.append(Node(data[i]))
+    for i in range(len(tree_node_list)//2):
+        if tree_node_list[i] is not None:
+            left_index = i*2+1
+            right_index =i*2+2
+            if left_index<len(tree_node_list):
+                tree_node_list[i].left = tree_node_list[left_index]
+            if right_index<len(tree_node_list):
+                tree_node_list[i].right = tree_node_list[right_index]
+    return tree_node_list[0]
 
-
+test_case = [[1,2,3,None,None,4,5],[]]
+for tree_list in test_case:
+    if not tree_list:
+        print("None")
+        break
+    root = generate_tree_from_list(tree_list)
+    print(f"Original Tree: {root}")
+    data = serialize(root)
+    print(f"Serialize Result: {data}")
+    de_root = deserialize(data)
+    print(f"Deserialize Result:{de_root}")
+print("***** Method Two: Pre-Order and DFS *****")
+def serialize_dfs_preorder(root):
+    result = []
+    def dfs(node):
+        if not node:
+            result.append("N")
+            return
+        result.append(str(node.value))
+        dfs(node.left)
+        dfs(node.right)
+    dfs(root)
+    return ",".join(result)
+def deserialize_dfs_preorder(data):
+    vals=data.split(",")
+    print(f"The result of split is {vals}")
+    global i
+    i=0
+    def dfs():
+        global i
+        if vals[i]=="N":
+            i = i+1
+            return None
+        node = TreeNode(int(vals[i]))
+        i = i+1
+        node.left = dfs()
+        node.right = dfs()
+        return node
+    return dfs()
+test_case = [[1,2,3,None,None,4,5],[]]
+for tree_list in test_case:
+    if len(tree_list)==0:
+        print("[]")
+        break
+    else:
+        root = generate_tree_from_list(tree_list)
+        print(f"Original Tree: {root}")
+    se = serialize_dfs_preorder(root)
+    print(f"The Result of Serialize is {se}")
+    print(f"The result of Deserialize is {deserialize_dfs_preorder(se)}")
 
