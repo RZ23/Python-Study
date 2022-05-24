@@ -1,4 +1,4 @@
-from binarytree import Node, tree
+# from binarytree import Node, tree
 from binarytree import Node, tree
 from collections import deque
 from collections import Counter
@@ -11,6 +11,9 @@ def print_matrix(dp):
             else:
                 print(dp[i][j], end="|")
         print()
+import binarytree
+
+
 def generate_tree_from_list(root):
     node_list = []
     # generate node for each item in the list
@@ -28,7 +31,7 @@ def generate_tree_from_list(root):
                 node_list[i].left = node_list[left_child]
             if right_child<len(node_list):
                 node_list[i].right = node_list[right_child]
-    return node_list
+    return node_list[0]
 class Graph_Node():
     def __init__(self,value = 0,neighbors = None):
         self.value = value
@@ -71,31 +74,66 @@ def generate_graph(graph_node_list):
         for adj in graph_node_list[i]:
             graph[i].neighbors.append(graph_map[str(adj)])
     return graph[0]
-print("---------------------323. Number of Connected Components in an Undirected Graph-------------------------")
-print("***** Method Two: Traditional DFS method *****")
-def countComponent(n,edges):
-    graph = {i:[] for i in range(n)}
-    for n1,n2 in edges:
-        graph[n1].append(n2)
-        graph[n2].append(n1)
-    visit = set()
-    count = 0
-    q = deque()
-    for i in range(n):
-        if i in visit:
-            continue
-        q.append(i)
-        while len(q)>0:
-            cur = q.popleft()
-            if cur in visit:
-                continue
-            visit.add(cur)
-            for nei in graph[cur]:
-                q.append(nei)
-        count = count+1
-    return count
-test_case = [[5, [[0, 1], [1, 2], [3, 4]]],[5,[[0, 1], [1, 2], [2, 3], [3, 4]]]]
-for n, edges in test_case:
-    print("In this {} nodes graph with {} edges, there are {} Connected Components".format(n, edges,
-                                                                                               countComponent(n,
-                                                                                                              edges)))
+print("---------------------297. Serialize and Deserialize Binary Tree-------------------------")
+print("***** Method Two: Pre-Order and DFS *****")
+class TreeNode(binarytree.Node):
+    def __init__(self,value):
+        self.value = value
+        self.left = None
+        self.right = None
+def generate_tree_from_list(root):
+    node_list = []
+    # generate node for each item in the list
+    for i in range(len(root)):
+        if root[i] is not None:
+            node_list.append(TreeNode(root[i]))
+        else:
+            node_list.append(None)
+    # Set the Left/Right child for each node
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child =2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list[0]
+def serialize(root):
+    result = []
+    def dfs(node):
+        if not node:
+            result.append("N")
+            return
+        result.append(str(node.value))
+        dfs(node.left)
+        dfs(node.right)
+    dfs(root)
+    return ",".join(result)
+def deserialize(data):
+    vals=data.split(",")
+    print(f"The result of split is {vals}")
+    global i
+    i=0
+    def dfs():
+        global i
+        if vals[i]=="N":
+            i = i+1
+            return None
+        node = TreeNode(int(vals[i]))
+        i = i+1
+        node.left = dfs()
+        node.right = dfs()
+        return node
+    return dfs()
+test_case = [[1,2,3,None,None,4,5],[]]
+for tree_list in test_case:
+    if len(tree_list)==0:
+        print("[]")
+        break
+    else:
+        root = generate_tree_from_list(tree_list)
+        print(f"Original Tree: {root}")
+    se = serialize(root)
+    print(f"The Result of Serialize is {se}")
+    print(f"The result of Deserialize is {deserialize(se)}")
