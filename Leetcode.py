@@ -3985,4 +3985,28 @@ for tree_list in test_case:
     se = serialize_dfs_preorder(root)
     print(f"The Result of Serialize is {se}")
     print(f"The result of Deserialize is {deserialize_dfs_preorder(se)}")
+print("---------------------572. Subtree of Another Tree-------------------------")
+def isSubtree(root, subroot):
+    def sameTree(p,q):
+        if not p and not q:
+            return True
+        if not p or not q:
+            return False
+        if p.value==q.value:
+            return (sameTree(p.left,q.left)) and (sameTree(p.right,q.right))
+    if not subroot:
+        return True
+    if not root:
+        return False
+    if sameTree(root,subroot):
+        return True
+    else:
+        return isSubtree(root.left,subroot) or isSubtree(root.right,subroot)
+test_case = [[[3,4,5,1,2,None,None,None,None,0], [4,1,2]],[[3,4,5,1,2,None,None,None,None,0], [4,1,2,None,None,0]]]
+for root_list, subroot_list in test_case:
+    root = generate_tree_from_list(root_list)
+    subroot = generate_tree_from_list(subroot_list)
+    print(f"Tree One is {root}")
+    print(f"Tree Two is {subroot}")
+    print(f"Tree TWO is the subtree of Tree One: {isSubtree(root,subroot)}")
 
