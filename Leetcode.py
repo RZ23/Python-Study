@@ -4002,11 +4002,22 @@ def isSubtree(root, subroot):
         return True
     else:
         return isSubtree(root.left,subroot) or isSubtree(root.right,subroot)
-test_case = [[[3,4,5,1,2,None,None,None,None,0], [4,1,2]],[[3,4,5,1,2,None,None,None,None,0], [4,1,2,None,None,0]]]
+test_case = [[[3,4,5,1,2], [4,1,2]],[[3,4,5,1,2,None,None,None,None,0], [4,1,2]],[[3,4,5,1,2,None,None,None,None,0], [4,1,2,None,None,0]]]
 for root_list, subroot_list in test_case:
     root = generate_tree_from_list(root_list)
     subroot = generate_tree_from_list(subroot_list)
     print(f"Tree One is {root}")
     print(f"Tree Two is {subroot}")
     print(f"Tree TWO is the subtree of Tree One: {isSubtree(root,subroot)}")
-
+print("---------------------105. Construct Binary Tree from Preorder and Inorder Traversal-------------------------")
+def buildTree(preorder,inorder):
+    if not preorder or not inorder:
+        return None
+    root=TreeNode(preorder[0])
+    ind = inorder.index(preorder[0])
+    root.left = buildTree(preorder[1:ind+1],inorder[:ind])
+    root.right=buildTree(preorder[ind+1:],inorder[ind+1:])
+    return root
+test_case = [[[3,9,20,15,7],[9,3,15,20,7]],[[-1],[-1]]]
+for preorder, inorder in test_case:
+    print(f"The Tree based on the Pre-Order {preorder} and In-Order {inorder} is {buildTree(preorder,inorder)}")
