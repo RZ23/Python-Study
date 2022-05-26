@@ -4059,3 +4059,17 @@ for tree_node_list,k in test_case:
     root =generate_tree_from_list(tree_node_list)
     print(f"The Tree is {root}")
     print(f"The {k} smallest element in BST is {kthSmallest_stack(root,k)}")
+
+print("---------------------98. Validate Binary Search Tree-------------------------")
+def isValidBST(root):
+    def validBST(root,left_bound,right_bound):
+        if not root:
+            return True
+        if not((root.value>left_bound) and (root.value<right_bound)):
+            return False
+        return validBST(root.left,left_bound,root.value) and validBST(root.right,root.value,right_bound)
+    return validBST(root,float("-inf"),float("inf"))
+test_case = [[2,1,3],[5,1,4,None,None,3,6]]
+for tree_node_list in test_case:
+    root =generate_tree_from_list(tree_node_list)
+    print(f"The Tree  {root }is the valid BST: {isValidBST(root)}")
