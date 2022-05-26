@@ -4021,3 +4021,41 @@ def buildTree(preorder,inorder):
 test_case = [[[3,9,20,15,7],[9,3,15,20,7]],[[-1],[-1]]]
 for preorder, inorder in test_case:
     print(f"The Tree based on the Pre-Order {preorder} and In-Order {inorder} is {buildTree(preorder,inorder)}")
+
+print("---------------------230. Kth Smallest Element in a BST-------------------------")
+print("***** Method One: In-Order Scan and find kth smallest element *****")
+def kthSmallest_in_order(root,k):
+    if k<1:
+        return False
+    def in_order(root):
+        if root is None:
+            return []
+        else:
+            return in_order(root.left)+[root.value]+in_order(root.right)
+    result = in_order(root)
+    print(result)
+    return result[k-1]
+
+test_case = [[[3,1,4,None,2],1],[[5,3,6,2,4,None,None,1], 3]]
+for tree_node_list,k in test_case:
+    root =generate_tree_from_list(tree_node_list)
+    print(f"The Tree is {root}")
+    print(f"The {k} smallest element in BST is {kthSmallest_in_order(root,k)}")
+print("***** Method One: using Stack *****")
+def kthSmallest_stack(root,k):
+    stack = []
+    n = 0
+    current = root
+    while current or stack:
+        while current:
+            stack.append(current)
+            current = current.left
+        current = stack.pop()
+        n = n+1
+        if n==k:
+            return current.values[0]
+        current = current.right
+for tree_node_list,k in test_case:
+    root =generate_tree_from_list(tree_node_list)
+    print(f"The Tree is {root}")
+    print(f"The {k} smallest element in BST is {kthSmallest_stack(root,k)}")
