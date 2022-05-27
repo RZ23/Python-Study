@@ -4113,3 +4113,42 @@ for tree_node_list,p,q in test_case:
     p = TreeNode(p)
     q = TreeNode(q)
     print(f"The Lowest Common Ancestor of {p.value},{q.value} in {root}is {lowestCommonAncestor_iteration(root,p,q)}")
+print("---------------------208. Implement Trie (Prefix Tree)-------------------------")
+class TriesNode():
+    def __init__(self):
+        self.child = {}
+        self.EndofWord= False
+class Trie():
+    def __init__(self):
+        self.root = TriesNode()
+    def insert(self,word):
+        current_node = self.root
+        for ch in word:
+            if ch not in current_node.child:
+                current_node.child[ch]= TriesNode()
+            current_node = current_node.child[ch]
+        current_node.EndofWord=True
+    def search(self,word):
+        current = self.root
+        for ch in word:
+            if ch not in current.child:
+                return False
+            current = current.child[ch]
+        return current.EndofWord
+    def startsWith(self,prefix):
+        cur = self.root
+        for ch in prefix:
+            if ch not in cur.child:
+                return False
+            cur = cur.child[ch]
+        return True
+search_word1 = "apple"
+search_word2 = "app"
+search_prefix = "app"
+obj = Trie()
+obj.insert(search_word1)
+print(f"The result of search {search_word1} is {obj.search(search_word1)}")
+print(f"The result of search {search_word2} is {obj.search(search_word2)}")
+print(f"The result of search prefix {search_prefix} is {obj.startsWith(search_prefix)}")
+obj.insert("app")
+print(f"The result of search {search_word2} is {obj.search(search_word2)}")
