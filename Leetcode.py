@@ -4073,3 +4073,43 @@ test_case = [[2,1,3],[5,1,4,None,None,3,6]]
 for tree_node_list in test_case:
     root =generate_tree_from_list(tree_node_list)
     print(f"The Tree  {root }is the valid BST: {isValidBST(root)}")
+print("---------------------235. Lowest Common Ancestor of a Binary Search Tree-------------------------")
+print("***** Method One: Recursive *****")
+def lowestCommonAncestor(root,p,q):
+    if p.value<root.value<q.value:
+        return root.value
+    elif p.value==root.value or q.value==root.value:
+        if p==root:
+            return p.value
+        else:
+            return q.value
+    elif p.value<root.value and q.value<root.value:
+        return lowestCommonAncestor(root.left,p,q)
+    elif p>root.value and q>root.value:
+        return lowestCommonAncestor(root.right,p,q)
+
+test_case = [[[6,2,8,0,4,7,9,None,None,3,5],2,8],[[6,2,8,0,4,7,9,None,None,3,5],2,4],[[2,1],2,1]]
+for tree_node_list,p,q in test_case:
+    root =generate_tree_from_list(tree_node_list)
+    # print(f"The Tree is {root}")
+    p,q = min(p,q),max(p,q)
+    p = TreeNode(p)
+    q = TreeNode(q)
+    print(f"The Lowest Common Ancestor of {p.value},{q.value} in {root} is {lowestCommonAncestor(root,p,q)}")
+print("***** Method One: Iteration *****")
+def lowestCommonAncestor_iteration(root,p,q):
+    cur = root
+    while cur:
+        if p.value <cur.value and q.value<cur.value:
+            cur=cur.left
+        elif p.value >cur.value and q.value>cur.value:
+            cur=cur.right
+        else:
+            return cur.value
+for tree_node_list,p,q in test_case:
+    root =generate_tree_from_list(tree_node_list)
+    # print(f"The Tree is {root}")
+    p,q = min(p,q),max(p,q)
+    p = TreeNode(p)
+    q = TreeNode(q)
+    print(f"The Lowest Common Ancestor of {p.value},{q.value} in {root}is {lowestCommonAncestor_iteration(root,p,q)}")
