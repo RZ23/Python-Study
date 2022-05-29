@@ -4116,7 +4116,7 @@ for tree_node_list,p,q in test_case:
 print("---------------------208. Implement Trie (Prefix Tree)-------------------------")
 class TriesNode():
     def __init__(self):
-        self.child = {}
+        self.children = {}
         self.EndofWord= False
 class Trie():
     def __init__(self):
@@ -4124,23 +4124,23 @@ class Trie():
     def insert(self,word):
         current_node = self.root
         for ch in word:
-            if ch not in current_node.child:
-                current_node.child[ch]= TriesNode()
-            current_node = current_node.child[ch]
+            if ch not in current_node.children:
+                current_node.children[ch]= TriesNode()
+            current_node = current_node.children[ch]
         current_node.EndofWord=True
     def search(self,word):
         current = self.root
         for ch in word:
-            if ch not in current.child:
+            if ch not in current.children:
                 return False
-            current = current.child[ch]
+            current = current.children[ch]
         return current.EndofWord
     def startsWith(self,prefix):
         cur = self.root
         for ch in prefix:
-            if ch not in cur.child:
+            if ch not in cur.children:
                 return False
-            cur = cur.child[ch]
+            cur = cur.children[ch]
         return True
 search_word1 = "apple"
 search_word2 = "app"
@@ -4152,3 +4152,39 @@ print(f"The result of search {search_word2} is {obj.search(search_word2)}")
 print(f"The result of search prefix {search_prefix} is {obj.startsWith(search_prefix)}")
 obj.insert("app")
 print(f"The result of search {search_word2} is {obj.search(search_word2)}")
+print("---------------------211. Design Add and Search Words Data Structure-------------------------")
+class WordDictionary():
+    def __init__(self):
+        self.root = TriesNode()
+    def addWord(self, word):
+        cur = self.root
+        for ch in word:
+            if ch not in cur.children:
+                cur.children[ch] = TriesNode()
+            cur = cur.children[ch]
+        cur.EndofWord = True
+
+    def search(self,word):
+        def dfs(j,root):
+            cur = root
+            for i in range(j,len(word)):
+                ch = word[i]
+                if ch==".":
+                    for child in cur.children.values():
+                        if dfs(i+1,child):
+                            return True
+                    return False
+                else:
+                    if ch not in cur.children:
+                        return False
+                    cur = cur.children[ch]
+            return cur.EndofWord
+        return dfs(0,self.root)
+
+obj = WordDictionary()
+add_word_test_case = ["bad","dad","mad"]
+search_word_test_case = ["pad","bad",".ad","b.."]
+for word in add_word_test_case:
+    obj.addWord(word)
+for word in search_word_test_case:
+    print(f"Word {word} is in the dictionary: {obj.search(word)}")
