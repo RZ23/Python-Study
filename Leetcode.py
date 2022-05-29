@@ -4188,3 +4188,44 @@ for word in add_word_test_case:
     obj.addWord(word)
 for word in search_word_test_case:
     print(f"Word {word} is in the dictionary: {obj.search(word)}")
+
+print("---------------------212. Word Search II-------------------------")
+class TriesNode(TriesNode):
+    def __init__(self):
+        self.children = {}
+        self.endWord = False
+    def addword(self,word):
+        cur = self
+        for ch in word:
+            if ch not in cur.children:
+                cur.children[ch] = TriesNode()
+            cur = cur.children[ch]
+        cur.endWord = True
+def findwords(board,words):
+    root = TriesNode()
+    for word in words:
+        root.addword(word)
+    ROWS,COLS = len(board),len(board[0])
+    res,visit = set(),set()
+    def dfs(r,c,node,word):
+        if(r<0 or c<0 or r==ROWS or c==COLS or board[r][c] not in node.children or (r,c) in visit):
+            return
+        visit.add((r,c))
+        node = node.children[board[r][c]]
+        word = word+board[r][c]
+        if node.endWord:
+            res.add(word)
+        dfs(r+1,c,node,word)
+        dfs(r-1,c,node,word)
+        dfs(r,c+1,node,word)
+        dfs(r,c-1,node,word)
+        visit.remove((r,c))
+    for r in range(ROWS):
+        for c in range(COLS):
+            dfs(r,c,root,"")
+    return list(res)
+
+test_case = [[["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],["oath","pea","eat","rain"]],\
+            [[["a","b"],["c","d"]],["abcb"]]
+for board,words in test_case:
+    print(f"The board {board} contain words: {findwords(board,words)}")
