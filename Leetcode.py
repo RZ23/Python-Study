@@ -5,6 +5,7 @@ from collections import deque
 from collections import Counter
 from collections import defaultdict
 import collections
+import heapq
 # Helper Function
 def print_matrix(matrix):
     row = len(matrix)
@@ -4264,3 +4265,57 @@ def topKFrequent_bucket(nums,k):
                 return result
 for nums,k in test_case:
     print(f"The Top {k} of elements in {nums} are {topKFrequent_bucket(nums,k)}")
+print("---------------------295. Find Median from Data Stream-------------------------")
+print("***** Method One: Heap *****")
+class MedianFinder:
+    def __init__(self):
+        # two heaps, large(atually works as min heap), small(works as max_heap)
+        #Python using the min_heap
+        self.small,self.large = [],[]
+    def addNum(self,num):
+        # add num to small heap, since it is the min heap,*-1 to put the max number to the top
+        heapq.heappush(self.small,-1*num)
+        # make sure the evey num small is <= every nums in large
+        if(self.small and self.large and (-1*self.small[0])>self.large[0]):
+            val = -1*heapq.heappop(self.small)
+            heapq.heappush(self.large,val)
+        # smake sure the size of two heaps are equal or 1 different
+        if len(self.small)>len(self.large)+1:
+            val=-1*heapq.heappop(self.small)
+            heapq.heappush(self.large,val)
+        if len(self.large)>len(self.small)+1:
+            val = heapq.heappop(self.large)
+            heapq.heappush(self.small,-1*val)
+    def findMedian(self):
+        if len(self.small)>len(self.large):
+            return -1*self.small[0]
+        if len(self.large)>len(self.small):
+            return self.large[0]
+        return (-1*self.small[0]+self.large[0])/2
+med = MedianFinder()
+nums = []
+for item in [1,2]:
+    med.addNum(item)
+    nums.append(item)
+print(f"The median of {nums} is {med.findMedian()}")
+med.addNum(3)
+nums.append(3)
+print(f"The median of {nums} is {med.findMedian()}")
+print("***** Method Two: in-order sort")
+class MedianFinder_sorted:
+    def __init__(self):
+        self.nums = []
+    def addNum(self,num):
+        self.nums.append(num)
+    def findMedian(self):
+        self.nums.sort()
+        if len(self.nums)%2==0:
+            return (self.nums[len(self.nums)//2-1]+self.nums[(len(self.nums)//2)])/2
+        else:
+            return self.nums[len(self.nums)//2]
+med = MedianFinder_sorted()
+nums = []
+for item in [1,2,3,-1,-2,-3,-4,-5]:
+    med.addNum(item)
+    nums.append(item)
+    print(f"The median of {nums} (sorted {sorted(nums)}) is {med.findMedian()}")
