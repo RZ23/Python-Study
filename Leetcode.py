@@ -4319,3 +4319,38 @@ for item in [1,2,3,-1,-2,-3,-4,-5]:
     med.addNum(item)
     nums.append(item)
     print(f"The median of {nums} (sorted {sorted(nums)}) is {med.findMedian()}")
+
+print("---------------------242. Valid Anagram-------------------------")
+print("***** Methond One: Using Counter")
+def isAnagram(s,t):
+    count_s = Counter(s)
+    count_t = Counter(t)
+    return count_t==count_s
+test_case = [["anagram","nagaram"],["rat","car"]]
+for s,t in test_case:
+    print(f"{s} and {t} is anagram: {isAnagram(s,t)}")
+print("***** Method Two: Sort the String *****")
+def isAnagram_sort_string(s,t):
+    sort_s = sorted(s)
+    sort_t = sorted(t)
+    return sort_t==sort_s
+for s,t in test_case:
+    print(f"{s} and {t} is anagram: {isAnagram_sort_string(s,t)}")
+print("***** Method Three: Hashmap *****")
+def isAnagram_hashmap(s,t):
+    count_hash = {}
+    for ch in s:
+        count_hash[ch] = 1+count_hash.get(ch,0)
+    for ch in t:
+        if ch not in count_hash.keys():
+            return False
+        elif count_hash[ch]==1:
+            count_hash.pop(ch)
+        else:
+            count_hash[ch] = count_hash[ch]-1
+    if len(count_hash)==0:
+        return True
+    else:
+        return False
+for s,t in test_case:
+    print(f"{s} and {t} is anagram: {isAnagram_hashmap(s,t)}")
