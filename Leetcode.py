@@ -4229,3 +4229,38 @@ test_case = [[["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l"
             [[["a","b"],["c","d"]],["abcb"]]
 for board,words in test_case:
     print(f"The board {board} contain words: {findwords(board,words)}")
+print("---------------------347. Top K Frequent Elements-------------------------")
+print("***** Method One: Sort Dict *****")
+def topKFrequent(nums,k):
+    cnt = {}
+    for item in nums:
+        if item not in cnt:
+            cnt[item] = 1
+        else:
+            cnt[item] = cnt[item]+1
+    result = []
+    # print(cnt)
+    cnt_1 = sorted(cnt.items(),key=lambda x:x[1],reverse = True)
+    # print(cnt_1)
+    for i in range(k):
+        result.append(cnt_1[i][0])
+    return result
+test_case =[[[1,1,1,2,2,3],2],[[1],1]]
+for nums,k in test_case:
+    print(f"The Top {k} of elements in {nums} are {topKFrequent(nums,k)}")
+print("***** Method One: Bucket Sort O(N)*****")
+def topKFrequent_bucket(nums,k):
+    count = {}
+    freq = [[] for _ in range(len(nums)+1)]
+    for n in nums:
+        count[n] = 1+count.get(n,0)
+    for n,c in count.items():
+        freq[c].append(n)
+    result = []
+    for i in range(len(freq)-1,0,-1):
+        for n in freq[i]:
+            result.append(n)
+            if len(result)==k:
+                return result
+for nums,k in test_case:
+    print(f"The Top {k} of elements in {nums} are {topKFrequent_bucket(nums,k)}")
