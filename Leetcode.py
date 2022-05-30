@@ -4354,3 +4354,20 @@ def isAnagram_hashmap(s,t):
         return False
 for s,t in test_case:
     print(f"{s} and {t} is anagram: {isAnagram_hashmap(s,t)}")
+print("---------------------371. Sum of Two Integers-------------------------")
+def getSum(a,b):
+
+    mask = 0xffffffff
+    a = a & mask
+    while b:
+        sum = (a^b)&mask
+        carry = ((a&b)<<1)&mask
+        a = sum
+        b= carry
+    # if a is negative in 32 bits
+    if (a>>31)&1:
+        return ~(a^mask)
+    return a
+test_case = [[1,2],[2,3]]
+for a,b in test_case:
+    print(f"The sum of {a}+{b} is {getSum(a,b)}")
