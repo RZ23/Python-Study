@@ -4371,3 +4371,68 @@ def getSum(a,b):
 test_case = [[1,2],[2,3]]
 for a,b in test_case:
     print(f"The sum of {a}+{b} is {getSum(a,b)}")
+print("---------------------438. Find All Anagrams in a String-------------------------")
+print("***** Methond One: Iteration and Sort *****")
+def findAnagrams(s,p):
+    sort_p =sorted(p)
+    result = []
+    for i in range(len(s)-len(p)+1):
+        if sorted(s[i:i+len(p)])==sort_p:
+            result.append(i)
+    return result
+test_case = [["cbaebabacd","abc"],["abab","ab"]]
+for s,p in test_case:
+    print(f"The start index of anagram {p} in {s} is {findAnagrams(s,p)}")
+print("***** Method Two: Two Pointers *****")
+def findAnagrams_two_pointer(s,p):
+    if len(p)>len(s):
+        return []
+    pCount,sCount = {},{}
+    for i in range(len(p)):
+        pCount[p[i]] = 1+pCount.get(p[i],0)
+        sCount[s[i]] = 1+sCount.get(s[i],0)
+    res = [0] if sCount ==pCount else []
+    l=0
+    for r in range(len(p),len(s)):
+        sCount[s[r]] = 1+sCount.get(s[r],0)
+        sCount[s[l]]=sCount[s[l]]-1
+        if sCount[s[l]]==0:
+            sCount.pop(s[l])
+        l = l+1
+        if sCount==pCount:
+            res.append(l)
+    return res
+for s,p in test_case:
+    print(f"The start index of anagram {p} in {s} is {findAnagrams_two_pointer(s,p)}")
+print("---------------------239. Sliding Window Maximum-------------------------")
+print("***** Method One: Loop O(k*(n-k)) *****")
+def maxSlidingWindow(nums,k):
+    result = []
+    for i in range(len(nums)-k+1):
+        result.append(max(nums[i:i+k]))
+    return result
+test_case = [[1,3,-1,-3,5,3,6,7],3],[[1],1]
+for nums,k in test_case:
+    print(f"The Sliding Window Maximun is {nums} is {maxSlidingWindow(nums,k)}")
+print("***** Method One: Dqueue and Monotonic Queue O(n) *****")
+def maxSlidingWindow_monotonic(nums,k):
+    result  = []
+    q = deque()
+    # sliding windows
+    l=r=0
+    while r<len(nums):
+        # pop smaller values from q
+        while q and nums[q[-1]]<nums[r]:
+            q.pop()
+        q.append(r)
+        # remove left val from window
+        if l>q[0]:
+            q.popleft()
+        # based on the size of k, add new value
+        if (r+1)>=k:
+            result.append(nums[q[0]])
+            l = l+1
+        r = r+1
+    return result
+for nums,k in test_case:
+    print(f"The Sliding Window Maximun is {nums} is {maxSlidingWindow_monotonic(nums,k)}")
