@@ -4436,3 +4436,35 @@ def maxSlidingWindow_monotonic(nums,k):
     return result
 for nums,k in test_case:
     print(f"The Sliding Window Maximun is {nums} is {maxSlidingWindow_monotonic(nums,k)}")
+
+print("---------------------1838. Frequency of the Most Frequent Element-------------------------")
+def maxFrequency(nums,k):
+    # sort the list
+    nums.sort()
+    # using sliding windows
+    l,r = 0,0
+    # result store the final result, total calculates the sum of sliding windows
+    result,total,final_result,updated_substring = 0,0,[],[]
+    while r<len(nums):
+        # calculate the sum of current sliding windows
+        total = total+nums[r]
+        # assume all the numbers in the sliding windows are same to get the max frequency
+        # since the the array is sorted, the assumed sum should be nums[r]*length of sliding windows
+        # if current sliding windows break the assumption, shrink the windows
+        while nums[r]*(r-l+1)>total+k:
+            # update the total
+            total = total-nums[l]
+            # left pointer move forward
+            l = l + 1
+        # now the current sliding windows meet the assumption, update the final result
+        result = max(result,(r-l+1))
+        final_result = nums[l:r + 1]
+        updated_substring = nums[:l]+[nums[r] for _ in range(r - l + 1)]
+        # move the right pointer to extent the sliding windows
+        r = r+1
+    # return final result
+    return result,final_result,updated_substring
+test_case= [[[1,2,4],5],[[1,4,8,13],5],[[3,9,6],2]]
+for nums,k in test_case:
+    print(f"The Maximum Frequency in {nums} with credit {k} is {maxFrequency(nums,k)[0]}, the sub_array is {maxFrequency(nums,k)[1]}"
+          f" and updated substring is {maxFrequency(nums, k)[2]}" )
