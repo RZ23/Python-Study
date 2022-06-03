@@ -4468,3 +4468,31 @@ test_case= [[[1,2,4],5],[[1,4,8,13],5],[[3,9,6],2]]
 for nums,k in test_case:
     print(f"The Maximum Frequency in {nums} with credit {k} is {maxFrequency(nums,k)[0]}, the sub_array is {maxFrequency(nums,k)[1]}"
           f" and updated substring is {maxFrequency(nums, k)[2]}" )
+print("---------------------1888. Minimum Number of Flips to Make the Binary String Alternating-------------------------")
+def minFlips(s):
+    n = len(s)
+    s = s+s
+    alt1,alt2 = "",""
+    for i in range(len(s)):
+        alt1 += "0" if i%2 else "1"
+        alt2 += "1" if i%2 else "0"
+    res = len(s)
+    diff1,diff2 =0,0
+    l = 0
+    for r in range(len(s)):
+        if s[r]!=alt1[r]:
+            diff1 = diff1+1
+        if s[r]!=alt2[r]:
+            diff2 = diff2+1
+        if (r-l+1)>n:
+            if s[l]!=alt1[l]:
+                diff1 = diff1-1
+            if s[l]!=alt2[l]:
+                diff2 = diff2-1
+            l = l+1
+        if (r-l+1)==n:
+            res= min(res,diff1,diff2)
+    return res
+test_case = ["111000","010","1110"]
+for s in test_case:
+    print(f"The Minimum flip in {s} is {minFlips(s)}")
