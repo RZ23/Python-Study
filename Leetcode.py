@@ -4496,3 +4496,22 @@ def minFlips(s):
 test_case = ["111000","010","1110"]
 for s in test_case:
     print(f"The Minimum flip in {s} is {minFlips(s)}")
+print("---------------------1963. Minimum Number of Swaps to Make the String Balanced-------------------------")
+'''
+Using the Sliding window,with the CountClose variable. if character is [,CountClose minus one
+if character is ], CountClose plus one, after each loop, using max() get the max of previous value 
+and CountClose. the return value should be (max+1)//2. for example: ][[], CountClose = 2, 
+just swap 1st and 2nd characters 
+'''
+def minSwaps(s):
+   close,maxClose = 0,0
+   for ch in s:
+       if ch=="[":
+           close = close-1
+       else:
+           close = close+1
+       maxClose = max(close,maxClose)
+   return (maxClose+1)//2
+test_case = ["][][","]]][[[","[]","]][]"]
+for s in test_case:
+    print(f"Minimum Number of Swaps in {s} to Make the String Balanced is {minSwaps(s)}")
