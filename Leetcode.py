@@ -4583,3 +4583,23 @@ def checkInclusion_count26(s1,s2):
 
 for s1,s2 in test_case:
     print(f"There is Permutation of {s1} in {s2}: {checkInclusion_count26(s1,s2)}")
+print("---------------------209. Minimum Size Subarray Sum-------------------------")
+'''
+Using Sliding windows,if the total sum is greater than the target,
+shrink the window, left pointer plus one and to check if the new window's total sum still
+greater or equal to the target.
+after each loop, update the right pointer and the total sum  
+'''
+def minSubArrayLen(target,nums):
+    total,minSize = 0,float("inf")
+    l= 0
+    for r in range(len(nums)):
+        total = total+nums[r]
+        while total>=target:
+            minSize = min(minSize,(r-l+1))
+            total = total-nums[l]
+            l = l+1
+    return 0 if minSize ==float("inf") else minSize
+test_case = [7, [2,3,1,2,4,3]],[4,[1,4,4]],[11,[1,1,1,1,1,1,1,1]]
+for target,nums in test_case:
+    print(f"The Minimum size of {nums} to get {target} is {minSubArrayLen(target,nums)}")
