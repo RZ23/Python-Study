@@ -4515,3 +4515,71 @@ def minSwaps(s):
 test_case = ["][][","]]][[[","[]","]][]"]
 for s in test_case:
     print(f"Minimum Number of Swaps in {s} to Make the String Balanced is {minSwaps(s)}")
+print("---------------------567. Permutation in String-------------------------")
+print("***** Method One: Hashmap *****")
+def checkInclusion(s1,s2):
+    if len(s1)>len(s2):
+        return False
+    s1_hashmap,s2_hashmap = {},{}
+    for i in range(len(s1)):
+        s1_hashmap[s1[i]] = 1+s1_hashmap.get(s1[i],0)
+        s2_hashmap[s2[i]] = 1+s2_hashmap.get(s2[i],0)
+    l=0
+    r = len(s1)
+    # print(s1_hashmap,s2_hashmap)
+    while r<len(s2) :
+        if s1_hashmap==s2_hashmap:
+            return True
+        else:
+            if s2_hashmap[s2[l]] ==1:
+                s2_hashmap.pop(s2[l])
+            else:
+                s2_hashmap[s2[l]] = s2_hashmap[s2[l]]-1
+            l=l+1
+        s2_hashmap[s2[r]] = 1+s2_hashmap.get(s2[r],0)
+        # print(s1_hashmap,s2_hashmap)
+        r = r + 1
+    return s1_hashmap==s2_hashmap
+test_case = [["ab","eidbaooo"],["ab","eidboaoo"],["adc","dcda"]]
+for s1,s2 in test_case:
+    print(f"There is Permutation of {s1} in {s2}: {checkInclusion(s1,s2)}")
+print("***** Method Two: Using 26 alphabet to calculate the Permutation *****")
+'''
+count the number of 26 alphabet characters. if the count of all the 26 characters are equal, return True
+else sliding the windows, to continue check.
+after sliding the right window, add the new character to the s2count, update the match variable. if the updated 
+s2Count[i]==s1Count[i], match plus one, if s1Count[i]==s2Count[i] before the update, then match minus one.
+end the loop, continue to check if match ==26 (means all the alphabet characters are equal)
+'''
+def checkInclusion_count26(s1,s2):
+    if len(s1)>len(s2):
+        return False
+    s1Count,s2Count = [0]*26,[0]*26
+    for i in range(len(s1)):
+        s1Count[ord(s1[i])-ord("a")] = s1Count[ord(s1[i])-ord("a")]+1
+        s2Count[ord(s2[i]) - ord("a")] = s2Count[ord(s2[i]) - ord("a")] + 1
+    match =0
+    for i in range(26):
+        if s1Count[i]==s2Count[i]:
+            match = match+1
+    l = 0
+    for r in range(len(s1),len(s2)):
+        if match ==26:
+            return True
+        index = ord(s2[r])-ord("a")
+        s2Count[index] = s2Count[index]+1
+        if s1Count[index]==s2Count[index]:
+            match = match+1
+        elif s1Count[index]+1==s2Count[index]:
+            match = match-1
+        index = ord(s2[l])-ord("a")
+        s2Count[index] = s2Count[index]-1
+        if s1Count[index]==s2Count[index]:
+            match = match+1
+        elif s1Count[index]-1==s2Count[index]:
+            match=match-1
+        l = l+1
+    return match==26
+
+for s1,s2 in test_case:
+    print(f"There is Permutation of {s1} in {s2}: {checkInclusion_count26(s1,s2)}")
