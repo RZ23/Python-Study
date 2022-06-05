@@ -4603,3 +4603,20 @@ def minSubArrayLen(target,nums):
 test_case = [7, [2,3,1,2,4,3]],[4,[1,4,4]],[11,[1,1,1,1,1,1,1,1]]
 for target,nums in test_case:
     print(f"The Minimum size of {nums} to get {target} is {minSubArrayLen(target,nums)}")
+print("---------------------187. Repeated DNA Sequences-------------------------")
+'''
+Using Sliding windows and set(). Scan 10 characters each time, if it is in the visited set, add to the result set.
+for each iteration, add the scanned character sequences to the visited set. Since it is the set, there will not be 
+the duplicated sequency in it. formate the result to the list with list() function 
+'''
+def findRepeatedDnaSequences(s):
+    seen,repeat = set(),set()
+    for i in range(len(s)-9):
+        cur = s[i:i+10]
+        if cur in seen:
+            repeat.add(cur)
+        seen.add(cur)
+    return list(repeat)
+test_case = ["AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT","AAAAAAAAAAAAA"]
+for s in test_case:
+    print(f"The repeat DNA sequences in {s} is {findRepeatedDnaSequences(s)}")
