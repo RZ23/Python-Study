@@ -1270,6 +1270,7 @@ for height in height_list:
     print("The Maxium Area of list {} is {} ".format(height,maxArea(height)))
 
 print("---------------------17. Letter Combinations of a Phone Number-------------------------")
+print("***** Method One: Hashmaping ***** ")
 def letterCombinations(digits):
     if len(digits)==0:
         return []
@@ -1285,7 +1286,26 @@ def letterCombinations(digits):
 test_case=["23","","2"]
 for digits in test_case:
     print("The Combinations of {} are {}".format(digits,letterCombinations(digits)))
-
+print("***** Method Two: Backtracking *****")
+def letterCombinations_backtracking(digits):
+    result = []
+    digitToChart={
+        "2":"abc","3":"def",
+        "4":"ghi","5":"jkl",
+        "6":"mno","7":"qprs",
+        "8":"tuv","9":"wxyz"
+    }
+    def backtracking(i,curStr):
+        if len(curStr)==len(digits):
+            result.append(curStr)
+            return
+        for c in digitToChart[digits[i]]:
+            backtracking(i+1,curStr+c)
+    if digits:
+        backtracking(0,"")
+    return result
+for digits in test_case:
+    print("The Combinations of {} are {}".format(digits,letterCombinations_backtracking(digits)))
 print("---------------------19. Remove Nth Node From End of List-------------------------")
 print("Method One: Reverse, Remove and Reversed again")
 def removeNthFromEnd(head,n):
