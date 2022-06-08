@@ -4668,3 +4668,18 @@ def partition(s):
 test_case = ["aab","a"]
 for s in test_case:
     print(f"The Palindrome Partitioning in \'{s}\'is {partition(s)}")
+print("---------------------1332. Remove Palindromic Subsequences-------------------------")
+def removePalindromeSub(s):
+    # if s is None, means the string already empty, and return 0
+    if not s:
+        return 0
+    # s is equals to s[::-1] (revers of the s) means the s is palindromic, then delete it and return 1
+    elif s==s[::-1]:
+        return 1
+    # if s is not empty and not palindromic, since there are only two unique character is the s
+    # the after delete first not palindromic items, then rest will be palindromic substring
+    else:
+        return 2
+test_case = ["ababa","abb","baabb"]
+for s in test_case:
+    print(f"The minimum step to remove palindromic substring in '{s}' is {removePalindromeSub(s)} ")
