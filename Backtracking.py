@@ -141,6 +141,76 @@ def canPartitionKSubsets(nums,k):
 test_case =[[[4,3,2,3,5,2,1], 4],[[1,2,3,4], 3]]
 for nums,k in test_case:
     print(f"The array {nums} can be divide to {k} equal sum subsets: {canPartitionKSubsets(nums,k)}")
-
+print("---------------------473. Matchsticks to Square-------------------------")
+print("***** Methond One: Backtracking without Dynamic Programming *****")
+def makesquare(matchsticks):
+    length = sum(matchsticks)//4
+    sides = [0]*4
+    if sum(matchsticks)%4!=0:
+        return False
+    matchsticks.sort(reverse = True)
+    if matchsticks[0]>length:
+        return False
+    def backtracking(i):
+        # scan all the matchsticks
+        if i==len(matchsticks):
+            return True
+        # if not, the main body of the backtracking
+        # calculate the length of each side
+        for j in range(4):
+            if sides[j]+matchsticks[i]<=length:
+                sides[j] = sides[j]+matchsticks[i]
+                if backtracking(i+1):
+                    return True
+                # if not qualify, must return back
+                sides[j] = sides[j]-matchsticks[i]
+        return False
+    return backtracking(0)
+test_case = [[1,1,2,2,2],[3,3,3,3,4]]
+for matchsticks in test_case:
+    print(f"The matchsticks {matchsticks} could make a square: {makesquare(matchsticks)}")
+print("***** Methond One: Backtracking with Dynamic Programming *****")
+def makesquare_with_dp(matchsticks):
+    used = [False] * len(matchsticks)
+    total_sum = sum(matchsticks)
+    # if the total sum cannot be divide by 4, means it cannot be a square
+    if total_sum % 4 != 0:
+        return False
+    target = sum(matchsticks) // 4
+    # sorting the array in descending order, if the first value is greater than target
+    # it will not be included in any subset, so will return False
+    matchsticks.sort(reverse=True)
+    if matchsticks[0] > target:
+        return False
+    # using dynamic programming to store the previous calculated paired value
+    dp = {}
+    def backtracking(i, k, rem):
+        if tuple(used) in dp:
+            return dp[tuple(used)]
+        # k==0, means finish all the 4 sides
+        if k == 0:
+            return True
+        # rem =0, means find one side is qualified
+        # from the start point to find the rest subset
+        # set k to k-1 and rem tp target
+        if rem == 0:
+            partition = backtracking(0, k - 1, target)
+            dp[(tuple(used), rem)] = partition
+            return partition
+        # loop for each item in the array
+        for j in range(i, len(matchsticks)):
+            # if the nums[j] not used and nums[j] less or equals to current rem
+            if not used[j] and rem - matchsticks[j] >= 0:
+                used[j] = True
+                if backtracking(j + 1, k, rem - matchsticks[j]):
+                    return True
+                # if not qualify, reset the nums[j] to unused state
+                used[j] = False
+        # after each loop, if not qualify, memorize it to False
+        dp[tuple(used)] = False
+        return False
+    return backtracking(0, 4, target)
+for matchsticks in test_case:
+    print(f"The matchsticks {matchsticks} could make a square: {makesquare_with_dp(matchsticks)}")
 
 
