@@ -94,3 +94,53 @@ def restoreIpAddresses(s):
 test_case = ["25525511135","0000","101023"]
 for s in test_case:
     print(f"The all possible valid IP addresses that can be formed by inserting dots into '{s}' are {restoreIpAddresses(s)}")
+
+print("---------------------698. Partition to K Equal Sum Subsets-------------------------")
+def canPartitionKSubsets(nums,k):
+    used = [False] * len(nums)
+    total_sum=sum(nums)
+    # if the total sum cannot be divide by k, means it cannot be partitioned to
+    # k equal sum subsets
+    if total_sum%k!=0:
+        return False
+    target = sum(nums) // k
+    # sorting the array in descending order, if the first value is greater than target
+    # it will not be included in any subset, so will return False
+    nums.sort(reverse=True)
+    if nums[0]>target:
+        return False
+
+    # using dynamic programming to store the previous calculated paired value
+    dp ={}
+    def backtracking(i,k,rem):
+        if tuple(used) in dp:
+            return dp[tuple(used)]
+        # k==0, means there are k equal subsets
+        if k==0:
+            return True
+        # rem =0, means find one qualified subset
+        # from the start point to find the rest subset
+        # set k to k-1 and rem tp target
+        if rem==0:
+            partition = backtracking(0,k-1,target)
+            dp[(tuple(used),rem)]=partition
+            return partition
+        # loop for each item in the array
+        for j in range(i,len(nums)):
+            # if the nums[j] not used and nums[j] less or equals to current rem
+            if not used[j] and rem-nums[j]>=0:
+                used[j] = True
+                if backtracking(j+1,k,rem-nums[j]):
+                    return True
+                # if not qualify, reset the nums[j] to unused state
+                used[j] = False
+        # after each loop, if not qualify, memorize it to False
+        dp[tuple(used)]=False
+        return False
+    return backtracking(0,k,target)
+test_case =[[[4,3,2,3,5,2,1], 4],[[1,2,3,4], 3]]
+for nums,k in test_case:
+    print(f"The array {nums} can be divide to {k} equal sum subsets: {canPartitionKSubsets(nums,k)}")
+
+
+
