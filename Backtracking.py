@@ -212,5 +212,39 @@ def makesquare_with_dp(matchsticks):
     return backtracking(0, 4, target)
 for matchsticks in test_case:
     print(f"The matchsticks {matchsticks} could make a square: {makesquare_with_dp(matchsticks)}")
+print("---------------------90. Subsets II-------------------------")
+def subsetsWithDup(nums):
+    result = []
+    nums.sort()
+    def backtracking(i,subset):
+        # basic condition, index i is equals to the length of the list
+        # add the subset tot final result, since the subset is the global
+        # variable, must add the copy of the subset
+        if i==len(nums):
+            result.append(subset.copy())
+            return
+        '''
+        include the nums[i] into the subset
+        '''
+        subset.append(nums[i])
+        # backtracking next item in the nums
+        backtracking(i+1,subset)
+        # After the backtracking, must remove the nums[i] from the subset
+        subset.pop()
+
+        '''
+        not include the nums[i]
+        '''
+        # check if there is duplicated item in the list, if so, skip it
+        while i+1<len(nums) and nums[i+1]==nums[i]:
+            i=i+1
+        # the first unused/unduplicated item
+        backtracking(i+1,subset)
+    backtracking(0,[])
+    return result
+test_case = [[1,2,2],[0]]
+for nums in test_case:
+    print(f"The all possible not duplicated subsets of {nums} is {subsetsWithDup(nums)}")
+
 
 
