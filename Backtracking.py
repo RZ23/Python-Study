@@ -282,6 +282,51 @@ def totalNQueens(n):
 test_case = [i for i in range(1,10)]
 for n in test_case:
     print(f"For the {n}*{n} board, there are {totalNQueens(n)} possible non-duplicate solution(s)")
+print("---------------------332. Reconstruct Itinerary-------------------------")
+'''
+Time O(E^2) O((V+E)^2), since V is less then E, so the time complicity is O(E^2)
+Space: O(E) for create the hashmap 
+'''
+def findItinerary(tickets):
+    # Create the adj list
+    adj = {src:[] for src,dst in tickets}
+    tickets.sort()
+    # fill the adj list
+    for src, dst in tickets:
+        adj[src].append(dst)
+    # The first resource must be JFK
+    result = ["JFK"]
+    def dfs(src):
+        # if use all the ticket, the length of result
+        # should be equals to length of tickets plus one
+        # visit all the tickets and add the original resource JFK
+        if len(result)==len(tickets)+1:
+            return True
+        # if there is no possible itinerary
+        if src not in adj:
+            return False
+        temp = list(adj[src])
+        for i,v in enumerate(temp):
+            # if use this ticket, from the src to dst
+            # dst is the destination
+            adj[src].pop(i)
+            result.append(v)
+
+            if dfs(v):
+                # if the itinerary is validated
+                return True
+            # if the itinery is not validated
+            # remove the ticket and more it from the result
+            adj[src].insert(i,v)
+            result.pop()
+        # if there is no validated itinerary
+        return False
+    dfs("JFK")
+    return result
+test_case = [[["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]],[["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]]
+for tickets in test_case:
+    print(f"The itinerary in order and return in {tickets} is {findItinerary(tickets)}")
+
 
 
 
