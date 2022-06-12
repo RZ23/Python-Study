@@ -245,6 +245,43 @@ def subsetsWithDup(nums):
 test_case = [[1,2,2],[0]]
 for nums in test_case:
     print(f"The all possible not duplicated subsets of {nums} is {subsetsWithDup(nums)}")
+print("---------------------52. N-Queens II-------------------------")
+def totalNQueens(n):
+   # set the variable col to Set(), There is only one avaliable queen for each column
+   col =set()
+   # set the check sets for both Negative and Positive Diognal
+   posDig = set() # (r+c): (2,2) and (3,1), (3,4) and (4,3): the sum of r+c is equal
+   negDig = set() # (r-c): (1,1) and (2,2), (3,4) and (4,5): the substract of r-c is equal
+
+   result = 0
+   def backtracking(r):
+       '''
+       Basic Condition: after the last row, get one possible solution
+       result add one
+       '''
+       if r==n:
+           nonlocal result
+           result = result+1
+           return
+       for c in range(n):
+           # if the c not available position => this column has another queen or the diagonals has another queen
+           # move to next column
+           if c in col or (r+c) in posDig or (r-c) in negDig:
+               continue
+           # this column has a available positon
+           col.add(c)
+           posDig.add(r+c)
+           negDig.add(r-c)
+           backtracking(r+1)
+           # after not add queen to this column
+           col.remove(c)
+           posDig.remove(r+c)
+           negDig.remove(r-c)
+   backtracking(0)
+   return result
+test_case = [i for i in range(1,10)]
+for n in test_case:
+    print(f"For the {n}*{n} board, there are {totalNQueens(n)} possible non-duplicate solution(s)")
 
 
 
