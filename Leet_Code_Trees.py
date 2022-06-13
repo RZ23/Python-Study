@@ -1,4 +1,11 @@
 from binarytree import tree,Node
+import binarytree
+
+class TreeNode(binarytree.Node):
+    def __init__(self,values):
+        self.val = values
+        self.right = None
+        self.left = None
 def generate_tree_from_list(root):
     if len(root)==0:
         return None
@@ -50,3 +57,18 @@ def isBalanced_recurssive(root):
 for tree_node_list in test_case:
     root = generate_tree_from_list(tree_node_list)
     print(f"The Tree {root} is balanced: {isBalanced_recurssive(root)}")
+print("---------------------1448. Count Good Nodes in Binary Tree-------------------------")
+def goodNodes(root):
+    def dfs(node,max_value):
+        if not node:
+            return 0
+        result = 1 if node.val>=max_value else 0
+        max_value = max(max_value,node.val)
+        result = result+dfs(node.left,max_value)
+        result = result+dfs(node.right,max_value)
+        return result
+    return dfs(root,root.val)
+test_case = [[3,1,4,3,None,1,5],[3,3,None,4,2],[1]]
+for nodes_list in test_case:
+    print(generate_tree_from_list(nodes_list))
+    print(f"There is(are) {goodNodes(generate_tree_from_list(nodes_list))} goodnode(s) in the tree")
