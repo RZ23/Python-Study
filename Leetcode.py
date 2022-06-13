@@ -1706,6 +1706,7 @@ for n in test_case:
     print("All the combination of {} parenthesis are {}".format(n,generateParenthesis(n)))
 
 print("---------------------51. N-Queens-------------------------")
+print("***** Method One: Backtracking Method with multiple helping function *****")
 class solveNQueens():
     """
     since no queen could at the same row or column
@@ -1792,6 +1793,46 @@ test_case = [4,1]
 for n in test_case:
     s = solveNQueens()
     print(s.solveNQueens(n))
+
+print("***** Method Two: Backtracking with DFS *****")
+def solveNQueens_dfs(n):
+
+    # Declare three Set() to store the Column, posDiag and negDig
+    col = set()
+    posDig = set() # postive diagonal (r+c) such as (2,2) and (3,1) slop is positive so called posDig
+    negDig = set() # negative diagonal (r-c) such as (0,0) and (1,1)
+
+    result = []
+    board=[["X"]*n for _ in range(n)]
+    def backtracking(r):
+        # if scan the last row, then return the solution
+        if r==n:
+            copy=["".join(row) for row in board]
+            result.append(copy)
+            return
+        #if not reach the last row
+        for c in range(n):
+            # if the position is not available
+            if c in col or (r+c) in posDig or (r-c) in negDig:
+                continue
+            # else put the queen in this position and update the sets
+            col.add(c)
+            negDig.add(r-c)
+            posDig.add(r+c)
+            board[r][c] = "Q"
+            # search for next row
+            backtracking(r+1)
+            # if last position is not available, remove all the updated
+            col.remove(c)
+            negDig.remove(r-c)
+            posDig.remove(r+c)
+            board[r][c] = "X"
+    backtracking(0)
+    return result
+test_case = [4,1]
+for n in test_case:
+    print(f"For the {n}*{n} board, the solution is :")
+    print_matrix(solveNQueens_dfs(n))
 
 from itertools import product
 print("---------------------37. Sudoku Solver-------------------------")
