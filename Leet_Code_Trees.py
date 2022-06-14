@@ -106,3 +106,17 @@ for nodes_list1,nodes_list2 in test_case:
     print("Original Tree two:")
     print(root2)
     print(f"The merged Tree is {mergeTrees(root1,root2)}")
+print("---------------------108. Convert Sorted Array to Binary Search Tree-------------------------")
+def sortedArrayToBST(nums):
+   def helper(l,r):
+       if l>r:
+           return None
+       mid = (l+r)//2
+       root = TreeNode(nums[mid])
+       root.left = helper(l,mid-1)
+       root.right = helper(mid+1,r)
+       return root
+   return helper(0,len(nums)-1)
+test_case = [[-10,-3,0,5,9],[1,3]]
+for nodes_list in test_case:
+    print(f"The BST build based on {nodes_list} is {sortedArrayToBST(nodes_list)}")
