@@ -120,3 +120,17 @@ def sortedArrayToBST(nums):
 test_case = [[-10,-3,0,5,9],[1,3]]
 for nodes_list in test_case:
     print(f"The BST build based on {nodes_list} is {sortedArrayToBST(nodes_list)}")
+print("---------------------98. Validate Binary Search Tree-------------------------")
+def isValidBST(root):
+   def valid(root,left_bounday,right_bounday):
+       if not root:
+           return True
+       if (root.val<left_bounday) or (root.value>right_bounday):
+           return False
+       return valid(root.left,left_bounday,root.val) and valid(root.right,root.val,right_bounday)
+   return valid(root,float("-inf"),float("inf"))
+test_case = [[2,1,3],[5,1,4,None,None,3,6],[5,1,6,None,None,3,8],[5,1,7,None,None,6,8]]
+for nodes_list in test_case:
+    root = generate_tree_from_list(nodes_list)
+    print(f"{root}")
+    print(f"The tree is a BST: {isValidBST(root)}")
