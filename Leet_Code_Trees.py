@@ -87,3 +87,22 @@ test_case = [[4,2,7,1,3,6,9],[2,1,3],[]]
 for nodes_list in test_case:
     print(generate_tree_from_list(nodes_list))
     print(f"There invert Tree is {invertTree(generate_tree_from_list(nodes_list))}")
+print("---------------------617. Merge Two Binary Trees-------------------------")
+def mergeTrees(root1,root2):
+    if not root1 and not root2:
+        return None
+    v1 = root1.val if root1 else 0
+    v2 = root2.val if root2 else 0
+    root = TreeNode(v1+v2)
+    root.left = mergeTrees(root1.left if root1 else None,root2.left if root2 else None)
+    root.right = mergeTrees(root1.right if root1 else None,root2.right if root2 else None)
+    return root
+test_case = [[1,3,2,5],[2,1,3,None,4,None,7]],[[1],[1,2]]
+for nodes_list1,nodes_list2 in test_case:
+    root1 = generate_tree_from_list(nodes_list1)
+    root2 = generate_tree_from_list(nodes_list2)
+    print("Original Tree one:")
+    print(root1)
+    print("Original Tree two:")
+    print(root2)
+    print(f"The merged Tree is {mergeTrees(root1,root2)}")
