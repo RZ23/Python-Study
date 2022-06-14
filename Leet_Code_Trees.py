@@ -134,3 +134,20 @@ for nodes_list in test_case:
     root = generate_tree_from_list(nodes_list)
     print(f"{root}")
     print(f"The tree is a BST: {isValidBST(root)}")
+print("---------------------543. Diameter of Binary Tree-------------------------")
+def diameterOfBinaryTree(root):
+    result = [0]
+    def dfs(root):
+        if not root:
+            return 0
+        left = dfs(root.left)
+        right = dfs(root.right)
+        result[0] = max(result[0],2+left-1+right-1)
+        return 1+max(left,right)
+    dfs(root)
+    return result[0]
+test_case = [[1,2,3,4,5],[1,2]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The Diameter of tree is {diameterOfBinaryTree(root)}")
