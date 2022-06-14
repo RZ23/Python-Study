@@ -72,3 +72,18 @@ test_case = [[3,1,4,3,None,1,5],[3,3,None,4,2],[1]]
 for nodes_list in test_case:
     print(generate_tree_from_list(nodes_list))
     print(f"There is(are) {goodNodes(generate_tree_from_list(nodes_list))} goodnode(s) in the tree")
+
+print("---------------------226. Invert Binary Tree-------------------------")
+def invertTree(root):
+    if not root:
+        return None
+    temp = root.left
+    root.left = root.right
+    root.right = temp
+    invertTree(root.left)
+    invertTree(root.right)
+    return root
+test_case = [[4,2,7,1,3,6,9],[2,1,3],[]]
+for nodes_list in test_case:
+    print(generate_tree_from_list(nodes_list))
+    print(f"There invert Tree is {invertTree(generate_tree_from_list(nodes_list))}")
