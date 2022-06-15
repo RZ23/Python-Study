@@ -151,3 +151,13 @@ for node_list in test_case:
     root = generate_tree_from_list(node_list)
     print(root)
     print(f"The Diameter of tree is {diameterOfBinaryTree(root)}")
+print("---------------------120. Triangle-------------------------")
+def minimumTotal(triangle):
+    dp = [0]*(len(triangle)+1)
+    for row in triangle[::-1]:
+        for i,num in enumerate(row):
+            dp[i]=num+min(dp[i],dp[i+1])
+    return dp[0]
+test_case = [[[2],[3,4],[6,5,7],[4,1,8,3]],[[-10]]]
+for triangle in test_case:
+    print(f"The minimum path sum from top to bottom of {triangle} is {minimumTotal(triangle)}")
