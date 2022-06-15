@@ -184,3 +184,19 @@ def minimumTotal_to_to_bottom(triangle):
    return min(triangle[-1])
 for triangle in test_case:
     print(f"The minimum path sum from top to bottom of {triangle} is {minimumTotal_to_to_bottom(triangle)}")
+
+print("---------------------129. Sum Root to Leaf Numbers-------------------------")
+def sumNumbers(root):
+    def dfs(cur_node,num):
+        if not cur_node:
+            return 0
+        num = num*10+cur_node.val
+        if not cur_node.left and not cur_node.right:
+            return num
+        return dfs(cur_node.left,num)+dfs(cur_node.right,num)
+    return dfs(root,0)
+test_case = [[1,2,3],[4,9,0,5,1]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The Sum Root to Leaf Numbers is {sumNumbers(root)}")
