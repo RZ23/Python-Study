@@ -152,6 +152,7 @@ for node_list in test_case:
     print(root)
     print(f"The Diameter of tree is {diameterOfBinaryTree(root)}")
 print("---------------------120. Triangle-------------------------")
+print("***** Method One: Bottom to Top *****")
 def minimumTotal(triangle):
     dp = [0]*(len(triangle)+1)
     for row in triangle[::-1]:
@@ -161,3 +162,25 @@ def minimumTotal(triangle):
 test_case = [[[2],[3,4],[6,5,7],[4,1,8,3]],[[-10]]]
 for triangle in test_case:
     print(f"The minimum path sum from top to bottom of {triangle} is {minimumTotal(triangle)}")
+print("***** Method Two: Top to Bottom *****")
+def minimumTotal_to_to_bottom(triangle):
+   if not triangle:
+       return 0
+   if len(triangle)==1:
+       return triangle[0][0]
+   leng = len(triangle)
+   for i in range(1,leng):
+       # update the boundary
+       # left boundary
+       triangle[i][0]=triangle[i][0]+triangle[i-1][0]
+       # right boundary
+       triangle[i][-1]=triangle[i][-1]+triangle[i-1][-1]
+   # updated the middle items
+   for i in range(2,leng):
+       for j in range(1,i):
+           triangle[i][j] = triangle[i][j]+min(triangle[i-1][j],triangle[i-1][j-1])
+   print(triangle)
+   # return the min item of bottom row
+   return min(triangle[-1])
+for triangle in test_case:
+    print(f"The minimum path sum from top to bottom of {triangle} is {minimumTotal_to_to_bottom(triangle)}")
