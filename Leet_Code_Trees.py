@@ -1,5 +1,6 @@
 from binarytree import tree,Node
 import binarytree
+from collections import deque
 
 class TreeNode(binarytree.Node):
     def __init__(self,values):
@@ -221,3 +222,48 @@ def numTrees(n):
   return numTree[n]
 for i in range(1,20):
     print(f"For {i} node(s), it could construct {numTrees(i)} unique BST")
+print("---------------------199. Binary Tree Right Side View-------------------------")
+print("***** Method One: BFS *****")
+def rightSideView_bfs(root):
+    result = []
+    q = deque()
+    q.append(root)
+    while q:
+        rightSide = None
+        qLen = len(q)
+        for i in range(qLen):
+            node=q.popleft()
+            if node:
+                rightSide=node
+                q.append(node.left)
+                q.append(node.right)
+        if rightSide:
+            result.append(rightSide.val)
+    return result
+test_case = [[1,2,3,None,5,None,4],[1,None,3],[],[2,1,3],[5,1,4,None,None,3,6]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print("The tree is ")
+    print(root)
+    print(f"And the Right View is {rightSideView_bfs(root)}")
+print("***** Method One: BFS *****")
+def rightSideView_dfs(root):
+    """
+    using result to identify the length, if the length of the result is less than the depth variable
+    means need to add it the final result, else, means this level already scanned, and move to next level
+    """
+    def rightSideViewDFS(node,depth,result):
+        if not node:
+            return
+        if depth>len(result):
+            result.append(node.val)
+        rightSideViewDFS(root.right,depth+1,result)
+        rightSideViewDFS(root.left,depth+1,result)
+    result = []
+    rightSideViewDFS(root,1,result)
+    return result
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print("The tree is ")
+    print(root)
+    print(f"And the Right View is {rightSideView_bfs(root)}")
