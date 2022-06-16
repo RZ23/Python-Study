@@ -200,3 +200,24 @@ for node_list in test_case:
     root = generate_tree_from_list(node_list)
     print(root)
     print(f"The Sum Root to Leaf Numbers is {sumNumbers(root)}")
+print("---------------------96. Unique Binary Search Trees-------------------------")
+def numTrees(n):
+  """
+    numsTree[4] = numsTree[0]*numsTree[3]+
+                  numsTree[1]*numsTree[2]+
+                  numsTree[2]*numsTree[1]+
+                  numsTree[4]*numsTree[0]
+  """
+  numTree = [1]*(n+1)
+  # o node is 1 tree
+  # 1 nnode is 1 tree
+  for node in range(2,n+1):
+      total = 0
+      for root in range(1,node+1):
+          left = root-1
+          right = node-root
+          total=total+numTree[left]*numTree[right]
+      numTree[node]=total
+  return numTree[n]
+for i in range(1,20):
+    print(f"For {i} node(s), it could construct {numTrees(i)} unique BST")
