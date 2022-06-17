@@ -136,6 +136,7 @@ for nodes_list in test_case:
     print(f"{root}")
     print(f"The tree is a BST: {isValidBST(root)}")
 print("---------------------543. Diameter of Binary Tree-------------------------")
+print("***** Method One: ")
 def diameterOfBinaryTree(root):
     result = [0]
     def dfs(root):
@@ -152,6 +153,22 @@ for node_list in test_case:
     root = generate_tree_from_list(node_list)
     print(root)
     print(f"The Diameter of tree is {diameterOfBinaryTree(root)}")
+print("***** Method Two *****")
+def diameterOfBinaryTree_me2(root):
+    max_diameter=[0]
+    def dfs(root):
+        if not root:
+            return 0
+        left = dfs(root.left)
+        right = dfs(root.right)
+        max_diameter[0] = max(max_diameter[0],left+right)
+        return 1+max(left,right)
+    dfs(root)
+    return max_diameter[0]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The Diameter of tree is {diameterOfBinaryTree_me2(root)}")
 print("---------------------120. Triangle-------------------------")
 print("***** Method One: Bottom to Top *****")
 def minimumTotal(triangle):
