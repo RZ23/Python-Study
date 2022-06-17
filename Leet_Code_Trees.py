@@ -267,3 +267,52 @@ for node_list in test_case:
     print("The tree is ")
     print(root)
     print(f"And the Right View is {rightSideView_bfs(root)}")
+print("---------------------230. Kth Smallest Element in a BST-------------------------")
+print("***** Method One: in-order travel and return *****")
+def kthSmallest_in_order_travel(root,k):
+    def in_order_travel(root):
+        if not root:
+            return []
+        else:
+            return in_order_travel(root.left)+[root.val]+in_order_travel(root.right)
+    result = in_order_travel(root)
+    return result[k-1]
+test_case = [[3,1,4,None,2],1],[[5,3,6,2,4,None,None,1],3]
+for node_list,k in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The {k}th smallest element in this BST is {kthSmallest_in_order_travel(root,k)}")
+print("***** Method Two: In-Order Travel and without recursive *****")
+def kthSmallest_in_order_without_array(root,k):
+   result = []
+   def search(root,result):
+       if not root:
+           return result
+       search(root.left,result)
+       result.append(root.val)
+       search(root.right,result)
+   search(root,result)
+   return result[k-1]
+for node_list,k in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The {k}th smallest element in this BST is {kthSmallest_in_order_without_array(root,k)}")
+print("***** Method Three: Iteration *****")
+def kthSmallest_recurssive(root,k):
+    n=0
+    stack=[]
+    cur = root
+    while cur or stack:
+        while cur:
+            stack.append(cur)
+            cur = cur.left
+        cur = stack.pop()
+        n=n+1
+        if n==k:
+            return cur.val
+        cur=cur.right
+for node_list,k in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The {k}th smallest element in this BST is {kthSmallest_recurssive(root,k)}")
+print("***** Method Three: Iteration *****")
