@@ -332,4 +332,23 @@ for node_list,k in test_case:
     root = generate_tree_from_list(node_list)
     print(root)
     print(f"The {k}th smallest element in this BST is {kthSmallest_recurssive(root,k)}")
-print("***** Method Three: Iteration *****")
+print("---------------------337. House Robber III-------------------------")
+"""
+each node has a tuple variable [with_this_node, without_this_node]
+"""
+def rob(root):
+    def dfs(root):
+        if not root:
+            return [0,0]
+        left_part = dfs(root.left)
+        right_part = dfs(root.right)
+        withRoot = root.val+left_part[1]+right_part[1]
+        withoutRoot = max(left_part)+max(right_part)
+        return [withRoot,withoutRoot]
+    return max(dfs(root))
+test_case = [[3,2,3,None,3,None,1],[3,4,5,1,3,None,1]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print("The Tree is:")
+    print(root)
+    print(f"Maximum amount of money the thief can rob is {rob(root)}")
