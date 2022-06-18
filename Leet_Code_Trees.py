@@ -352,3 +352,28 @@ for node_list in test_case:
     print("The Tree is:")
     print(root)
     print(f"Maximum amount of money the thief can rob is {rob(root)}")
+print("---------------------102. Binary Tree Level Order Traversal-------------------------")
+def levelOrder(root):
+    if root is None:
+        return []
+    q = deque()
+    result = []
+    if root:
+        q.append(root)
+    while q:
+        level = []
+        len_q = len(q)
+        for item in range(len_q):
+            cur = q.popleft()
+            level.append(cur.val)
+            if cur.left:
+                q.append(cur.left)
+            if cur.right:
+                q.append(cur.right)
+        result.append(level)
+    return result
+test_case = [[3,9,20,None,None,15,7],[1],[]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The Level order is {levelOrder(root)}")
