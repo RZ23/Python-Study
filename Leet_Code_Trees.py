@@ -391,4 +391,17 @@ for preorder,inorder in test_case:
     root = buildTree(preorder,inorder)
     print(f"The tree based on preorder {preorder} and inorder {inorder} is :")
     print(root)
-
+print("---------------------100. Same Tree-------------------------")
+def isSameTree(p,q):
+    if not p and not q:
+        return True
+    if not p or not q or p.val!=q.val:
+        return False
+    return isSameTree(p.left,q.left) and isSameTree(p.right,q.right)
+test_case = [[[1,2,3],[1,2,3]],[[1,2],[1,None,2]],[[1,2,1],[1,1,2]]]
+for p_node_list,q_node_list in test_case:
+    p=generate_tree_from_list(p_node_list)
+    q=generate_tree_from_list(q_node_list)
+    print(p)
+    print(q)
+    print(f"The trees are same: {isSameTree(p,q)}")
