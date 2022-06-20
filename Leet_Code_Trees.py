@@ -405,3 +405,45 @@ for p_node_list,q_node_list in test_case:
     print(p)
     print(q)
     print(f"The trees are same: {isSameTree(p,q)}")
+print("---------------------1993. Operations on Tree-------------------------")
+class lockingTree():
+    def __init__(self,parent):
+        self.parent = parent
+        self.locked = [None]*len(parent)
+        self.child= {i:[] for i in range(len(parent))}
+        for i in range(1,len(parent)):
+            self.child[parent[i]].append(i)
+    def lock(self,num,user):
+        if self.locked[num]:return False
+        self.locked[num]=user
+        return True
+    def unlock(self,num,user):
+        if self.locked[num]!=user:return False
+        self.locked[num]=None
+        return True
+    def upgrade(self,num,user):
+        # up to find the ancestors
+        i = num
+        while i!=-1:
+            if self.locked[i]:
+                return False
+            i=self.parent[i]
+        lockedCount,q = 0,deque([num])
+        while q:
+            n = q.popleft()
+            if self.locked[n]:
+                self.locked[n]=None
+                lockedCount = lockedCount+1
+            q.extend(self.child[n])
+        if lockedCount>0:
+            self.locked[num]=user
+        return lockedCount>0
+
+parent = [-1, 0, 0, 1, 1, 2, 2]
+obj = lockingTree(parent)
+print(f"Lock the node 2 with user 2: {obj.lock(2,2)}")
+print(f"Unlock the node 2 with user 3: {obj.unlock(2,3)}")
+print(f"Unlock the node 2 with user 2: {obj.unlock(2,2)}")
+print(f"Lock the node 4 with user 5: {obj.lock(4,5)}")
+print(f"Upgrade the node 0 with user 1: {obj.upgrade(0,1)}")
+print(f"Lock the node 0 with user 1: {obj.lock(0,1)}")
