@@ -27,6 +27,17 @@ def generate_tree_from_list(root):
             if right_child<len(node_list):
                 node_list[i].right = node_list[right_child]
     return node_list[0]
+def tree_level_to_list(root):
+    def generate_list(root):
+        if not root:
+            return [None]
+        else:
+            return [root.val]+generate_list(root.left)+generate_list(root.right)
+    node_list = generate_list(root)
+    i=len(node_list)-1
+    while i>0 and node_list[i] is None:
+        i=i-1
+    return node_list[:i+1]
 print("---------------------110. Balanced Binary Tree-------------------------")
 print("***** Method One: DFS *****")
 def isBalanced(root):
@@ -447,3 +458,51 @@ print(f"Unlock the node 2 with user 2: {obj.unlock(2,2)}")
 print(f"Lock the node 4 with user 5: {obj.lock(4,5)}")
 print(f"Upgrade the node 0 with user 1: {obj.upgrade(0,1)}")
 print(f"Lock the node 0 with user 1: {obj.lock(0,1)}")
+print("---------------------114. Flatten Binary Tree to Linked List-------------------------")
+print("***** Method One: Pre-order and generate the tree *****")
+def flatten(root):
+    def pre_order_generate_list(root):
+        if not root:
+            return []
+        else:
+            return [root.val]+pre_order_generate_list(root.left)+pre_order_generate_list(root.right)
+    node_list = pre_order_generate_list(root)
+    if len(node_list)==0:
+        return []
+    root = TreeNode(node_list[0])
+    temp_root = root
+    for i in range(1,len(node_list)):
+        temp_root.left = None
+        temp_root.right = TreeNode(node_list[i])
+        temp_root = temp_root.right
+    return root
+test_case = [[1,2,5,3,4,None,6],[],[0]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The flatten tree is :")
+    root = flatten(root)
+    print(root)
+    print(f"The Flatten List is {tree_level_to_list(root)}")
+print("***** Method Two: Modify the tree in-place *****")
+def flatten_in_place(root):
+    def dfs(root):
+        if not root:
+            return None
+        left_tail= dfs(root.left)
+        right_tail = dfs(root.right)
+        if root.left:
+            left_tail.right = root.right
+            root.right = root.left
+            root.left = None
+        last = right_tail or left_tail or root
+        return last
+    dfs(root)
+    return root
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The flatten tree is :")
+    root = flatten_in_place(root)
+    print(root)
+    print(f"The Flatten List is {tree_level_to_list(root)}")
