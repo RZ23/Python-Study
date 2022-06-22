@@ -1,12 +1,13 @@
 from binarytree import tree,Node
 import binarytree
 from collections import deque
+import sys
 
 class TreeNode(binarytree.Node):
-    def __init__(self,values):
+    def __init__(self,values=0,right=None,left = None):
         self.val = values
-        self.right = None
-        self.left = None
+        self.right = right
+        self.left = left
 def generate_tree_from_list(root):
     if len(root)==0:
         return None
@@ -506,3 +507,91 @@ for node_list in test_case:
     root = flatten_in_place(root)
     print(root)
     print(f"The Flatten List is {tree_level_to_list(root)}")
+print("---------------------894. All Possible Full Binary Trees-------------------------")
+'''A full binary tree is a binary tree where each node has exactly 0 or 2 children'''
+
+def allPossibleFBT(n):
+    if n%2==0:
+        return []
+    """
+    using hashmap to reduce the computing time
+    """
+    dp ={0:[],1:[TreeNode(0,None,None)]}
+    # Return the list of full-binary tree
+    def backtracking(n):
+        if n in dp:
+            return dp[n]
+        res = []
+        # since it is from 0 to n-1, and for the n nodes, there are n-1 children nodes without the root
+        for l in range(n):
+            r = n-1-l
+            leftTrees, rightTrees= backtracking(l),backtracking(r)
+
+            for t1 in leftTrees:
+                for t2 in rightTrees:
+                    res.append(TreeNode(0,left = t1,right = t2))
+        dp[n] = res
+        return res
+    return backtracking(n)
+test_case = [7,3]
+for n in test_case:
+    print(f"There are {allPossibleFBT(n)} trees for the {n} nodes")
+print("***** Methond Two: Print the result with Null value")
+def allPossibleFBT_format_result(n):
+    # travel the tree and add all the left and right children in the result list
+    def display(node,result_list):
+        if not node:
+            return
+        if node.left:
+            result_list.append(node.left.val)
+        else:
+            result_list.append(-sys.maxsize)
+        if node.right:
+            result_list.append(node.right.val)
+        else:
+            result_list.append(-sys.maxsize)
+        display(node.left,result_list)
+        display(node.right,result_list)
+    # hashmap to reduce the computing time
+    hm = {}
+    def allPossibleFBT(n):
+        if n not in hm:
+            list = []
+            if n==1:
+                list.append(TreeNode(0,None,None))
+            elif (n%2==1):
+                for left_side in range(n):
+                    right_side = n-left_side-1
+                    leftTrees = allPossibleFBT(left_side)
+                    rightTrees =allPossibleFBT(right_side)
+                    for left in range(len(leftTrees)):
+                        for right in range(len(rightTrees)):
+                            node = TreeNode(0,None,None)
+                            node.left = leftTrees[left]
+                            node.right =rightTrees[right]
+                            list.append(node)
+            hm[n] = list
+        return hm[n]
+    list = allPossibleFBT(n)
+    for root in range(len(list)):
+        al = []
+        al.append(list[root].val)
+        display(list[root],al)
+        print("[",end = "")
+        for i in range(len(al)):
+            if (i!=len(al)-1):
+                if(al[i]==-sys.maxsize):
+                    print("null, ",end = "")
+                else:
+                    print(al[i],end = ",")
+            else:
+                if(al[i]==-sys.maxsize):
+                    print("null]",end = "")
+                else:
+                    print(al[i],end = "]")
+        print()
+for n in test_case:
+    print(f"{n} nodes:")
+    allPossibleFBT_format_result(n)
+
+
