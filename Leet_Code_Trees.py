@@ -29,16 +29,38 @@ def generate_tree_from_list(root):
                 node_list[i].right = node_list[right_child]
     return node_list[0]
 def tree_level_to_list(root):
-    def generate_list(root):
-        if not root:
-            return [None]
+    if not root:
+        return [None]
+    result = []
+    q = deque()
+    q.append(root)
+    while q:
+        node = q.popleft()
+        if node is None:
+            result.append(None)
         else:
-            return [root.val]+generate_list(root.left)+generate_list(root.right)
-    node_list = generate_list(root)
-    i=len(node_list)-1
-    while i>0 and node_list[i] is None:
+            result.append(node.val)
+            q.append(node.left)
+            q.append(node.right)
+    i=len(result)-1
+    while i>0 and result[i] is None:
         i=i-1
-    return node_list[:i+1]
+    return result[:i+1]
+def tree_level_to_list_with_queue_and_null_value(root):
+    if not root:
+        return []
+    result = []
+    q= deque()
+    q.append(root)
+    while q:
+        node = q.popleft()
+        if node is None:
+            result.append(None)
+        else:
+            result.append(node.val)
+            q.append(node.left)
+            q.append(node.right)
+    return result
 print("---------------------110. Balanced Binary Tree-------------------------")
 print("***** Method One: DFS *****")
 def isBalanced(root):
@@ -480,11 +502,13 @@ def flatten(root):
 test_case = [[1,2,5,3,4,None,6],[],[0]]
 for node_list in test_case:
     root = generate_tree_from_list(node_list)
+    print("Original Tree:")
     print(root)
     print(f"The flatten tree is :")
     root = flatten(root)
     print(root)
     print(f"The Flatten List is {tree_level_to_list(root)}")
+    # print(tree_level_to_list_with_queue_and_null_value(root))
 print("***** Method Two: Modify the tree in-place *****")
 def flatten_in_place(root):
     def dfs(root):
@@ -502,11 +526,13 @@ def flatten_in_place(root):
     return root
 for node_list in test_case:
     root = generate_tree_from_list(node_list)
+    print("Original Tree:")
     print(root)
     print(f"The flatten tree is :")
     root = flatten_in_place(root)
     print(root)
     print(f"The Flatten List is {tree_level_to_list(root)}")
+    # print(tree_level_to_list_with_queue_and_null_value(root))
 print("---------------------894. All Possible Full Binary Trees-------------------------")
 '''A full binary tree is a binary tree where each node has exactly 0 or 2 children'''
 
@@ -535,7 +561,12 @@ def allPossibleFBT(n):
     return backtracking(n)
 test_case = [7,3]
 for n in test_case:
-    print(f"There are {allPossibleFBT(n)} trees for the {n} nodes")
+    print(f"All the possible of Full Binary Tree(s) of the {n} nodes:")
+    root_list = allPossibleFBT(n)
+    for i in range(len(root_list)):
+        root = root_list[i]
+        print(root)
+        print(tree_level_to_list_with_queue_and_null_value(root))
 print("***** Methond Two: Print the result with Null value")
 def allPossibleFBT_format_result(n):
     # travel the tree and add all the left and right children in the result list
@@ -593,5 +624,62 @@ def allPossibleFBT_format_result(n):
 for n in test_case:
     print(f"{n} nodes:")
     allPossibleFBT_format_result(n)
+print("---------------------513. Find Bottom Left Tree Value-------------------------")
+print("***** Method One: Using Left Side View and Return the last level's first item *****")
+def findBottomLeftValue(root):
+    result =[]
+    q = deque()
+    q.append(root)
+    while q:
+        left_node = None
+        qLen = len(q)
+        for i in range(qLen):
+            node = q.popleft()
+            if node:
+                left_node=node
+                q.append(node.right)
+                q.append(node.left)
+        if left_node:
+            result.append(left_node.val)
+    print(result)
+    return result[-1]
 
+test_case = [[2,1,3],[1,2,3,4,None,5,6,None,None,None,None,7]]
+for nodes_list in test_case:
+    root = generate_tree_from_list(nodes_list)
+    print(root)
+    print(f"The Bottom left node is  {findBottomLeftValue(root)}")
+print("***** Method Two: Right to Left Level Travel ******")
+def findBottomLeftValue_right_left_level_order(root):
+    q = deque()
+    q.append(root)
+    result=[0]
+    while q:
+        deq_len = len(q)
+        for i in range(deq_len):
+            node = q.popleft()
+            if node:
+                q.append(node.right)
+                q.append(node.left)
+                result[0]=node.val
+    return result[0]
+for nodes_list in test_case:
+    root = generate_tree_from_list(nodes_list)
+    print(root)
+    print(f"The Bottom left node is  {findBottomLeftValue_right_left_level_order(root)}")
+print("***** Method Three: Right to Left Level Order, without len() in function *****")
+def findBottomLeftValue_right_left_level_order_without_len(root):
+    q = deque()
+    q.append(root)
+    while q:
+        node = q.popleft()
+        if node.right:
+            q.append(node.right)
+        if node.left:
+            q.append(node.left)
+    return node.val
+for nodes_list in test_case:
+    root = generate_tree_from_list(nodes_list)
+    print(root)
+    print(f"The Bottom left node is  {findBottomLeftValue_right_left_level_order_without_len(root)}")
 
