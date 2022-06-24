@@ -682,4 +682,55 @@ for nodes_list in test_case:
     root = generate_tree_from_list(nodes_list)
     print(root)
     print(f"The Bottom left node is  {findBottomLeftValue_right_left_level_order_without_len(root)}")
-
+print("---------------------669. Trim a Binary Search Tree-------------------------")
+print("***** Method One: Handle Low and High separately *****")
+def trimBST(root,low,high):
+    # print(low,high)
+    def trimLeft(root,low):
+        if root.val==low:
+            root.left = None
+            return root
+        elif root.val<low:
+            return trimLeft(root.right,low)
+        elif root.val>low:
+            if root.left.val<low:
+                root.left =trimLeft(root.left.right,low)
+            elif root.left.val>=low:
+                root.left = trimLeft(root.left,low)
+        return root
+    def trimRight(root,high):
+        if root.val==high:
+            root.right = None
+            return root
+        if root.val>high:
+            return trimRight(root.left,high)
+        if root.val<high:
+            if root.right.val>high:
+                root.right = trimRight(root.right.left,high)
+            elif root.right.val<=high:
+                root.right = trimRight(root.right,high)
+        return root
+    new_root = trimLeft(root,low)
+    return trimRight(new_root,high)
+test_case = [[[3,0,4,None,2,None,7,None,None,1,None,None,None,5,10,None,None,None,None,None,None,None,None,None,None,None,None,None,6,9],4,10],[[1,0,2],1,2],[[3,2,4,1],2,4]]
+for nodes_list,low,high in test_case:
+    root = generate_tree_from_list(nodes_list)
+    print(root)
+    print(f"Trim the tree with boundry {low} to {high} is:")
+    print(trimBST(root,low,high))
+print("***** Method Two : Recursive handle low and high at the same time  *****")
+def trimBST_Recursive(root,low,high):
+    if not root:
+        return None
+    if root.val >high:
+        return trimBST_Recursive(root.left,low,high)
+    if root.val<low:
+        return trimBST_Recursive(root.right,low,high)
+    root.left = trimBST_Recursive(root.left,low,high)
+    root.right=trimBST_Recursive(root.right,low,high)
+    return root
+for nodes_list,low,high in test_case:
+    root = generate_tree_from_list(nodes_list)
+    print(root)
+    print(f"Trim the tree with boundary {low} to {high} is:")
+    print(trimBST_Recursive(root,low,high))
