@@ -687,28 +687,30 @@ print("***** Method One: Handle Low and High separately *****")
 def trimBST(root,low,high):
     # print(low,high)
     def trimLeft(root,low):
-        if root.val==low:
+        if root and root.val==low:
             root.left = None
             return root
-        elif root.val<low:
+        elif root and root.val<low:
             return trimLeft(root.right,low)
-        elif root.val>low:
-            if root.left.val<low:
-                root.left =trimLeft(root.left.right,low)
-            elif root.left.val>=low:
-                root.left = trimLeft(root.left,low)
+        elif root and root.val>low:
+            if root.left:
+                if root.left.val<low:
+                    root.left =trimLeft(root.left.right,low)
+                elif root.left.val>=low:
+                    root.left = trimLeft(root.left,low)
         return root
     def trimRight(root,high):
-        if root.val==high:
+        if root and root.val==high:
             root.right = None
             return root
-        if root.val>high:
+        if root and root.val>high:
             return trimRight(root.left,high)
-        if root.val<high:
-            if root.right.val>high:
-                root.right = trimRight(root.right.left,high)
-            elif root.right.val<=high:
-                root.right = trimRight(root.right,high)
+        if root and root.val<high:
+            if root.right:
+                if root.right.val>high:
+                    root.right = trimRight(root.right.left,high)
+                elif root.right.val<=high:
+                    root.right = trimRight(root.right,high)
         return root
     new_root = trimLeft(root,low)
     return trimRight(new_root,high)
@@ -734,3 +736,15 @@ for nodes_list,low,high in test_case:
     print(root)
     print(f"Trim the tree with boundary {low} to {high} is:")
     print(trimBST_Recursive(root,low,high))
+print("---------------------112. Path Sum-------------------------")
+def hasPathSum(root,targetSum):
+    if not root:
+        return False
+    if root.val==targetSum and root.left is None and root.right is None:
+        return True
+    return hasPathSum(root.left,targetSum-root.val) or hasPathSum(root.right,targetSum-root.val)
+test_case = [[[5,4,8,11,None,13,4,7,2,None,None,None,1],22],[[1,2,3],5],[[],0],[[-2,None,-3],-5]]
+for node_list,targetSum in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"There has the path sum to target {targetSum}:{hasPathSum(root,targetSum)}")
