@@ -748,3 +748,31 @@ for node_list,targetSum in test_case:
     root = generate_tree_from_list(node_list)
     print(root)
     print(f"There has the path sum to target {targetSum}:{hasPathSum(root,targetSum)}")
+print("---------------------94. Binary Tree Inorder Traversal-------------------------")
+print("***** Method One: Recursive *****")
+def inorderTraversal(root):
+   if not root:
+       return []
+   return inorderTraversal(root.left)+[root.val]+inorderTraversal(root.right)
+test_case = [[1,None,2,None,None,3],[],[1]]
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The In-order Travel the tree is {inorderTraversal(root)}")
+print("***** Method One: Iteration: DFS *****")
+def inorderTraversal_dfs(root):
+    stack = []
+    result =[]
+    cur = root
+    while cur or stack:
+        while cur:
+            stack.append(cur)
+            cur =cur.left
+        cur=stack.pop()
+        result.append(cur.val)
+        cur = cur.right
+    return result
+for node_list in test_case:
+    root = generate_tree_from_list(node_list)
+    print(root)
+    print(f"The In-order Travel the tree is {inorderTraversal_dfs(root)}")
