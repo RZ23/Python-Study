@@ -4724,3 +4724,26 @@ def removePalindromeSub(s):
 test_case = ["ababa","abb","baabb"]
 for s in test_case:
     print(f"The minimum step to remove palindromic substring in '{s}' is {removePalindromeSub(s)} ")
+print("---------------------665. Non-decreasing Array-------------------------")
+def checkPossibility(nums):
+    changed = False
+    for i in range(len(nums)-1):
+        if nums[i]<=nums[i+1]:
+            continue
+        if changed:
+            return False
+        # if find nums[i] is greater than nums[i+1], update it
+        '''
+        if nums[i+1] is equal or greater than nums[i-1], update the
+        nums[i] to nums[i+1]
+        else, update the nums[i+1] to nums[i]
+        '''
+        if i==0 or nums[i+1]>=nums[i-1]:
+            nums[i]=nums[i+1]
+        else:
+            nums[i+1] = nums[i]
+        changed = True
+    return True
+test_case = [[4,2,1],[4,2,3],[1,4,1,2],[3,4,2,3]]
+for nums in test_case:
+    print(f"The list {nums} could become non-decreasing by modifying at most one element: {checkPossibility(nums)} ")
