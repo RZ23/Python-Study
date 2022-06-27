@@ -805,3 +805,53 @@ print(f"The value of obj.next() is {obj.next()}")
 print(f"Has the next node: {obj.hasNext()}")
 print(f"The value of obj.next() is {obj.next()}")
 print(f"Has the next node: {obj.hasNext()}")
+print("---------------------116. Populating Next Right Pointers in Each Node-------------------------")
+class TreeNode_with_next(binarytree.Node):
+    def __init__(self,val=None,left=None,right=None,next=None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+def generate_next_tree_from_list(list):
+    if len(list)==0:
+        return []
+    node_list = []
+    for i in range(len(list)):
+        if list[i] is not None:
+            node_list.append(TreeNode_with_next(list[i]))
+        else:
+            node_list.append(None)
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child = 2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list[0]
+def connect(root):
+    current = root
+    next_level_node = root.left if root else None
+    while current and next_level_node:
+        current.left.next = current.right
+        if current.next:
+            current.right.next = current.next.left
+        current = current.next
+        if not current:
+            current = next_level_node
+            next_level_node = current.left
+    return root
+def pre_order_next_tree(root):
+    if not root:
+        return []
+    else:
+        return [(root.val,root.next)]+pre_order_next_tree(root.left)+pre_order_next_tree(root.right)
+test_case=[[1,2,3,4,5,6,7],[]]
+for node_list in test_case:
+    root = generate_next_tree_from_list(node_list)
+    print(root)
+    if root:
+        root.pprint(index = True)
+    root = connect(root)
+    print(pre_order_next_tree(root))
