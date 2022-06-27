@@ -776,3 +776,32 @@ for node_list in test_case:
     root = generate_tree_from_list(node_list)
     print(root)
     print(f"The In-order Travel the tree is {inorderTraversal_dfs(root)}")
+
+print("---------------------173. Binary Search Tree Iterator-------------------------")
+class BSTIterator:
+
+    def __init__(self, root):
+        self.stack = []
+        while root:
+            self.stack.append(root)
+            root = root.left
+    def next(self):
+        res = self.stack.pop()
+        cur = res.right
+        while cur:
+            self.stack.append(cur)
+            cur = cur.left
+        return res.val
+    def hasNext(self):
+        return self.stack!=[]
+root = generate_tree_from_list([7, 3, 15, None, None, 9, 20])
+print(root)
+obj = BSTIterator(root)
+print(f"The Pointer is {obj.stack}:{obj.stack[-1].val}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"Has the next node: {obj.hasNext()}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"Has the next node: {obj.hasNext()}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"Has the next node: {obj.hasNext()}")
