@@ -855,3 +855,50 @@ for node_list in test_case:
         root.pprint(index = True)
     root = connect(root)
     print(pre_order_next_tree(root))
+print("---------------------538. Convert BST to Greater Tree-------------------------")
+print("***** Method One: In-Order to get the list and add it from back to front *****")
+def convertBST(root):
+    def in_order(node):
+        if not node:
+            return []
+        else:
+            return in_order(node.left)+[node]+in_order(node.right)
+    node_list =in_order(root)
+    # print(node_list)
+    if len(node_list)==0:
+        return []
+    sum = node_list[-1].val
+    for i in range(len(node_list)-2,-1,-1):
+        node_list[i].val=node_list[i].val+sum
+        sum = node_list[i].val
+    # print(node_list)
+    return root
+
+test_case = [[4,1,6,0,2,5,7,None,None,None,3,None,None,None,8],[0,None,1],[]]
+for node_list in test_case:
+    root =generate_tree_from_list(node_list)
+    print("Original Tree:")
+    print(root)
+    print("Updated Tree:")
+    print(convertBST(root))
+print("***** Method Two:DFS ***** ")
+def convertBST_DFS(root):
+    curSum = 0
+    def dfs(node):
+        if not node:
+            return
+        nonlocal  curSum
+        dfs(node.right)
+        temp = node.val
+        node.val = node.val+curSum
+        curSum = curSum+temp
+        dfs(node.left)
+    dfs(root)
+    return root
+test_case = [[4,1,6,0,2,5,7,None,None,None,3,None,None,None,8],[0,None,1],[]]
+for node_list in test_case:
+    root =generate_tree_from_list(node_list)
+    print("Original Tree:")
+    print(root)
+    print("Updated Tree:")
+    print(convertBST_DFS(root))
