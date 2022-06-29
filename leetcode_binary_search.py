@@ -56,3 +56,18 @@ def splitArray_dp(nums,m):
     return dfs(0,m)
 for nums,m in test_case:
     print(f"Minimize the largest sum among these {m} subarrays for {nums} is {splitArray_dp(nums,m)} ")
+print("---------------------704. Binary Search-------------------------")
+def search(nums,target):
+    left,right= 0,len(nums)-1
+    while left<=right:
+        mid = (left+right)//2
+        if nums[mid]==target:
+            return mid
+        elif nums[mid]<target:
+            left = mid+1
+        else:
+            right=mid-1
+    return -1
+test_case = [[[-1,0,3,5,9,12],9],[[-1,0,3,5,9,12],2]]
+for nums,target in test_case:
+    print(f"The {target} is the {search(nums,target)}th in the {nums}")
