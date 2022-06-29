@@ -71,3 +71,28 @@ def search(nums,target):
 test_case = [[[-1,0,3,5,9,12],9],[[-1,0,3,5,9,12],2]]
 for nums,target in test_case:
     print(f"The {target} is the {search(nums,target)}th in the {nums}")
+print("---------------------367. Valid Perfect Square-------------------------")
+print("***** Method One: Binary Search *****")
+def isPerfectSquare(num):
+    left,right= 1,num
+    while left<=right:
+        mid = (left+right)//2
+        if mid*mid==num:
+            return True
+        if mid*mid<num:
+            left = mid+1
+        else:
+            right =mid-1
+    return False
+test_case = [16,14,2000105819]
+for num in test_case:
+    print(f"{num} is the perfect Square: {isPerfectSquare(num)}")
+print("***** Method Two: Iteration *****")
+def isPerfectSquare_iteration(num):
+    for i in range(num+1):
+        if i*i==num:
+            return True
+        if i*i>num:
+            return False
+for num in test_case:
+    print(f"{num} is the perfect Square: {isPerfectSquare_iteration(num)}")
