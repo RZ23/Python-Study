@@ -126,3 +126,27 @@ def arrangeCoins_brut_forct(n):
     return level
 for i in range(1,9):
     print(f"For {i} conins, it could construct {arrangeCoins_brut_forct(i)} completed level stair(s)")
+print("---------------------374. Guess Number Higher or Lower-------------------------")
+def guessNumber(n,pick):
+    def guess(num):
+        if num > pick:
+            return -1
+        elif num < pick:
+            return 1
+        else:
+            return 0
+    left,right = 1,n
+    count = 0
+    while True:
+        mid=(left+right)//2
+        result = guess(mid)
+        if result<0:
+            right = mid-1
+        elif result>0:
+            left = mid+1
+        else:
+            return mid,count
+        count = count+1
+test_case = [[10,6],[1,1],[2,1]]
+for num,pick in test_case:
+    print(f"For the given number {num}, to guess {pick},and the result is {guessNumber(num,pick)[0]} with {guessNumber(num,pick)[1]} times.")
