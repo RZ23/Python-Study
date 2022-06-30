@@ -96,3 +96,33 @@ def isPerfectSquare_iteration(num):
             return False
 for num in test_case:
     print(f"{num} is the perfect Square: {isPerfectSquare_iteration(num)}")
+print("---------------------441. Arranging Coins-------------------------")
+def arrangeCoins(n):
+    left = 0
+    right = n
+    res = 0
+    while left<=right:
+        mid = (left+right)//2
+        coins = (mid/2)*(mid+1)
+        if coins>n:
+            right = mid-1
+        else:
+            left = mid+1
+            res = max(mid,res)
+    return res
+for i in range(1,9):
+    print(f"For {i} conins, it could construct {arrangeCoins(i)} completed level stair(s)")
+print("***** Method Two: Brute Force *****")
+def arrangeCoins_brut_forct(n):
+    level=1
+    while True:
+        coins = (level*(level+1))/2
+        if coins==n:
+            return level
+        elif coins>n:
+            return level-1
+        else:
+            level = level+1
+    return level
+for i in range(1,9):
+    print(f"For {i} conins, it could construct {arrangeCoins_brut_forct(i)} completed level stair(s)")
