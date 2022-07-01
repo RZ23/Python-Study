@@ -150,3 +150,46 @@ def guessNumber(n,pick):
 test_case = [[10,6],[1,1],[2,1]]
 for num,pick in test_case:
     print(f"For the given number {num}, to guess {pick},and the result is {guessNumber(num,pick)[0]} with {guessNumber(num,pick)[1]} times.")
+print("---------------------658. Find K Closest Elements-------------------------")
+print("***** Method One: Binary Search *****")
+def findClosestElements(arr,k,x):
+    left = 0
+    right = len(arr)-k
+    while left<right:
+        mid = (left+right)//2
+        if x-arr[mid]>arr[mid+k]-x:
+            left = mid+1
+        else:
+            right = mid
+    return arr[left:left+k]
+test_case = [[[1,2,3,4,5],4,3],[[1,2,3,4,5], 4,-1]]
+for arr,k,x in test_case:
+    print(f"the {k} closest integers to {x} in the {arr} is {findClosestElements(arr,k,x)}")
+print("***** Method Two: Binary Search 2 *****")
+def findClosestElements_bs(arr,k,x):
+    left = 0
+    right = len(arr)-1
+    # find index of x or the close val to x
+    val,idx = arr[0],0
+    while left<=right:
+        m=(left+right)//2
+        curDiff,resDiff = abs(arr[m]-x),abs(val-x)
+        if (curDiff<resDiff) or (curDiff==resDiff and arr[m]<val):
+            val,idx = arr[m],m
+        if arr[m]<x:
+            left = m+1
+        elif arr[m]>x:
+            right = m-1
+        else:
+            break
+    l=r= idx
+    for i in range(k-1):
+        if l==0:
+            r = r+1
+        elif r==len(arr)-1 or x-arr[l-1]<=arr[r+1]-x:
+            l = l-1
+        else:
+            r = r+1
+    return arr[l:r+1]
+for arr,k,x in test_case:
+    print(f"the {k} closest integers to {x} in the {arr} is {findClosestElements_bs(arr,k,x)}")
