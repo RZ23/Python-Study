@@ -193,3 +193,31 @@ def findClosestElements_bs(arr,k,x):
     return arr[l:r+1]
 for arr,k,x in test_case:
     print(f"the {k} closest integers to {x} in the {arr} is {findClosestElements_bs(arr,k,x)}")
+print("---------------------981. Time Based Key-Value Store-------------------------")
+class TimeMap():
+    def __init__(self):
+        self.store = {}
+    def set(self,key,value,timestamp):
+        if key not in self.store:
+            self.store[key]=[]
+        self.store[key].append([value,timestamp])
+    def get(self,key,timestamp):
+        res = ""
+        values = self.store.get(key,[])
+        left = 0
+        right = len(values)-1
+        while left<=right:
+            mid = (left+right)//2
+            if values[mid][1]<=timestamp:
+                res = values[mid][0]
+                left = mid+1
+            elif values[mid][1]>timestamp:
+                right = mid-1
+        return res
+obj = TimeMap()
+obj.set("foo","bar",1)
+print(obj.get("foo",1))
+print(obj.get("foo",3))
+obj.set("foo","bar2",4)
+print(obj.get("foo",4))
+print(obj.get("foo",5))
