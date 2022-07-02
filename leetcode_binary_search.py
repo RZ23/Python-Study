@@ -1,3 +1,10 @@
+def print_int_matrix(matrix):
+    row = len(matrix)
+    col =len(matrix[0])
+    for i in range(row):
+        for j in range(col):
+            print(format(matrix[i][j],"02d"),end = " ")
+        print()
 print("---------------------410. Split Array Largest Sum-------------------------")
 print("***** Method One: Binary Search")
 """
@@ -241,3 +248,43 @@ def findMin(nums):
 test_case = [[3,4,5,1,2],[4,5,6,7,0,1,2],[11,13,15,17]]
 for nums in test_case:
     print(f"The minimum in {nums} is {findMin(nums)}")
+print("---------------------74. Search a 2D Matrix-------------------------")
+def searchMatrix(matrix,target):
+    row = len(matrix)
+    col = len(matrix[0])
+    top = 0
+    bottom = len(matrix)-1
+    while top<=bottom:
+        row = (top+bottom)//2
+        # target > last item of this row
+        #move to next row
+        if target>matrix[row][-1]:
+            top = row+1
+        # target < first item of this row
+        # move to last row
+        elif target<matrix[row][0]:
+            bottom = row-1
+        # target > the first item and < the last item in this row
+        # the target is in the range of this row
+        else:
+            break
+    # target is out of the range
+    if not (top<=bottom):
+        return False
+    row = (top+bottom)//2
+    left = 0
+    right = col-1
+    while left<=right:
+        mid = (left+right)//2
+        if target<matrix[row][mid]:
+            right = mid-1
+        elif target>matrix[row][mid]:
+            left = mid+1
+        else:
+            return True
+    return False
+test_case = [[[[1,3,5,7],[10,11,16,20],[23,30,34,60]],3],[[[1,3,5,7],[10,11,16,20],[23,30,34,60]],13]]
+for matrix, target in test_case:
+    print("For matrix:")
+    print_int_matrix(matrix)
+    print(f"It has the {target} in it:{searchMatrix(matrix,target)}")
