@@ -249,6 +249,7 @@ test_case = [[3,4,5,1,2],[4,5,6,7,0,1,2],[11,13,15,17]]
 for nums in test_case:
     print(f"The minimum in {nums} is {findMin(nums)}")
 print("---------------------74. Search a 2D Matrix-------------------------")
+print("***** Method One: Two Binary Search, find row and search the col *****")
 def searchMatrix(matrix,target):
     row = len(matrix)
     col = len(matrix[0])
@@ -283,8 +284,36 @@ def searchMatrix(matrix,target):
         else:
             return True
     return False
-test_case = [[[[1,3,5,7],[10,11,16,20],[23,30,34,60]],3],[[[1,3,5,7],[10,11,16,20],[23,30,34,60]],13]]
+test_case = [[[[1,3,5,7],[10,11,16,20],[23,30,34,60]],3],[[[1,3,5,7],[10,11,16,20],[23,30,34,60]],13],[
+[[1],[3]],1]]
 for matrix, target in test_case:
     print("For matrix:")
     print_int_matrix(matrix)
     print(f"It has the {target} in it:{searchMatrix(matrix,target)}")
+print("***** Method Two: From top to bottom scan the row and binary search the selected row *****")
+def searchMatrix_scan(matrix,target):
+    if target<matrix[0][0] or target>matrix[-1][-1]:
+        return False
+    i=0
+    row = 0
+    while i <len(matrix):
+        if target<=matrix[i][-1]:
+            row=i
+            break
+        else:
+            i=i+1
+    left=0
+    right = len(matrix[0])
+    while left<=right:
+        mid = (left+right)//2
+        if matrix[row][mid]>target:
+            right = mid-1
+        elif matrix[row][mid]<target:
+            left = mid+1
+        else:
+            return True
+    return False
+for matrix, target in test_case:
+    print("For matrix:")
+    print_int_matrix(matrix)
+    print(f"It has the {target} in it:{searchMatrix_scan(matrix,target)}")
