@@ -221,3 +221,23 @@ print(obj.get("foo",3))
 obj.set("foo","bar2",4)
 print(obj.get("foo",4))
 print(obj.get("foo",5))
+print("---------------------153. Find Minimum in Rotated Sorted Array-------------------------")
+def findMin(nums):
+    left = 0
+    right = len(nums)-1
+    result = nums[0]
+    while left<=right:
+        # subarray is sorted
+        if nums[left]<nums[right]:
+            result =min(result,nums[left])
+            break
+        mid = (left+right)//2
+        result = min(result,nums[mid])
+        if nums[mid]>=nums[left]:
+            left = mid+1
+        else:
+            right = mid-1
+    return result
+test_case = [[3,4,5,1,2],[4,5,6,7,0,1,2],[11,13,15,17]]
+for nums in test_case:
+    print(f"The minimum in {nums} is {findMin(nums)}")
