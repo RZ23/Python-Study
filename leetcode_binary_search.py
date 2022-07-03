@@ -317,3 +317,58 @@ for matrix, target in test_case:
     print("For matrix:")
     print_int_matrix(matrix)
     print(f"It has the {target} in it:{searchMatrix_scan(matrix,target)}")
+print("---------------------1898. Maximum Number of Removable Characters-------------------------")
+print("***** Binary Search *****")
+def maximumRemovals(s,p,removable):
+    def isSubstring(str,substr):
+        idx1,idx2 = 0,0
+        while idx1<len(str) and idx2 <len(substr):
+            if idx1 in removed or str[idx1]!=substr[idx2]:
+                idx1 = idx1+1
+                continue
+            idx1 = idx1+1
+            idx2 = idx2+1
+        return idx2==len(substr)
+    result = 0
+    left = 0
+    right = len(removable)-1
+    while left<=right:
+        mid = (left+right)//2
+        removed = set(removable[:mid+1])
+        if isSubstring(s,p):
+            result = max(result,mid+1)
+            left = mid+1
+        else:
+            right = mid-1
+    return result
+test_case = [["abcacb","ab",[3,1,0]],["abcbddddd","abcd",[3,2,1,4,5,6]],["abcab","abc",[0,1,2,3,4]]]
+for s,p,removable in test_case:
+    print(f"The maximum slice of removable in {removable} to keep {p} as the substring of {s} is {maximumRemovals(s,p,removable)}")
+print("***** Method Two: Brute Force *****")
+def maximumRemovals_brute_force(s,p,removable):
+    result = 0
+    def issubStr(str,substr):
+        idx1,idx2 = 0,0
+        while idx1<len(str) and idx2<len(substr):
+            if str[idx1]!=substr[idx2]:
+                idx1 = idx1+1
+            else:
+                idx1 = idx1+1
+                idx2 = idx2+1
+        if idx2==len(substr):
+            return True
+        else:
+            return False
+    def remove_char(str,remove_list):
+        updated_str = ""
+        for i in range(len(str)):
+            if i not in remove_list:
+                updated_str = updated_str+str[i]
+        return updated_str
+    for i in range(len(removable)):
+        removable_list = removable[:i+1]
+        if issubStr(remove_char(s,removable_list),p):
+            result = max(result,i+1)
+    return result
+for s,p,removable in test_case:
+    print(f"The maximum slice of removable in {removable} to keep {p} as the substring of {s} is {maximumRemovals_brute_force(s,p,removable)}")
