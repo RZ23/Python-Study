@@ -1,3 +1,4 @@
+import math
 def print_int_matrix(matrix):
     row = len(matrix)
     col =len(matrix[0])
@@ -318,7 +319,7 @@ for matrix, target in test_case:
     print_int_matrix(matrix)
     print(f"It has the {target} in it:{searchMatrix_scan(matrix,target)}")
 print("---------------------1898. Maximum Number of Removable Characters-------------------------")
-print("***** Binary Search *****")
+print("***** Method One: Binary Search *****")
 def maximumRemovals(s,p,removable):
     def isSubstring(str,substr):
         idx1,idx2 = 0,0
@@ -372,3 +373,33 @@ def maximumRemovals_brute_force(s,p,removable):
     return result
 for s,p,removable in test_case:
     print(f"The maximum slice of removable in {removable} to keep {p} as the substring of {s} is {maximumRemovals_brute_force(s,p,removable)}")
+print("---------------------875. Koko Eating Bananas-------------------------")
+print("***** Method One: Binary Search *****")
+def minEatingSpeed(piles, h):
+    left =1
+    right = max(piles)
+    result = max(piles)
+    while left<=right:
+        k = (left+right)//2
+        hours = 0
+        for p in piles:
+            hours = hours+math.ceil(p / k)
+        if hours<=h:
+            result = min(result,k)
+            right = k-1
+        else:
+            left = k+1
+    return result
+test_case = [[[3,6,7,11],8],[[30,11,23,4,20],5],[[30,11,23,4,20],6]]
+for piles, h in test_case:
+    print(f"The minimum speed to eat bananas in {h} hours with piles {piles} is {minEatingSpeed(piles,h)}")
+print("***** Method Two: Binary Search *****")
+def minEatingSpeed_brute_force(piles, h):
+    for i in range(1,max(piles)+1):
+        hours = 0
+        for p in piles:
+            hours = hours + math.ceil(p/i)
+        if hours<=h:
+            return i
+for piles, h in test_case:
+    print(f"The minimum speed to eat bananas in {h} hours with piles {piles} is {minEatingSpeed_brute_force(piles, h)}")
