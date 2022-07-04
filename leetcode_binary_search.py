@@ -403,3 +403,98 @@ def minEatingSpeed_brute_force(piles, h):
             return i
 for piles, h in test_case:
     print(f"The minimum speed to eat bananas in {h} hours with piles {piles} is {minEatingSpeed_brute_force(piles, h)}")
+print("---------------------34. Find First and Last Position of Element in Sorted Array-------------------------")
+print("***** Method One: Binary Search,Find left boundary and then right boundary *****")
+def searchRange(nums,target):
+    # binary search to find the left value
+    left_most =-1
+    left = 0
+    right = len(nums)-1
+    while left<=right:
+        mid = (left+right)//2
+        if nums[mid]==target:
+            left_most=mid
+            right=mid-1
+        elif nums[mid]<target:
+            left = mid+1
+        elif nums[mid]>target:
+            right = mid-1
+    if left_most==-1:
+        return [-1,-1]
+    left = left_most+1
+    right = len(nums)-1
+    right_most=left_most
+    while left<=right:
+        mid = (left+right)//2
+        if nums[mid]>target:
+            right = mid-1
+        elif nums[mid]==target:
+            right_most = mid
+            left = mid+1
+    return [left_most,right_most]
+test_case = [[[5,7,7,8,8,10],8],[[5,7,7,8,8,10],6],[[],0],[[2,2],2]]
+for nums, target in test_case:
+    print(f"The start and end position for target {target} in {nums} is {searchRange(nums,target)} ")
+print("***** Method Two: Binary Search,Find left boundary and then right boundary with helper function *****")
+def searchRange_helper_function(nums,target):
+    def find_left_most(nums,target):
+        result=-1
+        left = 0
+        right = len(nums)-1
+        while left<=right:
+            mid = (left+right)//2
+            if nums[mid]==target:
+                result = mid
+                right = mid-1
+            elif nums[mid]>target:
+                right = mid-1
+            elif nums[mid]<target:
+                left = mid+1
+        # print(f"The left most target index is {result}")
+        return result
+    def find_right_most(nums,target):
+        result = -1
+        left = 0
+        right = len(nums)-1
+        while left<=right:
+            mid = (left+right)//2
+            if nums[mid]>target:
+                right = mid-1
+            elif nums[mid]<target:
+                left = mid+1
+            else:
+                result = mid
+                left = mid+1
+        # print(f"The right most target index is {result}")
+        return result
+    left = find_left_most(nums,target)
+    right = find_right_most(nums,target)
+    return [left,right]
+for nums, target in test_case:
+    print(f"The start and end position for target {target} in {nums} is {searchRange_helper_function(nums,target)} ")
+print("***** Method Three: Binary Search,with one helper function *****")
+def searchRange_one_helper_function(nums,target):
+    def find_most(nums,target,flag):
+        result = -1
+        left = 0
+        right = len(nums)-1
+        while left<=right:
+            mid = (left+right)//2
+            if nums[mid]<target:
+                left = mid+1
+            elif nums[mid]>target:
+                right = mid-1
+            else:
+                result = mid
+                # find the left most
+                if flag:
+                    right=mid-1
+                # find the right most
+                else:
+                    left = mid+1
+        return result
+    left = find_most(nums,target,True)
+    right =find_most(nums,target,False)
+    return [left,right]
+for nums, target in test_case:
+    print(f"The start and end position for target {target} in {nums} is {searchRange_one_helper_function(nums,target)} ")
