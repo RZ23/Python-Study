@@ -533,3 +533,19 @@ def findMedianSortedArrays(nums1,nums2):
 test_case = [[[1,3],[2]],[[1,2],[3,4]],[[],[1]]]
 for nums1,nums2 in test_case:
     print(f"The median of {nums1} and {nums2} is {findMedianSortedArrays(nums1,nums2)}")
+print("---------------------35. Search Insert Position-------------------------")
+def searchInsert(nums,target):
+    left = 0
+    right = len(nums)-1
+    while left<=right:
+        mid = (left+right)//2
+        if nums[mid]==target:
+            return mid
+        elif nums[mid]>target:
+            right = mid-1
+        else:
+            left = mid+1
+    return left
+test_case = [[[1,3,5,6],5],[[1,3,5,6],2],[[1,3,5,6],7]]
+for nums,target in test_case:
+    print(f"The index of {target} in {nums} is {searchInsert(nums,target)}")
