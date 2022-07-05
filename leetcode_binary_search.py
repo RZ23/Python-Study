@@ -498,3 +498,38 @@ def searchRange_one_helper_function(nums,target):
     return [left,right]
 for nums, target in test_case:
     print(f"The start and end position for target {target} in {nums} is {searchRange_one_helper_function(nums,target)} ")
+
+print("---------------------4. Median of Two Sorted Arrays-------------------------")
+print("***** Method One: Binary Search *****")
+def findMedianSortedArrays(nums1,nums2):
+    A,B=nums1,nums2
+    # keep B the short array
+    if len(A)>len(B):
+        A,B=B,A
+    total = len(nums1)+len(nums2)
+    half = total//2
+    left = -1
+    right = len(A)
+    while True:
+        # find the middle of the short array
+        short_mid = (left+right)//2
+        # based on the value of short array
+        # get the middle of the long array
+        long_mid = half-short_mid-2
+        Aleft = A[short_mid] if short_mid>=0 else float("-infinity")
+        Aright = A[short_mid+1] if short_mid+1<len(A) else float("infinity")
+        Bleft = B[long_mid] if long_mid>=0 else float("-infinity")
+        Bright = B[long_mid+1] if long_mid+1<len(B) else float("infinity")
+        # find the middle item(s), check the odd/even of the combined arrays
+        if Aleft<=Bright and Bleft<=Aright:
+            if total%2:
+                return min(Aright,Bright)
+            else:
+                return (max(Aleft,Bleft)+min(Aright,Bright))/2
+        elif Aleft>Bright:
+            right = short_mid-1
+        elif Aright<Bleft:
+            left = short_mid+1
+test_case = [[[1,3],[2]],[[1,2],[3,4]],[[],[1]]]
+for nums1,nums2 in test_case:
+    print(f"The median of {nums1} and {nums2} is {findMedianSortedArrays(nums1,nums2)}")
