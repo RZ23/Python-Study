@@ -549,3 +549,76 @@ def searchInsert(nums,target):
 test_case = [[[1,3,5,6],5],[[1,3,5,6],2],[[1,3,5,6],7]]
 for nums,target in test_case:
     print(f"The index of {target} in {nums} is {searchInsert(nums,target)}")
+print("---------------------33. Search in Rotated Sorted Array-------------------------")
+print("***** Method One: Binary Search Find the pivot and then find the target")
+def search(nums,target):
+    # find the pivot
+    left = 0
+    right = len(nums)-1
+    while left<right:
+        mid = (left+right)//2
+        if nums[mid]<nums[right]:
+            right=mid
+        elif nums[mid]>nums[right]:
+            left = mid+1
+    pivot=left
+    # print(pivot)
+    if target>nums[-1]:
+        left = 0
+        right = pivot-1
+        while left<=right:
+            mid = (left+right)
+            if target==nums[mid]:
+                return mid
+            elif target>nums[mid]:
+                left = mid+1
+            else:
+                right = mid-1
+        return -1
+    elif target<=nums[-1]:
+        left = pivot
+        right = len(nums)
+        while left<=right:
+            mid = (left+right)//2
+            if target ==nums[mid]:
+                return mid
+            elif target>nums[mid]:
+                left = mid+1
+            else:
+                right = mid-1
+        return -1
+test_case = [[[4,5,6,7,0,1,2],0],[[4,5,6,7,0,1,2],3],[[1],0],[[3,1],3]]
+for nums,target in test_case:
+    print(f"the target {target} is {nums} is {search(nums,target)}")
+print("***** Method Two: build-in function find the pivot and then find the target")
+def search_with_build_in(nums,target):
+    if target<min(nums)or target>max(nums):
+        return -1
+    else:
+        pivot = nums.index(min(nums))
+        if target > nums[-1]:
+            left = 0
+            right = pivot - 1
+            while left <= right:
+                mid = (left + right)
+                if target == nums[mid]:
+                    return mid
+                elif target > nums[mid]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return -1
+        elif target <= nums[-1]:
+            left = pivot
+            right = len(nums)
+            while left <= right:
+                mid = (left + right) // 2
+                if target == nums[mid]:
+                    return mid
+                elif target > nums[mid]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+            return -1
+for nums,target in test_case:
+    print(f"the target {target} is {nums} is {search_with_build_in(nums,target)}")
