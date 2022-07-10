@@ -1,3 +1,8 @@
+from collections import deque
+class Node:
+    def __init__(self, val = 0, neighbors = None):
+        self.val = val
+        self.neighbors = neighbors if neighbors is not None else []
 def print_matrix(dp):
     for i in range(len(dp)):
         for j in range(len(dp[0])):
@@ -6,6 +11,44 @@ def print_matrix(dp):
             else:
                 print(dp[i][j], end="|")
         print()
+def display_graph(node):
+    if node is None:
+        return []
+    display_order = {}
+    q= deque()
+    q.append(node)
+    visit = set()
+    visit.add(node)
+    result = []
+    while len(q)>0:
+        cur_node =q.popleft()
+        print("{}".format(cur_node.val),end = ":")
+        sub_result = []
+        for neighbor in cur_node.neighbors:
+            if neighbor not in visit:
+                q.append(neighbor)
+                visit.add(neighbor)
+            print(neighbor.val,end = ",")
+            sub_result.append(neighbor.val)
+        print()
+        # result.append(sub_result)
+        display_order[cur_node.val] = sub_result
+    for i in range(1,len(display_order.keys())+1):
+        result.append(display_order[i])
+    return result
+def generate_graph(graph_node_list):
+    if len(graph_node_list)==0:
+        return None
+    graph = []
+    graph_map = {}
+    for i in range(len(graph_node_list)):
+        index = str(i+1)
+        graph.append(Node(i+1))
+        graph_map[index] = graph[i]
+    for i in range(len(graph)):
+        for adj in graph_node_list[i]:
+            graph[i].neighbors.append(graph_map[str(adj)])
+    return graph[0]
 print("---------------------207. Course Schedule-------------------------")
 def canFinish(numCourses,prerequisites):
     course_adj = {i:[] for i in range(numCourses)}
@@ -111,3 +154,26 @@ for grid in test_case:
     print(f"The Map is ")
     print_matrix(grid)
     print(f"There is(are) {numIslands(grid)} island(s) in this map")
+print("---------------------133. Clone Graph-------------------------")
+def cloneGraph(node):
+    map_node = {}
+    def dfs(node):
+        if node in map_node:
+            return map_node[node]
+        new_node = Node(node.val)
+        map_node[node] = new_node
+        for neighbor in node.neighbors:
+            new_node.neighbors.append(dfs(neighbor))
+        return new_node
+    if node is not None:
+        return dfs(node)
+    else:
+        return None
+test_case = [[[2,4],[1,3],[2,4],[1,3]],[[]],[]]
+for node_list in test_case:
+    node_root = generate_graph(node_list)
+    print("The Original Graph is:")
+    display_graph(node_root)
+    print("The Colon Graph is:")
+    coloned_node_root = cloneGraph(node_root)
+    display_graph(coloned_node_root)
