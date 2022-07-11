@@ -1,4 +1,5 @@
 from collections import deque
+from collections import defaultdict
 class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
@@ -177,3 +178,38 @@ for node_list in test_case:
     print("The Colon Graph is:")
     coloned_node_root = cloneGraph(node_root)
     display_graph(coloned_node_root)
+print("---------------------127. Word Ladder-------------------------")
+'''
+Using BFS algorithm
+'''
+def ladderLength(beginWord,endWord,wordList):
+    if endWord not in wordList:
+        return 0
+    # using the collections.defaultdict set the default of dict to []
+    neighbor = defaultdict(list)
+    wordList.append(beginWord)
+    # create the dict for each word pattern
+    # like hot=> *ot,h*t,ho*
+    for word in wordList:
+        for j in range(len(word)):
+            pattern = word[:j]+"*"+word[j+1:]
+            neighbor[pattern].append(word)
+    visited = set([beginWord])
+    q = deque([beginWord])
+    res = 1
+    while len(q)>0:
+        for i in range(len(q)):
+            word=q.popleft()
+            if word==endWord:
+                return res
+            for j in range(len(word)):
+                pattern = word[:j]+"*"+word[j+1:]
+                for neiword in neighbor[pattern]:
+                    if neiword not in visited:
+                        q.append(neiword)
+        res = res+1
+    return 0
+test_case = [["hit","cog",["hot","dot","dog","lot","log","cog"]],["hit", "cog",["hot","dot","dog","lot","log"]]]
+for beginWord,endWord,wordList in test_case:
+    print(f"For the begin word {beginWord}, there is(are) {ladderLength(beginWord, endWord, wordList)} step(s)"
+          f"to reach the end word {endWord} with dict {wordList}")
