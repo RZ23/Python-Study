@@ -213,3 +213,37 @@ test_case = [["hit","cog",["hot","dot","dog","lot","log","cog"]],["hit", "cog",[
 for beginWord,endWord,wordList in test_case:
     print(f"For the begin word {beginWord}, there is(are) {ladderLength(beginWord, endWord, wordList)} step(s)"
           f"to reach the end word {endWord} with dict {wordList}")
+print("---------------------417. Pacific Atlantic Water Flow-------------------------")
+'''
+Using BFS algorithm
+'''
+def pacificAtlantic(heights):
+    COL =len(heights[0])
+    ROW = len(heights)
+    Pac = set()
+    Atl = set()
+    def dfs(r,c,visit,prev):
+        if r<0 or r==ROW or c<0 or c==COL or heights[r][c]<prev or (r,c) in visit:
+            return
+        visit.add((r,c))
+        dfs(r+1,c,visit,heights[r][c])
+        dfs(r-1,c,visit,heights[r][c])
+        dfs(r, c+1, visit, heights[r][c])
+        dfs(r, c-1, visit, heights[r][c])
+    for r in range(ROW):
+        dfs(r,0,Pac,heights[r][0])
+        dfs(r,COL-1,Atl,heights[ROW-1][COL-1])
+    for c in range(COL):
+        dfs(0,c,Pac,heights[0][c])
+        dfs(ROW-1,c,Atl,heights[ROW-1][c])
+    result = []
+    for r in range(ROW):
+        for c in range(COL):
+            if (r,c) in Pac and (r,c) in Atl:
+                result.append([r,c])
+    return result
+test_case = [[[1,2,2,3,5],[3,2,3,4,4],[2,4,5,3,1],[6,7,1,4,5],[5,1,1,2,4]],[[2,1],[1,2]]]
+for heights in test_case:
+    print("The Map is ")
+    print_matrix(heights)
+    print(f"The wave(s) could flow to both Pacific and Atlantic is(are) {pacificAtlantic(heights)}")
