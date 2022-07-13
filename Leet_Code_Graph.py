@@ -1,5 +1,7 @@
 from collections import deque
 from collections import defaultdict
+from collections import deque
+import heapq
 class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
@@ -247,3 +249,31 @@ for heights in test_case:
     print("The Map is ")
     print_matrix(heights)
     print(f"The wave(s) could flow to both Pacific and Atlantic is(are) {pacificAtlantic(heights)}")
+print("---------------------743. Network Delay Time-------------------------")
+'''
+Using BFS algorithm
+'''
+def networkDelayTime(times, n, k):
+    edges = defaultdict(list)
+    for start,end, weight in times:
+        edges[start].append((end,weight))
+    miniheap = [(0,k)]
+    visited = set()
+    t = 0
+    while len(miniheap)>0:
+        weight,start_node = heapq.heappop(miniheap)
+        if start_node in visited:
+            continue
+        visited.add(start_node)
+        t = max(t,weight)
+        for end_node,visited_weight in edges[start_node]:
+            if end_node not in visited:
+                heapq.heappush(miniheap,((weight+visited_weight),end_node))
+    if len(visited)==n:
+        return t
+    else:
+        return -1
+
+test_case = [[[[2,1,1],[2,3,1],[3,4,1]],4,2],[[[1,2,1]],2,1],[[[1,2,1]],2,2]]
+for times, n,k in test_case:
+    print(f"The Minimum edge from node {k} to reach all the {n} node(s) with {times} is {networkDelayTime(times, n, k)}")
