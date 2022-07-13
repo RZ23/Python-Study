@@ -277,3 +277,29 @@ def networkDelayTime(times, n, k):
 test_case = [[[[2,1,1],[2,3,1],[3,4,1]],4,2],[[[1,2,1]],2,1],[[[1,2,1]],2,2]]
 for times, n,k in test_case:
     print(f"The Minimum edge from node {k} to reach all the {n} node(s) with {times} is {networkDelayTime(times, n, k)}")
+print("---------------------79. Word Search-------------------------")
+def exist(board, word):
+    ROW = len(board)
+    COL=len(board[0])
+    path = set()
+    def dfs(r,c,i):
+        if i==len(word):
+            return True
+        if r<0 or c<0 or r==ROW or c==COL or word[i]!=board[r][c] or (r,c) in path:
+            return False
+        path.add((r,c))
+        res = dfs(r+1,c,i+1) or dfs(r-1,c,i+1) or dfs(r,c-1,i+1) or dfs(r,c+1,i+1)
+        path.remove((r,c))
+        return res
+    for r in range(ROW):
+        for c in range(COL):
+            if dfs(r,c,0):
+                return True
+    return False
+test_case = [[[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],"ABCCED"],\
+            [[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],"SEE"],\
+            [[["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]],"ABCB"]]
+for board, word in test_case:
+    print("The Board is")
+    print_matrix(board)
+    print(f"The word {word} can be found in the board: {exist(board, word)}")
