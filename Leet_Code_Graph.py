@@ -342,3 +342,31 @@ for grid in test_case:
     print("The Map is ")
     print_matrix(grid)
     print(f"the Perimeter of the island is {islandPerimeter(grid)},the size of island is {sizeofisland(grid)}\n")
+print("---------------------695. Max Area of Island-------------------------")
+def maxAreaOfIsland(grid):
+    ROW =len(grid)
+    COL= len(grid[0])
+    visit = set()
+    max_size = 0
+    def dfs(r,c):
+        if r<0 or r==ROW or c<0 or c==COL or grid[r][c]==0:
+            return 0
+        grid[r][c]=0
+        return dfs(r+1,c)+dfs(r-1,c)+dfs(r,c+1)+dfs(r,c-1)+1
+    for r in range(ROW):
+        for c in range(COL):
+            if grid[r][c]==1:
+                max_size = max(max_size,dfs(r,c))
+    return max_size
+test_case = [[[0,0,1,0,0,0,0,1,0,0,0,0,0],
+             [0,0,0,0,0,0,0,1,1,1,0,0,0],
+             [0,1,1,0,1,0,0,0,0,0,0,0,0],
+             [0,1,0,0,1,1,0,0,1,0,1,0,0],
+             [0,1,0,0,1,1,0,0,1,1,1,0,0],
+             [0,0,0,0,0,0,0,0,0,0,1,0,0],
+             [0,0,0,0,0,0,0,1,1,1,0,0,0],
+             [0,0,0,0,0,0,0,1,1,0,0,0,0]],[[0,0,0,0,0,0,0,0]]]
+for grid in test_case:
+    print("Map is")
+    print_matrix(grid)
+    print(f"The Max Area of island is {maxAreaOfIsland(grid)}")
