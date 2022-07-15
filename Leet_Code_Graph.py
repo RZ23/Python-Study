@@ -370,3 +370,29 @@ for grid in test_case:
     print("Map is")
     print_matrix(grid)
     print(f"The Max Area of island is {maxAreaOfIsland(grid)}")
+print("---------------------1466. Reorder Routes to Make All Paths Lead to the City Zero-------------------------")
+def minReorder(n,connections):
+    edge = {(a,b) for a,b in connections}
+    neighbors = {city:[] for city in range(n)}
+    visited = set()
+    change = 0
+    for start, end in connections:
+        neighbors[start].append(end)
+        neighbors[end].append(start)
+    def dfs(city):
+        nonlocal edge,neighbors,change
+        for neighbor in neighbors[city]:
+            if neighbor in visited:
+                continue
+            if (neighbor,city) not in edge:
+                change = change+1
+            visited.add(neighbor)
+            dfs(neighbor)
+    visited.add(0)
+    dfs(0)
+    return change
+test_case = [[6, [[0,1],[1,3],[2,3],[4,0],[4,5]]],[3,[[1,0],[2,0]]]]
+for n,connections in test_case:
+    print(f"For {n} city(s), based on the current road map {connections}, there is(are)"
+    f" {minReorder(n, connections)} road(s) need to update to make sure all the city(s)"
+    f"could connection to city Zero")
