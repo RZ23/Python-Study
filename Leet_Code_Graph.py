@@ -396,3 +396,46 @@ for n,connections in test_case:
     print(f"For {n} city(s), based on the current road map {connections}, there is(are)"
     f" {minReorder(n, connections)} road(s) need to update to make sure all the city(s)"
     f"could connection to city Zero")
+print("---------------------684. Redundant Connection-------------------------")
+'''
+using Union and Find Algorithm
+'''
+def findRedundantConnection(edges):
+    # set the parent list
+    par = [i for i in range(len(edges)+1)]
+    # set the rank list:
+    rank = [1] *(len(edges)+1)
+    # find function, find the parent of each node
+    def find(n):
+        p = par[n]
+        # run the loop, until the parent of the node is not itself
+        while p!=par[p]:
+            par[p] = par[par[p]]
+            p = par[p]
+        return p
+    # union function, union two nodes into one subset, with the higher rank
+    def union(n1,n2):
+        p1 = find(n1)
+        p2 = find(n2)
+        # if two noeds already in the same subset, return False
+        if p1==p2:
+            return False
+        # if p1's rank is higher than p2's rank
+        # then merge p2 into the p1,p2's parent is p1
+        # and update p1's rank to add p2's rank
+        if rank[p1]>rank[p2]:
+            par[p2]=p1
+            rank[p1] = rank[p1]+rank[p2]
+        # if p2's rank is higher than p1's rank
+        # then merge p1 into the p2,p1's parent is p2
+        # and update p2's rank to add p1's rank
+        else:
+            par[p1]=p2
+            rank[p2] = rank[p2]+rank[p1]
+        return True
+    for n1,n2 in edges:
+        if not union(n1,n2):
+            return [n1,n2]
+test_case = [[[1,2],[1,3],[2,3]],[[1,2],[2,3],[3,4],[1,4],[1,5]]]
+for edges in test_case:
+    print(f"To create a tree, should remove the edge {findRedundantConnection(edges)} from the edge list {edges}")
