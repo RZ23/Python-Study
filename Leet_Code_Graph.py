@@ -439,3 +439,35 @@ def findRedundantConnection(edges):
 test_case = [[[1,2],[1,3],[2,3]],[[1,2],[2,3],[3,4],[1,4],[1,5]]]
 for edges in test_case:
     print(f"To create a tree, should remove the edge {findRedundantConnection(edges)} from the edge list {edges}")
+print("---------------------178 · Graph Valid Tree-------------------------")
+'''
+O(E+V)
+'''
+def valid_tree(n,edges):
+    if not n:
+        return False
+    # create the adj list
+    adj = {i:[] for i in range(n)}
+    # update the adj list
+    for start,end in edges:
+        adj[start].append(end)
+        adj[end].append(start)
+    # set the visit set
+    visit = set()
+    # create the dfs function, add the prev variable to store the
+    # parent node of this node
+    def dfs(i,prev):
+        if i in visit:
+            return False
+        visit.add(i)
+        for j in adj[i]:
+            if j==prev:
+                continue
+            if not dfs(j,i):
+                return False
+        return True
+    # set the prev for the first node to 0
+    return dfs(0,-1) and n==len(visit)
+test_case=[[5,[[0, 1], [0, 2], [0, 3], [1, 4]]],[5 ,[[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]]]]
+for n, edges in test_case:
+    print(f"based on the edges {edges}, this {n} node(s) could create a tree: {valid_tree(n, edges)}")
