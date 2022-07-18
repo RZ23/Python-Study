@@ -574,3 +574,53 @@ for board,words in test_case:
     print_matrix(board)
     print(f"based on the board and given word list {words}")
     print(f"Could find word(s) {findWords(board, words)} in the board")
+print("---------------------323. Number of Connected Components in an Undirected Graph-------------------------")
+print("***** Method One: Find and Union Algorithm *****")
+def countComponents(n,edges):
+    par = [i for i in range(n+1)]
+    rank = [1]*n
+    def find_parent(n):
+        result = n
+        while result!=n:
+            par[n] = par[par[n]]
+            n = par[n]
+        return n
+    def union(n1,n2):
+        p1,p2 = find_parent(n1),find_parent(n2)
+        if p1==p2:
+            return 0
+        if rank[p2]>rank[p1]:
+            par[p1] = p2
+            rank[p2]=rank[p2]+rank[p1]
+        else:
+            par[p2]=p1
+            rank[p1] = rank[p1]+rank[p2]
+        return 1
+    result = n
+    for n1,n2 in edges:
+        result = result - union(n1,n2)
+    return result
+test_case = [[5,[[0, 1], [1, 2], [3, 4]]],[5,[[0, 1], [1, 2], [2, 3], [3, 4]]],[4,[[2,3]]],
+             [7,[[0,1],[0,4],[2,3],[2,5],[2,6],[0,2]]]]
+for n,edges in test_case:
+    print(f"Based on the edge(s) {edges}, there is(are) {countComponents(n,edges)} component(s) in this {n} node(s) graph")
+print("***** Method Two: DFS algorithm *****")
+def countComponents_dfs(n,edges):
+    adj = {i:[] for i in range(n)}
+    for start, end in edges:
+        adj[start].append(end)
+        adj[end].append(start)
+    visit = set()
+    def dfs(node):
+        if node in visit:
+            return 0
+        visit.add(node)
+        for neighbor in adj[node]:
+            dfs(neighbor)
+        return 1
+    result = 0
+    for i in range(n):
+        result = result+dfs(i)
+    return result
+for n,edges in test_case:
+    print(f"Based on the edge(s) {edges}, there is(are) {countComponents_dfs(n,edges)} component(s) in this {n} node(s) graph")
