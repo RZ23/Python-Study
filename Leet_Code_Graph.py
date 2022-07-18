@@ -471,3 +471,106 @@ def valid_tree(n,edges):
 test_case=[[5,[[0, 1], [0, 2], [0, 3], [1, 4]]],[5 ,[[0, 1], [1, 2], [2, 3], [1, 3], [1, 4]]]]
 for n, edges in test_case:
     print(f"based on the edges {edges}, this {n} node(s) could create a tree: {valid_tree(n, edges)}")
+print("---------------------212. Word Search II-------------------------")
+print("***** Method One: Add Prun Word Function *****")
+class TrieNode():
+    def __init__(self):
+        self.children = {}
+        self.isWord = False
+    def addWord(self,word):
+        cur = self
+        for c in word:
+            if c not in cur.children:
+                cur.children[c] = TrieNode()
+            cur=cur.children[c]
+        cur.isWord = True
+    def prunWord(self,word):
+        cur= self
+        nodeAndChildKey = []
+        for char in word:
+            nodeAndChildKey.append((cur,char))
+            cur = cur.children[char]
+        for parentNode,childKey in reversed(nodeAndChildKey):
+            targetNode = parentNode.children[childKey]
+            if len(targetNode.children)==0:
+                del parentNode.children[childKey]
+            else:
+                return
+def findWords(board,words):
+    root = TrieNode()
+    for w in words:
+        root.addWord(w)
+    ROW = len(board)
+    COL = len(board[0])
+    result = []
+    visit = set()
+    def dfs(r,c,node,word):
+        if (r<0 or r==ROW or c<0 or c==COL or board[r][c] not in node.children or (r,c) in visit):
+            return
+        visit.add((r,c))
+        node = node.children[board[r][c]]
+        word = word+board[r][c]
+        if node.isWord:
+            result.append(word)
+            node.isWord = False
+            root.prunWord(word)
+        dfs(r+1,c,node,word)
+        dfs(r-1,c,node,word)
+        dfs(r,c+1,node,word)
+        dfs(r,c-1,node,word)
+        visit.remove((r,c))
+    for r in range(ROW):
+        for c in range(COL):
+            dfs(r,c,root,"")
+    return result
+test_case = [[[["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],["oath","pea","eat","rain"]],
+[[["a","b"],["c","d"]],["abcb"]]]
+for board,words in test_case:
+    print("The board is")
+    print_matrix(board)
+    print(f"based on the board and given word list {words}")
+    print(f"Could find word(s) {findWords(board, words)} in the board")
+print("***** Method Two: Without Prun Word Function")
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.isWord = False
+    def addWord(self,word):
+        cur = self
+        for char in word:
+            if char not in cur.children:
+                cur.children[char] = TrieNode()
+            cur = cur.children[char]
+        cur.isWord = True
+def findWords(board,words):
+    root = TrieNode()
+    for w in words:
+        root.addWord(w)
+    ROW = len(board)
+    COL =len(board[0])
+    result = set()
+    visit = set()
+    def dfs(r,c,node,word):
+        if (r<0 or c<0 or r==ROW or c==COL or board[r][c] not in node.children or (r,c) in visit):
+            return
+        visit.add((r,c))
+        node = node.children[board[r][c]]
+        word = word+board[r][c]
+        if node.isWord:
+            result.add(word)
+        dfs(r-1,c,node,word)
+        dfs(r+1,c,node,word)
+        dfs(r,c+1,node,word)
+        dfs(r,c-1,node,word)
+        visit.remove((r,c))
+    for r in range(ROW):
+        for c in range(COL):
+            dfs(r,c,root,"")
+    return list(result)
+test_case = [[[["o","a","a","n"],["e","t","a","e"],["i","h","k","r"],["i","f","l","v"]],["oath","pea","eat","rain"]],
+[[["a","b"],["c","d"]],["abcb"]]]
+for board,words in test_case:
+    print("The board is")
+    print_matrix(board)
+    print(f"based on the board and given word list {words}")
+    print(f"Could find word(s) {findWords(board, words)} in the board")
