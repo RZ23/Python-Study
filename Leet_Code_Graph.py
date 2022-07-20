@@ -624,3 +624,37 @@ def countComponents_dfs(n,edges):
     return result
 for n,edges in test_case:
     print(f"Based on the edge(s) {edges}, there is(are) {countComponents_dfs(n,edges)} component(s) in this {n} node(s) graph")
+print("---------------------1584. Min Cost to Connect All Points-------------------------")
+'''
+Using Prim's algorithm, with Visit Set and MiniHeap
+'''
+def minCostConnectPoints(points):
+    N = len(points)
+    # create the adj list
+    adj = {i:[] for i in range(N)}
+    #fill the adj list
+    for i in range(N):
+        x1,y1 = points[i]
+        for j in range(i+1,N):
+            x2,y2 = points[j]
+            distance = abs(x1-x2)+abs(y1-y2)
+            adj[i].append([distance,j])
+            adj[j].append([distance,i])
+    # Prim Algorithm
+    result = 0
+    visit = set()
+    minHeap = [[0,0]] # [cost, end_point]
+    while (len(visit))<N:
+        cost,i = heapq.heappop(minHeap)
+        if i in visit:
+            continue
+        result = result+cost
+        visit.add(i)
+        for cost,neigh in adj[i]:
+            if neigh not in visit:
+                heapq.heappush(minHeap,[cost,neigh])
+    return result
+test_case = [[[0,0],[2,2],[3,10],[5,2],[7,0]],[[3,12],[-2,5],[-4,1]]]
+for points in test_case:
+    print(f"Based on the point(s), to connect all the point(s) {points}, "
+          f"the shortest distance is {minCostConnectPoints(points)} ")
