@@ -707,3 +707,36 @@ def alienOeder(words):
 test_case = [["caa", "aaa", "aab"],["wrt","wrf","er","ett","rftt"]]
 for words in test_case:
     print("Based on the {}, the order is {}".format(words,alienOeder(words)))
+print("---------------------1905. Count Sub Islands-------------------------")
+def countSubIslands(grid1,grid2):
+    ROW = len(grid2)
+    COL =len(grid2[0])
+    visit = set()
+    def dfs(r,c):
+        if (r<0 or c<0 or r==ROW or c==COL or (r,c) in visit or grid2[r][c]==0):
+            return True
+        visit.add((r,c))
+        result = True
+        if grid1[r][c]==0:
+            result = False
+        result = dfs(r+1,c) and result
+        result = dfs(r-1,c) and result
+        result = dfs(r,c+1) and result
+        result = dfs(r,c-1) and result
+        return result
+    count = 0
+    for r in range(ROW):
+        for c in range(COL):
+            if grid2[r][c]==1 and (r,c) not in visit and dfs(r,c):
+                count = count+1
+    return count
+test_case =[[[[1,1,1,0,0],[0,1,1,1,1],[0,0,0,0,0],[1,0,0,0,0],[1,1,0,1,1]],
+            [[1,1,1,0,0],[0,0,1,1,1],[0,1,0,0,0],[1,0,1,1,0],[0,1,0,1,0]]],\
+           [[[1,0,1,0,1],[1,1,1,1,1],[0,0,0,0,0],[1,1,1,1,1],[1,0,1,0,1]],
+            [[0,0,0,0,0],[1,1,1,1,1],[0,1,0,1,0],[0,1,0,1,0],[1,0,0,0,1]]]]
+for grid1,grid2 in test_case:
+    print("Map One:")
+    print_matrix(grid1)
+    print("Map Two:")
+    print_matrix(grid2)
+    print(f"For map Two, There is(are) {countSubIslands(grid1, grid2)} sub-islands in map One")
