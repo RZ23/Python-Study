@@ -740,3 +740,26 @@ for grid1,grid2 in test_case:
     print("Map Two:")
     print_matrix(grid2)
     print(f"For map Two, There is(are) {countSubIslands(grid1, grid2)} sub-islands in map One")
+print("---------------------778. Swim in Rising Water-------------------------")
+def swimInWater(grid):
+    N = len(grid)
+    visit =set()
+    mheap = [[grid[0][0],0,0]] # (time/max-height,row,col)
+    direction = [[0,1],[0,-1],[1,0],[-1,0]]
+    visit.add((0,0))
+    while mheap:
+        t,r,c = heapq.heappop(mheap)
+        if r==N-1 and c==N-1:
+            return t
+        for dr,dc in direction:
+            neiR,neiC = r+dr,c+dc
+            if (neiR<0 or neiC<0 or neiC==N or neiR==N or (neiR,neiC) in visit):
+                continue
+            visit.add((neiR,neiC))
+            heapq.heappush(mheap,[max(t,grid[neiR][neiC]),neiR,neiC])
+test_case = [[[0,2],[1,3]],[[0,1,2,3,4],[24,23,22,21,5],[12,13,14,15,16],[11,17,18,19,20],[10,9,8,7,6]]]
+for grid in test_case:
+    print("Map is:")
+    print_matrix(grid)
+    print(f"Based on the map,The least time can reach the bottom right is {swimInWater(grid)}  ")
+    print()
