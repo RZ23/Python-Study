@@ -763,3 +763,55 @@ for grid in test_case:
     print_matrix(grid)
     print(f"Based on the map,The least time can reach the bottom right is {swimInWater(grid)}  ")
     print()
+print("---------------------286.Walls and Gates-------------------------")
+def walls_and_gates(rooms):
+    ROW = len(rooms)
+    COL = len(rooms[0])
+    visit = set()
+    q = deque()
+    def addRoom(r,c):
+        if (r<0 or r==ROW or c<0 or c==COL or (r,c) in visit or rooms[r][c]==-1):
+            return
+        visit.add((r,c))
+        q.append([r,c])
+    # find the gate,add to queue
+    for r in range(ROW):
+        for c in range(COL):
+            if rooms[r][c]==0:
+                q.append([r,c])
+                visit.add((r,c))
+    dist = 0
+    # using BFS and pop from the queue
+    while q:
+        # pop the items by level
+        for i in range(len(q)):
+            r,c = q.popleft()
+            rooms[r][c]=dist
+            addRoom(r+1,c)
+            addRoom(r-1,c)
+            addRoom(r,c+1)
+            addRoom(r,c-1)
+        dist = dist+1
+
+
+def print_door_and_well_map(dp):
+    for i in range(len(dp)):
+        for j in range(len(dp[0])):
+            if dp[i][j]==2147483647:
+                print("E",end = "|")
+            elif dp[i][j]==-1:
+                print("W",end = "|")
+            elif dp[i][j]==0:
+                print("G", end="|")
+            else:
+                print(dp[i][j],end = "|")
+        print()
+test_case = [[[2147483647,-1,0,2147483647],[2147483647,2147483647,2147483647,-1],[2147483647,-1,2147483647,-1],[0,-1,2147483647,2147483647]],
+[[0,-1],[2147483647,2147483647]]]
+for i,rooms in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print("The Map is")
+    print_door_and_well_map(rooms)
+    print("The distance from each room to nearest gate is")
+    walls_and_gates(rooms)
+    print_door_and_well_map(rooms)
