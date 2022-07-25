@@ -815,3 +815,38 @@ for i,rooms in enumerate(test_case):
     print("The distance from each room to nearest gate is")
     walls_and_gates(rooms)
     print_door_and_well_map(rooms)
+print("---------------------130. Surrounded Regions-------------------------")
+def solve(board):
+    ROW = len(board)
+    COL = len(board[0])
+    def capture(r,c):
+        if (r<0 or c<0 or r==ROW or c==COL or board[r][c]!="O"):
+            return
+        board[r][c]="T"
+        capture(r+1,c)
+        capture(r-1,c)
+        capture(r,c+1)
+        capture(r,c-1)
+    # capture unsurrounded regions (O -> T)
+    for r in range(ROW):
+        for c in range(COL):
+            if (board[r][c]=="O" and (r in [0,ROW-1] or c in [0,COL-1])):
+                capture(r,c)
+    # capture surronded regions (O->X)
+    for r in range(ROW):
+        for c in range(COL):
+            if board[r][c]=="O":
+                board[r][c]="X"
+    # Uncapture unsurrounded regions (T->O)
+    for r in range(ROW):
+        for c in range(COL):
+            if board[r][c]=="T":
+                board[r][c]="O"
+test_case = [[["X","X","X","X"],["X","O","O","X"],["X","X","O","X"],["X","O","X","X"]],[["X"]]]
+for i, board in enumerate(test_case):
+    print(f"##### Test Case {i+1} #####")
+    print("The original Map is")
+    print_matrix(board)
+    solve(board)
+    print("The Captured Map is")
+    print_matrix(board)
