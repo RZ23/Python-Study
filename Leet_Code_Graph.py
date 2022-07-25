@@ -2,6 +2,7 @@ from collections import deque
 from collections import defaultdict
 from collections import deque
 import heapq
+import collections
 class Node:
     def __init__(self, val = 0, neighbors = None):
         self.val = val
@@ -850,3 +851,65 @@ for i, board in enumerate(test_case):
     solve(board)
     print("The Captured Map is")
     print_matrix(board)
+print("---------------------787. Cheapest Flights Within K Stops-------------------------")
+print("***** Method One: Bellman-Ford Algorithm *****")
+def findCheapestPrice(n,flights,src,dst,k):
+    prices = [float("inf")]*n
+    prices[src]=0
+    for i in range(k+1):
+        tempPrice = prices.copy()
+        for s,d,p in flights:
+            if prices[s]==float('inf'):
+                continue
+            if prices[s]+p<tempPrice[d]:
+                tempPrice[d] = prices[s]+p
+        prices = tempPrice
+    return -1 if prices[dst]==float("inf") else prices[dst]
+test_case = [[4,[[0,1,100],[1,2,100],[2,0,100],[1,3,600],[2,3,200]],0,3,1],\
+            [3,[[0,1,100],[1,2,100],[0,2,500]],0,2,1],
+            [3,[[0,1,100],[1,2,100],[0,2,500]],0,2,0]]
+for n,flights,src,dst,k in test_case:
+    print(f"Based on the flight fare table {flights}, the cheapest fare from "
+              f"srouce {src} to destination {dst} with almost {k} stop(s) is {findCheapestPrice(n, flights, src, dst, k)}")
+print("***** Method Two: DFS Algorithm *****")
+def findCheapestPrice_dfs(n,flights,src,dst,k):
+    def dfs(stop,numOfStop):
+        if numOfStop>k:
+            return float("inf")
+        elif stop ==dst:
+            return 0
+        cheapestFlight = float("inf")
+        for flight in flights:
+            if flight[0]==stop:
+                cheapestFlight = min(cheapestFlight,(flight[2]+dfs(flight[1],numOfStop+1)))
+        return cheapestFlight
+    cheapestFlight = dfs(src,-1)
+    return cheapestFlight if cheapestFlight!=float("inf") else -1
+for n,flights,src,dst,k in test_case:
+    print(f"Based on the flight fare table {flights}, the cheapest fare from "
+              f"srouce {src} to destination {dst} with almost {k} stop(s) is {findCheapestPrice_dfs(n, flights, src, dst, k)}")
+print("***** Method Three: BFS Algorithm *****")
+def findCheapestPrice_bfs(n,flights,src,dst,k):
+    graph = collections.defaultdict(dict)
+    for u,v,w in flights:
+        graph[u][v]=w
+    q = deque()
+    q.append([src,0])
+    ans,step = float("inf"),0
+    while q:
+        for _ in range(len(q)):
+            cur,cost = q.popleft()
+            if cur==dst:
+                ans = min(ans,cost)
+                continue
+            for v,w in graph[cur].items():
+                if cost+w>ans:
+                    continue
+                q.append((v,cost+w))
+        if step>k:
+            break
+        step = step+1
+    return -1 if ans == float("inf") else ans
+for n,flights,src,dst,k in test_case:
+    print(f"Based on the flight fare table {flights}, the cheapest fare from "
+              f"srouce {src} to destination {dst} with almost {k} stop(s) is {findCheapestPrice_bfs(n, flights, src, dst, k)}")
