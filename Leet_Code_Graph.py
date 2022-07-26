@@ -913,3 +913,32 @@ def findCheapestPrice_bfs(n,flights,src,dst,k):
 for n,flights,src,dst,k in test_case:
     print(f"Based on the flight fare table {flights}, the cheapest fare from "
               f"srouce {src} to destination {dst} with almost {k} stop(s) is {findCheapestPrice_bfs(n, flights, src, dst, k)}")
+print("---------------------332. Reconstruct Itinerary-------------------------")
+def findItinerary(tickets):
+    adj = {src:[] for src,dst in tickets}
+    tickets.sort()
+    for src,dst in tickets:
+        adj[src].append(dst)
+    result = ["JFK"]
+    def dfs(src):
+        # for n tickets, the destination should be n+1 to use all the tickets
+        if len(result)==len(tickets)+1:
+            return True
+        if src not in adj:
+            return False
+        temp = list(adj[src])
+        for i,v in enumerate(temp):
+            adj[src].pop(i)
+            result.append(v)
+            if dfs(v):
+                return True
+            adj[src].insett(i,v)
+            result.pop()
+        return False
+    dfs("JFK")
+    return result
+test_case = [[["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]],\
+            [["JFK","SFO"],["JFK","ATL"],["SFO","ATL"],["ATL","JFK"],["ATL","SFO"]]]
+for i,tickets in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the ticket list {tickets}, the itinerary is {findItinerary(tickets)}")
