@@ -942,3 +942,44 @@ test_case = [[["MUC","LHR"],["JFK","MUC"],["SFO","SJC"],["LHR","SFO"]],\
 for i,tickets in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"Based on the ticket list {tickets}, the itinerary is {findItinerary(tickets)}")
+print("---------------------994. Rotting Oranges-------------------------")
+def print_orange_grid(dp):
+    for i in range(len(dp)):
+        for j in range(len(dp[0])):
+            if dp[i][j]==0:
+                print("E", end="|")
+            elif dp[i][j]==1:
+                print("F", end="|")
+            else:
+                print("R",end = "|")
+        print()
+def orangesRotting(grid):
+    ROW =len(grid)
+    COL = len(grid[0])
+    q = deque()
+    time,fresh = 0,0
+    for r in range(ROW):
+        for c in range(COL):
+            if grid[r][c]==1:
+                fresh = fresh+1
+            if grid[r][c]==2:
+                q.append([r,c])
+    directions = [[0,1],[0,-1],[1,0],[-1,0]]
+    while q and fresh>0:
+        for i in range(len(q)):
+            r,c=q.popleft()
+            for dr,dc in directions:
+                row,col = dr+r,dc+c
+                # if in bound and fresh, make rotten
+                if(row<0 or col <0 or row==ROW or col==COL)or grid[row][col]!=1:
+                    continue
+                grid[row][col]=2
+                q.append([row,col])
+                fresh = fresh-1
+        time = time+1
+    return time if fresh == 0 else -1
+test_case = [[[2,1,1],[1,1,0],[0,1,1]],[[0,2]]]
+for i,grid in enumerate(test_case):
+    print(f"Test Case {i+1}, Grid is:")
+    print_orange_grid(grid)
+    print(f"The minimum number of minutes that must elapse until no cell has a fresh orange is {orangesRotting(grid)}")
