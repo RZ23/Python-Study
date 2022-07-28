@@ -983,3 +983,31 @@ for i,grid in enumerate(test_case):
     print(f"Test Case {i+1}, Grid is:")
     print_orange_grid(grid)
     print(f"The minimum number of minutes that must elapse until no cell has a fresh orange is {orangesRotting(grid)}")
+print("---------------------329. Longest Increasing Path in a Matrix-------------------------")
+def longestIncreasingPath(matrix):
+    ROW = len(matrix)
+    COL = len(matrix[0])
+    dp = {} # (r,c)->LIP
+    def dfs(r,c,prevVal):
+        if (r<0 or r==ROW or c<0 or c==COL or matrix[r][c]<=prevVal):
+            return 0
+        if (r,c) in dp:
+            return dp[(r,c)]
+        result = 1
+        result = max(result,1+ dfs(r+1,c,matrix[r][c]))
+        result = max(result, 1 + dfs(r - 1, c, matrix[r][c]))
+        result = max(result, 1 + dfs(r, c+1, matrix[r][c]))
+        result = max(result, 1 + dfs(r , c-1, matrix[r][c]))
+        dp[(r,c)] = result
+        return result
+    for r in range(ROW):
+        for c in range(COL):
+            dfs(r,c,-1)
+    return max(dp.values())
+test_case = [[[9,9,4],[6,6,8],[2,1,1]],\
+            [[3,4,5],[3,2,6],[2,2,1]],
+            [[1]]]
+for i,matrix in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print_matrix(matrix)
+    print(f"The length of longest increasing path is {longestIncreasingPath(matrix)}")
