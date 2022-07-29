@@ -1011,3 +1011,40 @@ for i,matrix in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print_matrix(matrix)
     print(f"The length of longest increasing path is {longestIncreasingPath(matrix)}")
+print("---------------------909. Snakes and Ladders-------------------------")
+def snakesAndLadders(board):
+    length = len(board)
+    board.reverse()
+    def intToPos(square):
+        r = (square - 1) // length
+        c = (square - 1) % length
+        if r % 2:
+            c = length-1-c
+        return [r,c]
+    q = deque()
+    q.append([1,0]) # [square,move]
+    visit = set()
+    while q:
+        square,moves = q.popleft()
+        for i in range(1,7):
+            nextSquare = square+i
+            r,c = intToPos(nextSquare)
+            if board[r][c] != -1:
+                nextSquare=board[r][c]
+            if nextSquare==length * length:
+                return moves+1
+            if nextSquare not in visit:
+                visit.add(nextSquare)
+                q.append([nextSquare,moves+1])
+    return -1
+test_case = [[[-1,-1,-1,-1,-1,-1],
+             [-1,-1,-1,-1,-1,-1],
+             [-1,-1,-1,-1,-1,-1],
+             [-1,35,-1,-1,13,-1],
+             [-1,-1,-1,-1,-1,-1],
+             [-1,15,-1,-1,-1,-1]],
+            [[-1,-1],[-1,3]]]
+for i,board in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print_matrix(board)
+    print(f"The least number of moves required to reach the square n^2 is {snakesAndLadders(board)}")
