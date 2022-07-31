@@ -1134,3 +1134,29 @@ for i,grid in enumerate(test_case):
     print(f"Test Case {i+1}:The map is ")
     print_int_map(grid)
     print(f"the smallest number of 0's must flip to connect the two islands is {shortestBridge(grid)}")
+print("---------------------802. Find Eventual Safe States-------------------------")
+'''
+Using BFS and the Time Complexity is O(E+V), the Space Complexity is O(E+V) too
+'''
+def eventualSafeNodes(graph):
+    n = len(graph)
+    safe={}
+    def dfs(i):
+        if i in safe:
+            return safe[i]
+        safe[i]=False
+        for nei in graph[i]:
+            if not dfs(nei):
+                return False
+        safe[i]=True
+        return safe[i]
+    result = []
+    for i in range(n):
+        if dfs(i):
+            result.append(i)
+    return result
+test_case = [[[1,2],[2,3],[5],[0],[5],[],[]],
+            [[1,2,3,4],[1,2],[3,4],[0,4],[]]]
+for i,graph in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the graph {graph}, the list of all the safe nodes is {eventualSafeNodes(graph)}")
