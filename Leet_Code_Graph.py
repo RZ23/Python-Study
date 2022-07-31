@@ -1082,3 +1082,55 @@ for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"With the Deadend List {test[0]},"
               f"From '0000' to target '{test[1]}', the the minimum total number of turns required is {openLock(test[0],test[1])} ")
+print("---------------------934. Shortest Bridge-------------------------")
+'''
+Using BFS and the Time Complexity is O(n*n), the Space Complexity is O(n*n) too
+'''
+def shortestBridge(grid):
+    N = len(grid)
+    direct = [[0,1],[0,-1],[1,0],[-1,0]]
+    # check the position is valid
+    def invalid(r,c):
+        return r<0 or c<0 or r==N or c==N
+    visit = set()
+    # find the first island
+    def dfs(r,c):
+        if (invalid(r,c) or grid[r][c]== 0 or (r,c) in visit):
+            return
+        visit.add((r,c))
+        for dr,dc in direct:
+            dfs(r+dr,c+dc)
+    # Using BFS to find the least bridge
+    def bfs():
+        # add the visit to the queue
+        res,q = 0,deque(visit)
+        while q:
+            for i in range(len(q)):
+                r,c = q.popleft()
+                for dr,dc in direct:
+                    curR,curC = r+dr,c+dc
+                    if invalid(curR,curC) or (curR,curC) in visit:
+                        continue
+                    if grid[curR][curC]==1:
+                        return res
+                    q.append([curR,curC])
+                    visit.add((curR,curC))
+            res = res+1
+    for r in range(N):
+        for c in range(N):
+            if grid[r][c]==1:
+                dfs(r,c)
+                return bfs()
+test_case = [[[0,1],[1,0]],[[0,1,0],[0,0,0],[0,0,1]],
+             [[1,1,1,1,1],[1,0,0,0,1],[1,0,1,0,1],[1,0,0,0,1],[1,1,1,1,1]]]
+def print_int_map(matrix):
+    row = len(matrix)
+    col =len(matrix[0])
+    for i in range(row):
+        for j in range(col):
+            print(format(matrix[i][j]),end = " ")
+        print()
+for i,grid in enumerate(test_case):
+    print(f"Test Case {i+1}:The map is ")
+    print_int_map(grid)
+    print(f"the smallest number of 0's must flip to connect the two islands is {shortestBridge(grid)}")
