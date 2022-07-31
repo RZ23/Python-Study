@@ -1048,3 +1048,37 @@ for i,board in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print_matrix(board)
     print(f"The least number of moves required to reach the square n^2 is {snakesAndLadders(board)}")
+print("---------------------752. Open the Lock-------------------------")
+'''
+Using BFS and the Time Complexity is O(10000), the Space Complexity is O(10000) too
+'''
+def openLock(deadends,target):
+    if "0000" in deadends:
+        return -1
+    def children(lock):
+        res = []
+        for i in range(4):
+            digit = str((int(lock[i])+1)%10)
+            res.append(lock[:i]+digit+lock[i+1:])
+            digit = str(((int(lock[i]) - 1)+10) % 10)
+            res.append(lock[:i] + digit + lock[i + 1:])
+        return res
+    q= deque()
+    q.append(["0000",0]) # [lock,turns]
+    visit = set(deadends)
+    while q:
+        lock,turns = q.popleft()
+        if lock == target:
+            return turns
+        for child in children(lock):
+            if child not in visit:
+                visit.add(child)
+                q.append([child,turns+1])
+    return -1
+test_case = [[["0201","0101","0102","1212","2002"],"0202"],\
+            [["8888"],"0009"],\
+            [["8887","8889","8878","8898","8788","8988","7888","9888"],"8888"]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"With the Deadend List {test[0]},"
+              f"From '0000' to target '{test[1]}', the the minimum total number of turns required is {openLock(test[0],test[1])} ")
