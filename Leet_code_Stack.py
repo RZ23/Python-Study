@@ -59,3 +59,28 @@ test_case = [[2,1,5,6,2,3],[2,4]]
 for i,heights in enumerate(test_case):
     print(f"Test Case {i+1}:Heights List is {heights}")
     print(f"The area of the largest rectangle in the histogram is {largestRectangleArea(heights)}")
+print("---------------------22. Generate Parentheses-------------------------")
+def generateParenthesis(n):
+    # only add open parenthesis if open <n
+    # only add a closing parenthesis if close < open
+    # valid iif open ==close ==n
+    stack = []
+    result = []
+    def backtrack(openN,closedN):
+        if openN==closedN==n:
+            result.append("".join(stack))
+            return
+        if openN<n:
+            stack.append("(")
+            backtrack(openN+1,closedN)
+            stack.pop()
+        if closedN<openN:
+            stack.append(")")
+            backtrack(openN,closedN+1)
+            stack.pop()
+    backtrack(0,0)
+    return result
+test_case = [3,1]
+for i,n in enumerate(test_case):
+    print(f"For {n} pair(s) of Parentheses, it could generate {len(generateParenthesis(n))} combinations of well-formed Parentheses"
+          f"the list is {generateParenthesis(n)}")
