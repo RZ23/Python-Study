@@ -84,3 +84,33 @@ test_case = [3,1]
 for i,n in enumerate(test_case):
     print(f"For {n} pair(s) of Parentheses, it could generate {len(generateParenthesis(n))} combinations of well-formed Parentheses"
           f"the list is {generateParenthesis(n)}")
+print("---------------------155. Min Stack-------------------------")
+class MinStack:
+    def __init__(self):
+        self.stack = []
+        self.minStack = []
+    def push(self,val):
+        self.stack.append(val)
+        val = min(val,self.minStack[-1] if self.minStack else val)
+        self.minStack.append(val)
+    def pop(self):
+        self.stack.pop()
+        self.minStack.pop()
+    def top(self):
+        return self.stack[-1]
+    def getMin(self):
+        return self.minStack[-1]
+    def get_all_elements(self):
+        All_Element = []
+        for i in range(len(self.stack)):
+            All_Element.append(self.stack[i])
+        return All_Element
+minStack = MinStack()
+minStack.push(-2)
+minStack.push(0)
+minStack.push(-3)
+print(f"All the elements in the stack are {minStack.get_all_elements()}")
+print(f"the min stack is {minStack.getMin()}")
+print(f"the pop item is {minStack.pop()}")
+print(f"the top item is {minStack.top()}")
+print(f"the min stack is {minStack.getMin()}")
