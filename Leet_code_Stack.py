@@ -114,3 +114,37 @@ print(f"the min stack is {minStack.getMin()}")
 print(f"the pop item is {minStack.pop()}")
 print(f"the top item is {minStack.top()}")
 print(f"the min stack is {minStack.getMin()}")
+print("---------------------739. Daily Temperatures-------------------------")
+print("***** Method One: Array *****")
+def dailyTemperatures_array_list(temperatures):
+    result = []
+    for i in range(len(temperatures)-1):
+        updated = False
+        for j in range(i+1,len(temperatures)):
+            if temperatures[j]>temperatures[i]:
+                result.append(j-i)
+                updated = True
+                break
+        if not updated:
+            result.append(0)
+    result.append(0)
+    return result
+test_case = [[73,74,75,71,69,72,76,73],[30,40,50,60],[30,60,90]]
+for i, temperatures in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the temperatures list {temperatures},"
+          f"the days from ith day to get warner day is {dailyTemperatures_array_list(temperatures)}")
+print("***** Method One: Stack *****")
+def dailyTemperatures(temperatures):
+    result = [0]*len(temperatures)
+    stack = [] # pair: [temp,index]
+    for i, t in enumerate(temperatures):
+        while stack and t>stack[-1][0]:
+            stackT,stackInd = stack.pop()
+            result[stackInd] = (i-stackInd)
+        stack.append([t,i])
+    return result
+for i, temperatures in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the temperatures list {temperatures},"
+          f"the days from ith day to get warner day is {dailyTemperatures(temperatures)}")
