@@ -190,3 +190,26 @@ def asteroidCollision(asteroids):
 for i,asteroids in enumerate(test_case):
     print(f"Test Case: {i+1}:")
     print(f"Based on the asteroids list {asteroids}, the final result is {asteroidCollision(asteroids)}")
+print("---------------------1856. Maximum Subarray Min-Product-------------------------")
+def maxSumMinProduct(nums):
+    result = 0
+    stack = []
+    pre_sum = [0]
+    for n in nums:
+        pre_sum.append(pre_sum[-1]+n)
+    for i,n in enumerate(nums):
+        newStart = i
+        while stack and stack[-1][1]>n:
+            start,val = stack.pop()
+            total = pre_sum[i]-pre_sum[start]
+            result = max(result,total*val)
+            newStart = start
+        stack.append((newStart,n))
+    for start,val in stack:
+        total = pre_sum[len(nums)]-pre_sum[start]
+        result = max(result,total*val)
+    return result
+test_case = [[1,2,3,2],[2,3,3,1,2],[3,1,5,6,4,2]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the nums list {nums}, The maximum min-product is {maxSumMinProduct(nums)}")
