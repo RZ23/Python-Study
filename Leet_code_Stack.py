@@ -148,3 +148,45 @@ for i, temperatures in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"Based on the temperatures list {temperatures},"
           f"the days from ith day to get warner day is {dailyTemperatures(temperatures)}")
+print("---------------------735. Asteroid Collision-------------------------")
+print("***** Method One: By self *****")
+def asteroidCollision(asteroids):
+    stack = [asteroids[0]]
+    for i in range(1,len(asteroids)):
+        if len(stack)==0 or asteroids[i]*stack[-1]>0:
+            stack.append(asteroids[i])
+        if asteroids[i]>0 and stack[-1]<0:
+            stack.append(asteroids[i])
+        elif asteroids[i]*stack[-1]<0:
+            stack.append(asteroids[i])
+            while len(stack)>=2 and stack[-1]*stack[-2]<0 and (stack[-1]<0 and stack[-2]>0):
+                last_asteroid_1 = stack.pop()
+                last_asteroid_2 = stack.pop()
+                if abs(last_asteroid_1)>abs(last_asteroid_2):
+                    stack.append(last_asteroid_1)
+                elif abs(last_asteroid_1)<abs(last_asteroid_2):
+                    stack.append(last_asteroid_2)
+    return stack
+test_case = [[5,10,-5],[8,-8],[10,2,-5],[-2,-1,1,2]]
+for i,asteroids in enumerate(test_case):
+    print(f"Test Case: {i+1}:")
+    print(f"Based on the asteroids list {asteroids}, the final result is {asteroidCollision(asteroids)}")
+print("***** Method One: By NeetCode *****")
+def asteroidCollision(asteroids):
+    stack = []
+    for a in asteroids:
+        while stack and a<0 and stack[-1]>0:
+            diff = a+stack[-1]
+            if diff<0:
+                stack.pop()
+            elif diff >0:
+                a=0
+            else:
+                a = 0
+                stack.pop()
+        if a:
+            stack.append(a)
+    return stack
+for i,asteroids in enumerate(test_case):
+    print(f"Test Case: {i+1}:")
+    print(f"Based on the asteroids list {asteroids}, the final result is {asteroidCollision(asteroids)}")
