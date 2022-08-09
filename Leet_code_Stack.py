@@ -213,3 +213,17 @@ test_case = [[1,2,3,2],[2,3,3,1,2],[3,1,5,6,4,2]]
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"For the nums list {nums}, The maximum min-product is {maxSumMinProduct(nums)}")
+print("---------------------853. Car Fleet-------------------------")
+def carFleet(target,position,speed):
+    car_position = [[p,s] for p,s in zip(position,speed)]
+    stack = []
+    for p,s in sorted(car_position)[::-1]:
+        stack.append((target-p)/s)
+        if len(stack)>1 and stack[-1]<=stack[-2]:
+            stack.pop()
+    return len(stack)
+test_case = [[12,[10,8,0,5,3],[2,4,1,1,3]],[10, [3], [3]],[100, [0,2,4],[4,2,1]]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the speed list {test[1]} and position list {test[2]}, to the target {test[0]},"
+          f"there will be {carFleet(test[0],test[1],test[2])} car(s) fleets that will arrive at the destination")
