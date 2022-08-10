@@ -1,3 +1,4 @@
+from collections import deque
 print("---------------------20. Valid Parentheses-------------------------")
 def isValid(s):
     stack = []
@@ -227,3 +228,42 @@ for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"Based on the speed list {test[1]} and position list {test[2]}, to the target {test[0]},"
           f"there will be {carFleet(test[0],test[1],test[2])} car(s) fleets that will arrive at the destination")
+print("---------------------225. Implement Stack using Queues-------------------------")
+class MyStack:
+    def __init__(self):
+        self.q = deque()
+    def push(self, x):
+        self.q.append(x)
+    def pop(self):
+        for i in range(len(self.q)-1):
+            self.q.append(self.q.popleft())
+        return self.q.popleft()
+    def top(self):
+        return self.q[-1]
+    def empty(self):
+        return len(self.q)==0
+    def display_myStack(self):
+        if len(self.q)==0:
+            print("The myStack is empty")
+        else:
+            print("Element(s) in the myStack:")
+            for i in range(len(self.q)):
+                print(self.q[i],end = ",")
+            print()
+myStack = MyStack()
+myStack.push(1)
+myStack.push(2)
+myStack.push(3)
+myStack.push(6)
+myStack.display_myStack()
+print(f"Top element of myStack: {myStack.top()}")
+myStack.push(9)
+myStack.push(12)
+myStack.display_myStack()
+print(f"pop from the myStack: {myStack.pop()}")
+myStack.display_myStack()
+print(f"The myStack is empty: {myStack.empty()}")
+while not myStack.empty():
+    myStack.pop()
+myStack.display_myStack()
+print(f"The myStack is empty: {myStack.empty()}")
