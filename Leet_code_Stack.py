@@ -267,3 +267,37 @@ while not myStack.empty():
     myStack.pop()
 myStack.display_myStack()
 print(f"The myStack is empty: {myStack.empty()}")
+print("---------------------901. Online Stock Span-------------------------")
+print("***** Method One: Using Array")
+class StockSpanner:
+    def __init__(self):
+        self.lst = []
+    def next(self, price):
+        self.lst.append(price)
+        span = 1
+        for i in range(len(self.lst)-2,-1,-1):
+            if price>=self.lst[i]:
+                span = span+1
+            else:
+                break
+        return span
+stockSpanner = StockSpanner()
+span_list = [100,80,60,70,60,75,85]
+for i,price in enumerate(span_list):
+    print(f"For the {i+1} day, the span is {stockSpanner.next(price)}")
+
+print("***** Method One: Using Stack")
+class StockSpanner:
+    def __init__(self):
+        self.stack = []
+    def next(self, price):
+        span = 1
+        while self.stack and self.stack[-1][0]<=price:
+            span = self.stack[-1][1]+span
+            self.stack.pop()
+        self.stack.append((price,span))
+        return span
+stockSpanner = StockSpanner()
+span_list = [100,80,60,70,60,75,85]
+for i,price in enumerate(span_list):
+    print(f"For the {i+1} day, the span is {stockSpanner.next(price)}")
