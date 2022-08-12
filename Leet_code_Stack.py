@@ -301,3 +301,26 @@ stockSpanner = StockSpanner()
 span_list = [100,80,60,70,60,75,85]
 for i,price in enumerate(span_list):
     print(f"For the {i+1} day, the span is {stockSpanner.next(price)}")
+print("---------------------150. Evaluate Reverse Polish Notation-------------------------")
+def evalRPN(tokens):
+    stack = []
+    for t in tokens:
+        if t =="+":
+            stack.append(stack.pop()+stack.pop())
+        elif t=="-":
+            a,b = stack.pop(),stack.pop()
+            stack.append(b-a)
+        elif t=="*":
+            stack.append(stack.pop()*stack.pop())
+        elif t== "/":
+            a,b = stack.pop(),stack.pop()
+            stack.append(int(b/a))
+        else:
+            stack.append(int(t))
+    return stack[0]
+test_case = [["2","1","+","3","*"],\
+            ["4","13","5","/","+"],\
+            ["10","6","9","3","+","-11","*","/","*","17","+","5","+"]]
+for i, tokens in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the Token {tokens}, the result is {evalRPN(tokens)}")
