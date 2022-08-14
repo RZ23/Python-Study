@@ -343,3 +343,42 @@ test_case = [["1432219",3],["10200",1],["10",2],["1234567890",9]]
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"For the nums {test[0]},remove {test[1]} digits, the smallest possible integer is {removeKdigits(test[0],test[1])}")
+print("---------------------895. Maximum Frequency Stack-------------------------")
+class FreqStack:
+    def __init__(self):
+        self.group_stack = {}
+        self.maxCnt = 0
+        self.cnt = {}
+        self.display_list = []
+    def push(self, val):
+        valCnt = 1+self.cnt.get(val,0)
+        self.cnt[val] = valCnt
+        if valCnt>self.maxCnt:
+            self.maxCnt = valCnt
+            self.group_stack[valCnt] = []
+        self.group_stack[valCnt].append(val)
+        self.display_list.append(val)
+        print(f"After push the {val}, The updated list is {self.display_list}")
+    def pop(self):
+        result = self.group_stack[self.maxCnt].pop()
+        self.cnt[result] = self.cnt[result]-1
+        if not self.group_stack[self.maxCnt]:
+            self.maxCnt = self.maxCnt-1
+        display_list_cp = self.display_list.copy()
+        display_list_cp.reverse()
+        remove_index = len(self.display_list)-display_list_cp.index(result)-1
+        updated_list = self.display_list[:remove_index]+self.display_list[remove_index+1:]
+        self.display_list = updated_list
+        print(f"After remove the most frequency from the stack, The updated list is {self.display_list}")
+        return result
+freqStack = FreqStack()
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(5)
+freqStack.push(7)
+freqStack.push(4)
+freqStack.push(5)
+print(f"pop the most frequency from the stack is {freqStack.pop()}")
+print(f"pop the most frequency from the stack is {freqStack.pop()}")
+print(f"pop the most frequency from the stack is {freqStack.pop()}")
+print(f"pop the most frequency from the stack is {freqStack.pop()}")
