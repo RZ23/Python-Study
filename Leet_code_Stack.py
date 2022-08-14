@@ -324,3 +324,22 @@ test_case = [["2","1","+","3","*"],\
 for i, tokens in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"Based on the Token {tokens}, the result is {evalRPN(tokens)}")
+print("---------------------402. Remove K Digits-------------------------")
+def removeKdigits(num,k):
+    if len(num)==k:
+        return "0"
+    stack = []
+    for c in num:
+        while k>0 and stack and stack[-1]>c:
+            k = k-1
+            stack.pop()
+        stack.append(c)
+    stack = stack[:len(stack)-k]
+    result = ""
+    for i in range(len(stack)):
+        result = stack.pop()+result
+    return str(int(result))
+test_case = [["1432219",3],["10200",1],["10",2],["1234567890",9]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the nums {test[0]},remove {test[1]} digits, the smallest possible integer is {removeKdigits(test[0],test[1])}")
