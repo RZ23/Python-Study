@@ -360,6 +360,9 @@ class FreqStack:
         self.display_list.append(val)
         print(f"After push the {val}, The updated list is {self.display_list}")
     def pop(self):
+        if self.maxCnt==0:
+            print("The Stack is Empty, cannot run  the pop function")
+            return
         result = self.group_stack[self.maxCnt].pop()
         self.cnt[result] = self.cnt[result]-1
         if not self.group_stack[self.maxCnt]:
@@ -369,7 +372,7 @@ class FreqStack:
         remove_index = len(self.display_list)-display_list_cp.index(result)-1
         updated_list = self.display_list[:remove_index]+self.display_list[remove_index+1:]
         self.display_list = updated_list
-        print(f"After remove the most frequency from the stack, The updated list is {self.display_list}")
+        print(f"After remove the most frequency item {result} from the stack, The updated list is {self.display_list}")
         return result
 freqStack = FreqStack()
 freqStack.push(5)
@@ -378,7 +381,71 @@ freqStack.push(5)
 freqStack.push(7)
 freqStack.push(4)
 freqStack.push(5)
-print(f"pop the most frequency from the stack is {freqStack.pop()}")
-print(f"pop the most frequency from the stack is {freqStack.pop()}")
-print(f"pop the most frequency from the stack is {freqStack.pop()}")
-print(f"pop the most frequency from the stack is {freqStack.pop()}")
+# print(f"pop the most frequency from the stack is {freqStack.pop()}")
+# print(f"pop the most frequency from the stack is {freqStack.pop()}")
+# print(f"pop the most frequency from the stack is {freqStack.pop()}")
+# print(f"pop the most frequency from the stack is {freqStack.pop()}")
+freqStack.pop()
+freqStack.pop()
+freqStack.pop()
+freqStack.pop()
+freqStack.pop()
+freqStack.pop()
+freqStack.pop()
+print("---------------------496. Next Greater Element I-------------------------")
+print("***** Method One: Multiple Loop 0(m*n) *****")
+def nextGreaterElement(nums1, nums2):
+    result = []
+    updated = False
+    for num in nums1:
+        if num not in nums2:
+            result.append(-1)
+        else:
+            updated = False
+            num2_index = nums2.index(num)
+            j = num2_index+1
+            while j<len(nums2) and not updated:
+                if nums2[j]>num:
+                    result.append(nums2[j])
+                    updated = True
+                j = j+1
+            if not updated:
+                result.append(-1)
+    return result
+test_case = [[[4,1,2],[1,3,4,2]],[[2,4],[1,2,3,4]],[[4,1,2],[2,1,3,4]]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the list {test[0]}, the next greater element in the list {test[1]} is {nextGreaterElement(test[0],test[1])} ")
+print("***** Method Two: Hashmap 0(m*n) *****")
+def nextGreaterElement(nums1, nums2):
+    num1Index = {n:i for i,n in enumerate(nums1) }
+    result = [-1]*len(nums1)
+    for i in range(len(nums2)):
+        if nums2[i] not in num1Index:
+            continue
+        for j in range(i+1,len(nums2)):
+            if nums2[j]>nums2[i]:
+                index = num1Index[nums2[i]]
+                result[index] = nums2[j]
+                break
+    return result
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the list {test[0]}, the next greater element in the list {test[1]} is {nextGreaterElement(test[0],test[1])} ")
+print("***** Method Three: Stack 0(m+n) *****")
+def nextGreaterElement(nums1, nums2):
+    nums1Index = {n:i for i,n in enumerate(nums1)}
+    result = [-1]*len(nums1)
+    stack = []
+    for i in range(len(nums2)):
+        cur = nums2[i]
+        while stack and cur>stack[-1]:
+            val = stack.pop()
+            index = nums1Index[val]
+            result[index] = cur
+        if cur in nums1Index:
+            stack.append(cur)
+    return result
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the list {test[0]}, the next greater element in the list {test[1]} is {nextGreaterElement(test[0],test[1])} ")
