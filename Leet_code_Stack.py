@@ -1,4 +1,33 @@
 from collections import deque
+from binarytree import tree,Node
+import binarytree
+import sys
+
+class TreeNode(binarytree.Node):
+    def __init__(self,values=0,right=None,left = None):
+        self.val = values
+        self.right = right
+        self.left = left
+def generate_tree_from_list(root):
+    if len(root)==0:
+        return None
+    node_list = []
+    # generate node for each item in the list
+    for i in range(len(root)):
+        if root[i] is not None:
+            node_list.append(Node(root[i]))
+        else:
+            node_list.append(None)
+    # Set the Left/Right child for each node
+    for i in range(len(node_list)//2):
+        if node_list[i] is not None:
+            left_child =2*i+1
+            right_child = 2*i+2
+            if left_child<len(node_list):
+                node_list[i].left = node_list[left_child]
+            if right_child<len(node_list):
+                node_list[i].right = node_list[right_child]
+    return node_list[0]
 print("---------------------20. Valid Parentheses-------------------------")
 def isValid(s):
     stack = []
@@ -449,3 +478,30 @@ def nextGreaterElement(nums1, nums2):
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"For the list {test[0]}, the next greater element in the list {test[1]} is {nextGreaterElement(test[0],test[1])} ")
+print("---------------------173. Binary Search Tree Iterator-------------------------")
+class BSTIterator:
+    def __init__(self, root):
+        self.stack = []
+        while root:
+            self.stack.append(root)
+            root = root.left
+    def next(self):
+        res = self.stack.pop()
+        cur = res.right
+        while cur:
+            self.stack.append(cur)
+            cur = cur.left
+        return res.val
+    def hasNext(self) -> bool:
+        return len(self.stack)>0
+root = generate_tree_from_list([7, 3, 15, None, None, 9, 20])
+print(root)
+obj = BSTIterator(root)
+print(f"The Stack is:{obj.stack}, and the pointer is to {obj.stack[-1]}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"Has the next node: {obj.hasNext()}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"Has the next node: {obj.hasNext()}")
+print(f"The value of obj.next() is {obj.next()}")
+print(f"Has the next node: {obj.hasNext()}")
