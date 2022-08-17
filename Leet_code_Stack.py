@@ -525,3 +525,21 @@ test_case = [["5","2","C","D","+"], ["5","-2","4","C","D","9","+","+"],["1","C"]
 for i, ops in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"Based on the score record {ops}, the total sum is {calPoints(ops)}")
+print("---------------------1209. Remove All Adjacent Duplicates in String II-------------------------")
+def removeDuplicates(s, k):
+    stack = []
+    for c in s:
+        if stack and stack[-1][0]== c:
+            stack[-1][1] = stack[-1][1]+1
+        else:
+            stack.append([c,1])
+        if stack[-1][1]==k:
+            stack.pop()
+    result = ""
+    for char,count in stack:
+        result = result+(char*count)
+    return result
+test_case = [["abcd",2],["deeedbbcccbdaa",3],["pbbcggttciiippooaais",2]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Remove all {test[1]} adjacent duplicates in string {test[0]} is {removeDuplicates(test[0],test[1])} ")
