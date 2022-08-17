@@ -505,3 +505,23 @@ print(f"The value of obj.next() is {obj.next()}")
 print(f"Has the next node: {obj.hasNext()}")
 print(f"The value of obj.next() is {obj.next()}")
 print(f"Has the next node: {obj.hasNext()}")
+print("---------------------682. Baseball Game-------------------------")
+def calPoints(ops):
+    stack = []
+    for c in ops:
+        if c=="+":
+            stack.append(stack[-1]+stack[-2])
+        elif c=="D":
+            stack.append(2*stack[-1])
+        elif c=="C":
+            stack.pop()
+        else:
+            stack.append(int(c))
+    sum = 0
+    while stack:
+        sum = sum+stack.pop()
+    return sum
+test_case = [["5","2","C","D","+"], ["5","-2","4","C","D","9","+","+"],["1","C"]]
+for i, ops in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"Based on the score record {ops}, the total sum is {calPoints(ops)}")
