@@ -543,3 +543,34 @@ test_case = [["abcd",2],["deeedbbcccbdaa",3],["pbbcggttciiippooaais",2]]
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"Remove all {test[1]} adjacent duplicates in string {test[0]} is {removeDuplicates(test[0],test[1])} ")
+print("---------------------456. 132 Pattern-------------------------")
+print("***** Method One: Stack *****")
+def find132pattern(nums):
+    stack = [] # pair [val,minLeft]
+    curMin = nums[0]
+    for n in nums:
+        while stack and n>=stack[-1][0]:
+            stack.pop()
+        if stack and n<stack[-1][0] and n>stack[-1][1]:
+            return True
+        stack.append([n,curMin])
+        curMin = min(curMin,n)
+    return False
+test_case = [[1,2,3,4],[3,1,4,2],[-1,3,2,0]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"There is the subsquence in the {nums} meet the 132 pattern:{find132pattern(nums)}")
+print("***** Method One: Nest Loop *****")
+def find132pattern(nums):
+    for i in range(len(nums)-1,1,-1):
+        for j in range(i-1,0,-1):
+            if nums[i]>=nums[j]:
+                continue
+            if nums[i]<nums[j]:
+                for k in range(j-1,-1,-1):
+                    if nums[k]<nums[i]:
+                        return True
+    return False
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"There is the subsquence in the {nums} meet the 132 pattern:{find132pattern(nums)}")
