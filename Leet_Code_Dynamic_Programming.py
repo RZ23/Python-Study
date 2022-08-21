@@ -39,7 +39,7 @@ def climbStairs(n):
     return dp[n]
 for i in range(1,11):
     print(f"For {i} stairs floor, there are {climbStairs(i)} to reach the top")
-print("***** Method Two: Dynamic Programming II *****")
+print("***** Method Three: Dynamic Programming II *****")
 def climbStairs(n):
     one_step,two_step = 1,1
     for i in range(n-1):
@@ -49,3 +49,40 @@ def climbStairs(n):
     return one_step
 for i in range(1,11):
     print(f"For {i} stairs floor, there are {climbStairs(i)} to reach the top")
+print("---------------------983. Minimum Cost For Tickets -------------------------")
+print("***** Method One: Iteration *****")
+def mincostTickets(days,costs):
+    dp = {}
+    def dfs(i):
+        if i==len(days):
+            return 0
+        if i in dp:
+            return dp[i]
+        dp[i] = float("inf")
+        for d,c in zip([1,7,30],costs):
+            j = i
+            while j<len(days) and days[j]<d+days[i]:
+                j = j+1
+            dp[i] = min(dp[i],c+dfs(j))
+        return dp[i]
+    return dfs(0)
+test_case = [[[1,4,6,7,8,20], [2,7,15]],[[1,2,3,4,5,6,7,8,9,10,30,31],[2,7,15]]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}")
+    print(f"Based on the days {test[0]} and cost {test[1]}"
+          f", the Minimum cost is {mincostTickets(test[0],test[1])}")
+print("***** Method Two: Dynamic Programming *****")
+def mincostTickets(days,costs):
+    dp =  {}
+    for i in range(len(days)-1,-1,-1):
+        dp[i] = float("inf")
+        for d,c in zip([1,7,30],costs):
+            j = i
+            while j<len(days) and days[j]<d+days[i]:
+                j = j+1
+            dp[i] = min(dp[i],c+dp.get(j,0))
+    return dp[0]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}")
+    print(f"Based on the days {test[0]} and cost {test[1]}"
+          f", the Minimum cost is {mincostTickets(test[0],test[1])}")
