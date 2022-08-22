@@ -86,3 +86,34 @@ for i,test in enumerate(test_case):
     print(f"Test Case {i+1}")
     print(f"Based on the days {test[0]} and cost {test[1]}"
           f", the Minimum cost is {mincostTickets(test[0],test[1])}")
+print("---------------------518. Coin Change 2 -------------------------")
+print("***** Method One: 2D Array *****")
+def change(amount, coins):
+    dp = [[0]*(len(coins) + 1) for i in range(amount+1)]
+    dp[0] = [1]*(len(coins)+1)
+    for a in range(1,amount+1):
+        for i in range(len(coins)-1,-1,-1):
+            dp[a][i] = dp[a][i+1]
+            if a-coins[i]>=0:
+                dp[a][i] = dp[a][i]+dp[a-coins[i]][i]
+    return dp[amount][0]
+test_case = [[5,[1,2,5]],[3,[2]],[10,[10]]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"There are {change(test[0],test[1])} ways to use coins {test[1]} to get the amount {test[0]}")
+print("***** Method Two: Iteration *****")
+def change(amount, coins):
+    cache = {}
+    def dfs(i,a):
+        if a==amount:
+            return 1
+        if a>amount:
+            return 0
+        if i==len(coins):
+            return 0
+        cache[(i,a)] = dfs(i,a+coins[i])+dfs(i+1,a)
+        return cache[(i,a)]
+    return dfs(0,0)
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"There are {change(test[0],test[1])} ways to use coins {test[1]} to get the amount {test[0]}")
