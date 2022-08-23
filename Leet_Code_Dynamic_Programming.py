@@ -117,3 +117,18 @@ def change(amount, coins):
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"There are {change(test[0],test[1])} ways to use coins {test[1]} to get the amount {test[0]}")
+print("---------------------139. Word Break -------------------------")
+def wordBreak(s,wordDict):
+    dp = [False]*(len(s)+1)
+    dp[len(s)]=True
+    for i in range(len(s)-1,-1,-1):
+        for w in wordDict:
+            if (i+len(w))<=len(s) and s[i:i+len(w)]==w:
+                dp[i] = dp[i+len(w)]
+            if dp[i]:
+                break
+    return dp[0]
+test_case = [["leetcode",["leet","code"]],["applepenapple", ["apple","pen"]],["catsandog",["cats","dog","sand","and","cat"]]]
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"'{test[0]}' can be segmented into a space-separated sequence of one or more dictionary words in {test[1]}:{wordBreak(test[0],test[1])} ")
