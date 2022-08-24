@@ -132,3 +132,58 @@ test_case = [["leetcode",["leet","code"]],["applepenapple", ["apple","pen"]],["c
 for i, test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"'{test[0]}' can be segmented into a space-separated sequence of one or more dictionary words in {test[1]}:{wordBreak(test[0],test[1])} ")
+
+print("---------------------5. Longest Palindromic Substring -------------------------")
+print("***** Method One: Dynamic Programming *****")
+def longestPalindrome(s):
+    result = ""
+    resultLen = 0
+    for i in range(len(s)):
+        # for odd string
+        l,r = i,i
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            if (r-l+1)>resultLen:
+                resultLen = (r-l+1)
+                result = s[l:r+1]
+            l = l-1
+            r = r+1
+        # for even string
+        l,r = i,i+1
+        while l>=0 and r<len(s) and s[l]==s[r]:
+            if (r-l+1)>resultLen:
+                resultLen = (r-l+1)
+                result = s[l:r+1]
+            l = l-1
+            r = r+1
+    return result
+test_case = ["babad","cbbd","aba","abba","ccc","a","aacabdkacaa"]
+for i,s in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"The Longest Palindromic Substring in {s} is {longestPalindrome(s)}")
+print("***** Method Two: Brute Force *****")
+def longestPalindrome(s):
+    if len(s)==1:
+        return s
+    def check_palindrome(s):
+        l = 0
+        r = len(s)-1
+        while l<=r:
+            if s[l]!=s[r]:
+                return False
+            l = l+1
+            r = r-1
+        return True
+    maxLen = 1
+    result = s[0]
+    #
+    for i in range(len(s)):
+        for j in range(i,len(s)):
+            if check_palindrome(s[i:j+1]):
+                if (j-i+1)>maxLen:
+                    maxLen = (j-i+1)
+                    result = s[i:j+1]
+    # return check_palindrome(s)
+    return result
+for i,s in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"The Longest Palindromic Substring in {s} is {longestPalindrome(s)}")
