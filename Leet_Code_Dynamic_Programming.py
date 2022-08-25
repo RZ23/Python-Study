@@ -187,3 +187,37 @@ def longestPalindrome(s):
 for i,s in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"The Longest Palindromic Substring in {s} is {longestPalindrome(s)}")
+print("---------------------91. Decode Ways -------------------------")
+print("***** Method One: Dynamic Programming *****")
+def numDecodings(s):
+    dp = {len(s):1}
+    for i in range(len(s)-1,-1,-1):
+        if s[i]=="0":
+            dp[i] = 0
+        else:
+            dp[i]=dp[i+1]
+        if i+1<len(s) and (s[i]=="1" or s[i]=="2" and s[i+1] in ("0123456")):
+            dp[i] = dp[i]+dp[i+2]
+    return dp[0]
+test_case = ["12","226","06"]
+for i,s in enumerate(test_case):
+    print(f"Test Case {i+1}:"
+          f"There are {numDecodings(s)} ways to decoding the string '{s}'")
+print("***** Method Two: Iteration  *****")
+def numDecodings(s):
+    dp = {len(s):1}
+    def dfs(i):
+        if i in dp:
+            return dp[i]
+        if s[i]=="0":
+            return 0
+        result = dfs(i+1)
+        if i+1<len(s) and (s[i]=="1" or (s[i]=="2" and s[i+1] in "0123456")):
+            result = result+dfs(i+2)
+        dp[i] = result
+        return result
+    return dfs(0)
+test_case = ["12","226","06"]
+for i,s in enumerate(test_case):
+    print(f"Test Case {i+1}:"
+          f"There are {numDecodings(s)} ways to decoding the string '{s}'")
