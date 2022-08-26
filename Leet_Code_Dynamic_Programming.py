@@ -221,3 +221,31 @@ test_case = ["12","226","06"]
 for i,s in enumerate(test_case):
     print(f"Test Case {i+1}:"
           f"There are {numDecodings(s)} ways to decoding the string '{s}'")
+print("---------------------198. House Robber -------------------------")
+print("***** Method One: Dynamic Programming with list: Time:O(n), Space: O(n)*****")
+def rob(nums):
+    if len(nums) == 1:
+        return nums[0]
+    result = [0] * len(nums)
+    result[0] = nums[0]
+    result[1] = max(nums[0], nums[1])
+    if len(nums) < 3:
+        return max(result[0], result[1])
+    for i in range(2, len(nums)):
+        result[i] = max(result[i - 2] + nums[i], result[i - 1])
+    return result[-1]
+test_case = [[1,2,3,1],[2,7,9,3,1],[0],[2,1],[1,2]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: For the House layout {nums}, "
+          f"the maximum amount of money you can rob tonight without alerting the police is {rob(nums)} ")
+print("***** Method Two: Dynamic Programming with only 2 variables: Time:O(n), Space:O(1) *****")
+def rob(nums):
+    rob1,rob2 = 0,0
+    for n in nums:
+        temp = max(rob1+n,rob2)
+        rob1 = rob2
+        rob2 = temp
+    return rob2
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: For the House layout {nums}, "
+          f"the maximum amount of money you can rob tonight without alerting the police is {rob(nums)} ")
