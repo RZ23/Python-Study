@@ -289,3 +289,17 @@ def isInterleave(s1, s2, s3):
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}:The String '{test[2]}' could be interleaved by string '{test[0]}'"
           f"and String '{test[1]}':{isInterleave(test[0],test[1],test[2])}")
+print("---------------------213. House Robber II -------------------------")
+def rob(nums):
+    def robber(house):
+        house1,house2 = 0,0
+        for h in house:
+            temp = max(house1+h,house2)
+            house1 = house2
+            house2 = temp
+        return house2
+    # get max of [except first one], [except the last one] and,[first one]-> in case there is only one in the list
+    return max(robber(nums[:-1]),robber(nums[1:]),nums[0])
+test_case = [[2,3,2],[1,2,3,1],[1,2,3]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the house layout {nums}, the maximum amount of money can rob is {rob(nums)} ")
