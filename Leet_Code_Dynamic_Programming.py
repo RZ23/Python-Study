@@ -249,3 +249,43 @@ def rob(nums):
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: For the House layout {nums}, "
           f"the maximum amount of money you can rob tonight without alerting the police is {rob(nums)} ")
+print("---------------------97. Interleaving String -------------------------")
+print("***** Method One: Dynamic Programming with Iteration *****")
+def isInterleave(s1, s2, s3):
+    if len(s1)+len(s2)!=len(s3):
+        return False
+    dp= {}
+    def dfs(i,j):
+        if i==len(s1) and j== len(s2):
+            return True
+        if (i,j) in dp:
+            return dp[(i,j)]
+        if i<len(s1) and s1[i]==s3[i+j] and dfs(i+1,j):
+            return True
+        if j<len(s2) and s2[j]==s3[i+j] and dfs(i,j+1):
+            return True
+        dp[(i,j)] = False
+        return False
+    return dfs(0,0)
+test_case = [["aabcc","dbbca","aadbbcbcac"],
+             ["aabcc","dbbca","aadbbbaccc"],
+             ["","",""],["","","a"]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:The String '{test[2]}' could be interleaved by string '{test[0]}'"
+          f"and String '{test[1]}':{isInterleave(test[0],test[1],test[2])}")
+print("***** Method One: Dynamic Programming with 2D Arrays *****")
+def isInterleave(s1, s2, s3):
+    if len(s1)+len(s2)!=len(s3):
+        return False
+    dp = [[False]*(len(s2)+1) for i in range(len(s1)+1)]
+    dp[len(s1)][len(s2)]=True
+    for i in range(len(s1),-1,-1):
+        for j in range(len(s2),-1,-1):
+            if i<len(s1) and s1[i]==s3[i+j] and dp[i+1][j]:
+                dp[i][j] = True
+            if j<len(s2) and s2[j]==s3[i+j] and dp[i][j+1]:
+                dp[i][j]=True
+    return dp[0][0]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}:The String '{test[2]}' could be interleaved by string '{test[0]}'"
+          f"and String '{test[1]}':{isInterleave(test[0],test[1],test[2])}")
