@@ -303,3 +303,16 @@ def rob(nums):
 test_case = [[2,3,2],[1,2,3,1],[1,2,3]]
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: Based on the house layout {nums}, the maximum amount of money can rob is {rob(nums)} ")
+print("---------------------256. Paint House -------------------------")
+def minCost(costs):
+    if len(costs)==0:
+        return 0
+    if len(costs)==1:
+        return min(costs[0])
+    for i in range(1,len(costs)):
+        costs[i][0] = costs[i][0]+min(costs[i-1][1],costs[i-1][2])
+        costs[i][1] = costs[i][1] + min(costs[i - 1][0], costs[i - 1][2])
+        costs[i][2] = costs[i][2] + min(costs[i - 1][0], costs[i - 1][1])
+    return min(costs[-1])
+test_case = [[17,2,17],[16,16,5],[14,3,19]]
+print(f"The minimum cost of painting houses by the list {test_case} is {minCost(test_case)}")
