@@ -316,3 +316,17 @@ def minCost(costs):
     return min(costs[-1])
 test_case = [[17,2,17],[16,16,5],[14,3,19]]
 print(f"The minimum cost of painting houses by the list {test_case} is {minCost(test_case)}")
+print("---------------------300. Longest Increasing Subsequence -------------------------")
+def lengthOfLIS(nums):
+    if len(nums)==1:
+        return nums[0]
+    LIS = [1]*len(nums)
+    for i in range(len(nums)-1,-1,-1):
+        for j in range(i+1,len(nums)):
+            if nums[i]<nums[j]:
+                LIS[i] = max(LIS[i],1+LIS[j])
+    return max(LIS)
+test_case = [[10,9,2,5,3,7,101,18],[0,1,0,3,2,3],[7,7,7,7,7,7,7]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: The length of Longest Increasing Subsequence in {nums} "
+          f"is {lengthOfLIS(nums)} ")
