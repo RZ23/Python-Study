@@ -330,3 +330,17 @@ test_case = [[10,9,2,5,3,7,101,18],[0,1,0,3,2,3],[7,7,7,7,7,7,7]]
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: The length of Longest Increasing Subsequence in {nums} "
           f"is {lengthOfLIS(nums)} ")
+print("---------------------1143. Longest Common Subsequence -------------------------")
+def longestCommonSubsequence(text1, text2):
+    dp = [[0 for i in range(len(text2)+1)] for j in range(len(text1)+1)]
+    for i in range(len(text1)-1,-1,-1):
+        for j in range(len(text2)-1,-1,-1):
+            if text1[i]==text2[j]:
+                dp[i][j] = 1+dp[i+1][j+1]
+            else:
+                dp[i][j] = max(dp[i+1][j],dp[i][j+1])
+    return dp[0][0]
+test_case = [["abcde","ace"],["abc","abc"],["abc","def"]]
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}: The length of the longest Common Subsequence of "
+          f"{test[0]} and {test[1]} is {longestCommonSubsequence(test[0],test[1])}")
