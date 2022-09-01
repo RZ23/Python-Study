@@ -363,7 +363,7 @@ def maxProduct(nums):
 test_case = [[2,3,-2,4],[-2,0,-1],[-4,-3,-2]]
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: The Maximum Product Subarray of {nums} is {maxProduct(nums)} ")
-print("***** Method One:Dynamic Programming *****")
+print("***** Method Two:Dynamic Programming *****")
 def maxProduct(nums):
     result = max(nums)
     curMin,curMax = 1,1
@@ -378,3 +378,42 @@ def maxProduct(nums):
     return result
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: The Maximum Product Subarray of {nums} is {maxProduct(nums)} ")
+print("---------------------322. Coin Change -------------------------")
+print("***** Method One:Dynamic Programming *****")
+def coinChange(coins, amount):
+    dp = [float("inf")]*(amount+1)
+    dp[0] = 0
+    for temp_amount in range(1,amount+1):
+        for coin in coins:
+            if temp_amount-coin>=0:
+                dp[temp_amount] = min(dp[temp_amount],1+dp[temp_amount-coin])
+    return dp[amount] if dp[amount]!=float("inf") else -1
+test_case = [[[1,2,5], 11],[[2],3],[[1],0]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the coins {test[0]},"
+          f"the fewest number of coins to make up that amount {test[1]}"
+          f" is {coinChange(test[0],test[1])}. ")
+print("***** Method Two:Backtracking *****")
+def coinChange(coins, amount):
+    result = []
+    def dfs(remain,temp_arr):
+        if remain == amount:
+            result.append(temp_arr.copy())
+            return True
+        if remain>amount:
+            return False
+        for c in coins:
+            temp_arr.append(c)
+            dfs(remain+c,temp_arr)
+            temp_arr.pop()
+    dfs(0,[])
+    min_coin = float("inf")
+    print(f"There are {len(result)} combinations to get the amount {amount}")
+    for item in result:
+        if len(item)<min_coin:
+            min_coin = len(item)
+    return min_coin if min_coin!=float("inf") else -1
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the coins {test[0]},"
+          f"the fewest number of coins to make up that amount {test[1]}"
+          f" is {coinChange(test[0],test[1])}.")
