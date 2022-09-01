@@ -344,3 +344,37 @@ test_case = [["abcde","ace"],["abc","abc"],["abc","def"]]
 for i, test in enumerate(test_case):
     print(f"Test Case {i+1}: The length of the longest Common Subsequence of "
           f"{test[0]} and {test[1]} is {longestCommonSubsequence(test[0],test[1])}")
+print("---------------------152. Maximum Product Subarray -------------------------")
+print("***** Method One:Brute Force *****")
+def maxProduct(nums):
+    result = [1]* len(nums)
+    for i in range(len(nums)):
+        curCont = nums[i]
+        curMax = nums[i]
+        for j in range(i+1,len(nums)):
+            if nums[j]==0:
+                curCont = 1
+                continue
+            else:
+                curCont = curCont*nums[j]
+                curMax = max(curMax,curCont)
+        result[i] = curMax
+    return max(result)
+test_case = [[2,3,-2,4],[-2,0,-1],[-4,-3,-2]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: The Maximum Product Subarray of {nums} is {maxProduct(nums)} ")
+print("***** Method One:Dynamic Programming *****")
+def maxProduct(nums):
+    result = max(nums)
+    curMin,curMax = 1,1
+    for n in nums:
+        if n==0:
+            curMin,curMax = 1,1
+            continue
+        temp = curMax
+        curMax = max(curMax*n,curMin*n,n)
+        curMin = max(curMin * n, temp * n,n)
+        result = max(result,curMax)
+    return result
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: The Maximum Product Subarray of {nums} is {maxProduct(nums)} ")
