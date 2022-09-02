@@ -1,3 +1,12 @@
+def print_matrix(dp):
+    for i in range(len(dp)):
+        for j in range(len(dp[0])):
+            if isinstance(dp[i][j],int):
+                print(format(dp[i][j],'02d'), end="|")
+            else:
+                print(dp[i][j], end="|")
+        print()
+
 print("---------------------494. Target Sum -------------------------")
 def findTargetSumWays(nums,target):
     dp = {} # (index,total): # of ways
@@ -388,7 +397,7 @@ def coinChange(coins, amount):
             if temp_amount-coin>=0:
                 dp[temp_amount] = min(dp[temp_amount],1+dp[temp_amount-coin])
     return dp[amount] if dp[amount]!=float("inf") else -1
-test_case = [[[1,2,5], 11],[[2],3],[[1],0]]
+test_case = [[[1,2,5], 11],[[2],3],[[1],0],[[1,2,5],5],[[2],3],[[10],10]]
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}: Based on the coins {test[0]},"
           f"the fewest number of coins to make up that amount {test[1]}"
@@ -396,9 +405,11 @@ for i,test in enumerate(test_case):
 print("***** Method Two:Backtracking *****")
 def coinChange(coins, amount):
     result = []
+    # result = set()
     def dfs(remain,temp_arr):
         if remain == amount:
-            result.append(temp_arr.copy())
+            result.append(sorted(temp_arr.copy()))
+            # result.update(sorted(temp_arr.copy()))
             return True
         if remain>amount:
             return False
@@ -408,12 +419,40 @@ def coinChange(coins, amount):
             temp_arr.pop()
     dfs(0,[])
     min_coin = float("inf")
-    print(f"There are {len(result)} combinations to get the amount {amount}")
-    for item in result:
+    unduplicated_result = []
+    for lst in result:
+        if lst not in unduplicated_result:
+            unduplicated_result.append(lst)
+    print(f"There are {len(unduplicated_result)} combinations to get the amount {amount}")
+    print(f"Conbination: {unduplicated_result}")
+    for item in unduplicated_result:
         if len(item)<min_coin:
             min_coin = len(item)
     return min_coin if min_coin!=float("inf") else -1
 for i,test in enumerate(test_case):
-    print(f"Test Case {i+1}: Based on the coins {test[0]},"
-          f"the fewest number of coins to make up that amount {test[1]}"
+    print(f"Test Case {i+1}: ")
+    print(f"Based on the coins {test[0]} the fewest number of coins to make up that amount {test[1]}"
           f" is {coinChange(test[0],test[1])}.")
+print("---------------------221. Maximal Square -------------------------")
+def maximalSquare(matrix):
+    ROW,COLS = len(matrix),len(matrix[0])
+    dp = {}
+    def helper(r,c):
+        if r>=ROW or c>=COLS:
+            return 0
+        if (r,c) not in dp:
+            down = helper(r+1,c)
+            right = helper(r,c+1)
+            diag = helper(r+1,c+1)
+            dp[(r,c)]=0
+            if matrix[r][c]=="1":
+                dp[(r,c)] = 1+min(down,right,diag)
+        return dp[(r,c)]
+    helper(0,0)
+    return max(dp.values())**2
+test_case = [[["1","0","1","0","0"],["1","0","1","1","1"],["1","1","1","1","1"],["1","0","0","1","0"]],
+             [["0","1"],["1","0"]],[["0"]]]
+for i,matrix in enumerate(test_case):
+    print(f"Test Case {i+1}: The Matrix is ")
+    print_matrix(matrix)
+    print(f"The area of largest square is {maximalSquare(matrix)} ")
