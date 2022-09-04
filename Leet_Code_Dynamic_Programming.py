@@ -6,7 +6,23 @@ def print_matrix(dp):
             else:
                 print(dp[i][j], end="|")
         print()
-
+def print_matrix_in_triangle_format(matrix):
+    for i in range(len(matrix)):
+        for j in range(len(matrix[i])):
+            if matrix[i][j] == float("inf"):
+                break
+            else:
+                print(matrix[i][j],end = " ")
+        print()
+def print_triangle(triangle):
+    temp_triangle = [[" " for i in range(len(triangle[-1]))] for j in range(len(triangle))]
+    for i in range(len(triangle)):
+        for j in range(len(triangle[i])):
+            temp_triangle[i][j] = triangle[i][j]
+    for i in range(len(temp_triangle)):
+        for j in range(len(temp_triangle[i])):
+            print(temp_triangle[i][j],end = " ")
+        print()
 print("---------------------494. Target Sum -------------------------")
 def findTargetSumWays(nums,target):
     dp = {} # (index,total): # of ways
@@ -456,3 +472,31 @@ for i,matrix in enumerate(test_case):
     print(f"Test Case {i+1}: The Matrix is ")
     print_matrix(matrix)
     print(f"The area of largest square is {maximalSquare(matrix)} ")
+print("---------------------120. Triangle -------------------------")
+print("***** Method One: Dynamic Programming Time Complexity O(n^2) Space Complexity O(n) *****")
+def minimumTotal(triangle):
+    dp = [0]*(len(triangle)+1)
+    for row in triangle[::-1]:
+        for i,n in enumerate(row):
+            dp[i] = n+min(dp[i],dp[i+1])
+    return dp[0]
+test_case = [[[2],[3,4],[6,5,7],[4,1,8,3]],[[-10]]]
+for i,triangle in enumerate(test_case):
+    print(f"Test Case {i+1}: The triangle is:")
+    print_triangle(triangle)
+    print(f"The minimum path sum from top to bottom is {minimumTotal(triangle)}")
+print("***** Method Two: Auxiliary 2d array Time Complexity O(n^2) Space Complexity O(n^2) *****")
+def minimumTotal(triangle):
+    support_array = [[float("inf") for i in range(len(triangle[-1]))] for j in range(len(triangle))]
+    for j in range(len(triangle[-1])):
+        support_array[-1][j] = triangle[-1][j]
+    for i in range(len(triangle)-2,-1,-1):
+        for j in range(len(triangle[i])):
+            support_array[i][j] = triangle[i][j]+min(support_array[i+1][j],support_array[i+1][j+1])
+    print(f"The result of support array is:")
+    print_matrix_in_triangle_format(support_array)
+    return support_array[0][0]
+for i,triangle in enumerate(test_case):
+    print(f"Test Case {i+1}: The triangle is:")
+    print_triangle(triangle)
+    print(f"The minimum path sum from top to bottom is {minimumTotal(triangle)}")
