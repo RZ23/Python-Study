@@ -541,3 +541,44 @@ def isMatch(s,p):
 test_case = [["aa","a"],["aa", "a*"],["ab",".*"]]
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}: the Pattern '{test[1]}' matchs the String '{test[0]}': {isMatch(test[0],test[1])} ")
+print("---------------------55. Jump Game -------------------------")
+print("***** Method One: Greedy *****")
+def canJump(nums):
+    goal = len(nums)-1
+    for i in range(len(nums)-1,-1,-1):
+        if i+nums[i]>=goal:
+            goal = i
+    if goal ==0:
+        return True
+    else:
+        return False
+test_case = [[2,3,1,1,4],[3,2,1,0,4]]
+for i, nums in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the {nums}, it could jump from the 1st item to the last item: {canJump(nums)}")
+print("***** Method Two: Dynamic Programming *****")
+def canJump(nums):
+    dp = [False]*len(nums)
+    dp[len(nums)-1] = True
+    for i in range(len(nums)-2,-1,-1):
+        if nums[i]>0:
+            for j in range(1,nums[i]+1):
+                dp[i] = dp[i] or dp[i+j]
+        # print(f"dp[{i}] = {dp[i]}")
+    return dp[0]
+for i, nums in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the {nums}, it could jump from the 1st item to the last item: {canJump(nums)}")
+print("***** Method Three: Two Pointers *****")
+def canJump(nums):
+    l = r = 0
+    farthest = 0
+    while r<len(nums)-1:
+        for i in range(l,r+1):
+            farthest = max(farthest,i+nums[i])
+        if farthest==r:
+            return False
+        else:
+            l = r
+            r = farthest
+    return True
+for i, nums in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the {nums}, it could jump from the 1st item to the last item: {canJump(nums)}")
