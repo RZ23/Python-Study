@@ -500,3 +500,23 @@ for i,triangle in enumerate(test_case):
     print(f"Test Case {i+1}: The triangle is:")
     print_triangle(triangle)
     print(f"The minimum path sum from top to bottom is {minimumTotal(triangle)}")
+print("---------------------96. Unique Binary Search Trees -------------------------")
+print("***** Time Complexity O(n^2) Space Complexity O(n) *****")
+def numTrees(n):
+    # numTree[4] = numTree[0]*numTree[3]+
+    #              numTree[1]*numTree[2]+
+    #              numTree[2]*numTree[1]+
+    #              numTree[3]*numTree[0]
+    numTree = [1]*(n+1)
+    # numTree[1] =1
+    # numTree[0] = 1
+    for nodes in range(2,n+1):
+        total = 0
+        for root in range(1,nodes+1):
+            left = root-1
+            right = nodes-root
+            total = total+(numTree[left]*numTree[right])
+        numTree[nodes] = total
+    return numTree[n]
+for i in range(6):
+    print(f"For {i} node(s),it could construct {numTrees(i)}  structurally unique BST")
