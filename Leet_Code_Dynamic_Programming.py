@@ -520,3 +520,24 @@ def numTrees(n):
     return numTree[n]
 for i in range(6):
     print(f"For {i} node(s),it could construct {numTrees(i)}  structurally unique BST")
+print("---------------------10. Regular Expression Matching -------------------------")
+def isMatch(s,p):
+    def backtracking(i,j):
+        # Both at the end of the string, return True
+        if i>=len(s) and j>=len(p):
+            return True
+        # pattern reach the end, but string are not, return False
+        if j>=len(p):
+            return False
+        match = i<len(s) and (s[i]==p[j] or p[j]==".")
+        if (j+1)<len(p) and p[j+1]=="*":
+            # if the next character in the p is "*"
+            # two choices, not use previous character -> backtracking(i,j+2)
+            #              use the previous character ->backtracking (i+1,j)
+            return (backtracking(i,j+2) or ( match and backtracking(i+1,j)))
+        if match:
+            return backtracking(i+1,j+1)
+    return backtracking(0,0)
+test_case = [["aa","a"],["aa", "a*"],["ab",".*"]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}: the Pattern '{test[1]}' matchs the String '{test[0]}': {isMatch(test[0],test[1])} ")
