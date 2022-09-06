@@ -582,3 +582,32 @@ def canJump(nums):
     return True
 for i, nums in enumerate(test_case):
     print(f"Test Case {i+1}: Based on the {nums}, it could jump from the 1st item to the last item: {canJump(nums)}")
+print("---------------------45. Jump Game II -------------------------")
+print("***** Method One: Greedy *****")
+def canJump(nums):
+    l=r=0
+    result = 0
+    while r<len(nums)-1:
+        farthest = 0
+        for i in range(l,r+1):
+            farthest = max(farthest,i+nums[i])
+        l = r+1
+        r = farthest
+        result = result+1
+    return result
+test_case = [[2,3,1,1,4],[2,3,0,1,4]]
+for i, nums in enumerate(test_case):
+    print(f"Test Case {i+1}: For {nums}, the minimum step(s) to reach the"
+          f"last index is {canJump(nums)} ")
+print("***** Method Two: Dynamic Programming *****")
+def canJump(nums):
+    dp = [float("inf")]*len(nums)
+    dp[len(nums)-1] = 0
+    for i in range(len(nums)-2,-1,-1):
+        for j in range(1,nums[i]+1):
+            if i+j<len(nums):
+                dp[i] = min(dp[i],1+dp[i+j])
+    return dp[0]
+for i, nums in enumerate(test_case):
+    print(f"Test Case {i+1}: For {nums}, the minimum step(s) to reach the"
+          f"last index is {canJump(nums)} ")
