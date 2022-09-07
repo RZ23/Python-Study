@@ -648,3 +648,18 @@ def uniquePaths(m,n):
 for i, test in enumerate(test_case):
     print(f"Test Case {i+1}: For the {test[0]}*{test[1]} matrix,"
           f"there is(are) {uniquePaths(test[0],test[1])} path from left-top to bottom-right")
+print("---------------------279. Perfect Squares -------------------------")
+def numSquares(n):
+    dp = [n]*(n+1)
+    dp[0] = 0
+    for target in range(1,n+1):
+        for s in range(1,target+1):
+            square = s*s
+            if target-square<0:
+                break
+            dp[target] = min(dp[target],1+dp[target-square])
+            # if 1+dp[target-square]<dp[target]:
+            #     dp[target] = 1+dp[target-square]
+    return dp[n]
+for i in range(1,16):
+    print(f"The least number of perfect square numbers that sum to {i} is {numSquares(i)} ")
