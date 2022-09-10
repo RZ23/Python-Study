@@ -681,3 +681,25 @@ test_case = [["horse", "ros"],["intention","execution"]]
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}: The minimum number of operations required to convert '{test[0]}' to '{test[1]}' "
           f"is {minDistance(test[0],test[1])}")
+print("---------------------115. Distinct Subsequences -------------------------")
+def numDistinct(s, t):
+    dp = {}
+    def recursive(i,j):
+        # at the end of the target string t
+        if j==len(t):
+            return 1
+        # target string t is longer than the original string s
+        if i==len(s):
+            return 0
+        if (i,j) in dp:
+            return dp[(i,j)]
+        if s[i]==t[j]:
+            dp[(i,j)] = recursive(i+1,j+1)+recursive(i+1,j)
+        else:
+            dp[(i,j)] = recursive(i+1,j)
+        return dp[(i,j)]
+    return recursive(0,0)
+test_case = [["rabbbit","rabbit"],["babgbag","bag"]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}: There is(are) {numDistinct(test[0],test[1])} distinct subsequences of "
+          f"'{test[0]}' which equals '{test[1]}'. ")
