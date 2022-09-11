@@ -703,3 +703,53 @@ test_case = [["rabbbit","rabbit"],["babgbag","bag"]]
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}: There is(are) {numDistinct(test[0],test[1])} distinct subsequences of "
           f"'{test[0]}' which equals '{test[1]}'. ")
+print("-------------------- 377. Combination Sum IV -------------------------")
+print("***** Method One: Dynamic Programming *****")
+print("***** Time Complexity O(m*n) *****")
+def combinationSum4(nums,target):
+    dp={0:1}
+    for total in range(1,target+1):
+        dp[total] = 0
+        for n in nums:
+            dp[total] = dp[total]+dp.get(total-n,0)
+    return dp[target]
+test_case = [[[1,2,3], 4],[[9],3]]
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}: based on the list {test[0]}, there is"
+          f" {combinationSum4(test[0],test[1])} combination(s) to get target number"
+          f" {test[1]}")
+print("***** Method Two: Recursive *****")
+def combinationSum4(nums,target):
+    def countIt(cur):
+        if cur == target:
+            return 1
+        if target<cur:
+            return 0
+        ans = 0
+        for num in nums:
+            ans = ans+countIt(cur+num)
+        return ans
+    return countIt(0)
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}: based on the list {test[0]}, there is"
+          f" {combinationSum4(test[0],test[1])} combination(s) to get target number"
+          f" {test[1]}")
+print("***** Method Three: Recursive with Programming *****")
+def combinationSum4(nums,target):
+    def countIt(cur,dp):
+        if cur==target:
+            return 1
+        if cur>target:
+            return 0
+        if cur in dp:
+            return dp[cur]
+        ans = 0
+        for num in nums:
+            ans = ans+ countIt(cur+num,dp)
+        dp[cur] = ans
+        return ans
+    return countIt(0,{})
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}: based on the list {test[0]}, there is"
+          f" {combinationSum4(test[0],test[1])} combination(s) to get target number"
+          f" {test[1]}")
