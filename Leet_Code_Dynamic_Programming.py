@@ -753,3 +753,38 @@ for i, test in enumerate(test_case):
     print(f"Test Case {i+1}: based on the list {test[0]}, there is"
           f" {combinationSum4(test[0],test[1])} combination(s) to get target number"
           f" {test[1]}")
+print("-------------------- 312. Burst Balloons -------------------------")
+print("***** Method One: Dynamic Programming - DP Cache")
+def maxCoins(nums):
+    nums = [1]+nums+[1]
+    dp = {}
+    def dfs(l,r):
+        if l>r:
+            return 0
+        if (l,r) in dp:
+            return dp[(l,r)]
+        dp[(l,r)] = 0
+        for i in range(l,r+1):
+            coins = nums[l-1]*nums[i]*nums[r+1]
+            coins = coins+dfs(l,i-1)+dfs(i+1,r)
+            dp[(l,r)] = max(dp[l,r],coins)
+        return dp[(l,r)]
+    return dfs(1,len(nums)-2)
+test_case = [[3,1,5,8],[1,5]]
+for i, nums in enumerate(test_case):
+    print(f"Based on the nums {nums}, the maximum"
+          f"coins to burst balloons is {maxCoins(nums)}")
+print("***** Method Two: Dynamic Programming - 2D Cache")
+def maxCoins(nums):
+    N = len(nums)
+    nums = [1]+nums+[1]
+    dp = [[0 for i in range(len(nums)+2)] for j in range(len(nums)+2)]
+    for length in range(1, N + 1):
+        for left in range(1, N - length + 2):
+            right = left+length-1
+            for last in range(left,right+1):
+                dp[left][right] = max(dp[left][right],dp[left][last-1]+nums[left-1]*nums[last]*nums[right+1]+dp[last + 1][right])
+    return dp[1][N]
+for i, nums in enumerate(test_case):
+    print(f"Based on the nums {nums}, the maximum"
+          f"coins to burst balloons is {maxCoins(nums)}")
