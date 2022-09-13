@@ -814,3 +814,34 @@ def rearrangeSticks(n,k):
     return dp[(n,k)]% (10**9+7)
 for i, test in enumerate(test_case):
     print(f"Test Case {i+1}: There is(are) {rearrangeSticks(test[0],test[1])} ways for {test[0]} sticks and {test[1]} visiable")
+print("-------------------- 1911. Maximum Alternating Subsequence Sum -------------------------")
+print("***** Method One: Recursive *****")
+def maxAlternatingSum(nums):
+    dp = {}
+    # flag is true=> even, else odd
+    def dfs(i,even):
+        if i==len(nums):
+            return 0
+        if (i,even) in dp:
+            return dp[(i,even)]
+        total = nums[i] if even else (-1*nums[i])
+        dp[(i,even)] = max(total+dfs(i+1, not even),dfs(i+1,even))
+        return dp[(i,even)]
+    return dfs(0,True)
+test_case = [[4,2,5,3],[5,6,7,8],[6,2,1,2,4,5]]
+for i,nums in enumerate(test_case):
+    print(f"Test case {i+1}: for array {nums}, "
+          f"the Maximum Alternating Subsequence Sum is {maxAlternatingSum(nums)}")
+print("***** Method One: Dynamic Programming *****")
+def maxAlternatingSum(nums):
+    sumEven = 0
+    sumOdd = 0
+    for i in range(len(nums)-1,-1,-1):
+        tempEven = max(sumOdd+nums[i],sumEven)
+        tempOdd = max(sumEven-nums[i],sumOdd)
+        sumOdd = tempOdd
+        sumEven = tempEven
+    return sumEven
+for i,nums in enumerate(test_case):
+    print(f"Test case {i+1}: for array {nums}, "
+          f"the Maximum Alternating Subsequence Sum is {maxAlternatingSum(nums)}")
