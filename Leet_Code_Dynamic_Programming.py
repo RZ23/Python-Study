@@ -845,3 +845,23 @@ def maxAlternatingSum(nums):
 for i,nums in enumerate(test_case):
     print(f"Test case {i+1}: for array {nums}, "
           f"the Maximum Alternating Subsequence Sum is {maxAlternatingSum(nums)}")
+print("-------------------- 416. Partition Equal Subset Sum -------------------------")
+def canPartition(nums):
+    if sum(nums)%2:
+        return False
+    target = sum(nums)//2
+    dp = set()
+    dp.add(0)
+    for i in range(len(nums)-1,-1,-1):
+        TempDP= set()
+        for t in dp:
+            if t+nums[i]==target:
+                return True
+            TempDP.add(t+nums[i])
+            TempDP.add(t)
+        dp = TempDP
+    return True if target in dp else False
+test_case = [[1,5,11,5],[1,2,3,5]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: The array {nums} could be partitioned into two subsets "
+          f"that the sum of elements in both subsets is equal: {canPartition(nums)}")
