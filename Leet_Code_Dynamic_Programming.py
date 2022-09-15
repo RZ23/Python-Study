@@ -865,3 +865,36 @@ test_case = [[1,5,11,5],[1,2,3,5]]
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: The array {nums} could be partitioned into two subsets "
           f"that the sum of elements in both subsets is equal: {canPartition(nums)}")
+print("-------------------- 691. Stickers to Spell Word -------------------------")
+def minStickers(stickers, target):
+    stickCount = []
+    for i,s in enumerate(stickers):
+        stickCount.append({})
+        for c in s:
+            stickCount[i][c] = 1+stickCount[i].get(c,0)
+    dp = {}
+    def dfs(t,stick):
+        if t in dp:
+            return dp[t]
+        res = 1 if stick else 0
+        remainT =""
+        for c in t:
+            if c in stick and stick[c]>0:
+                stick[c] = stick[c]-1
+            else:
+                remainT = remainT+c
+        if remainT:
+            used = float("inf")
+            for s in stickCount:
+                if remainT[0] not in s:
+                    continue
+                used = min(used,dfs(remainT,s.copy()))
+            dp[remainT] = used
+            res = res+used
+        return res
+    res = dfs(target,{})
+    return res if res!=float("inf") else -1
+test_case = [[["with","example","science"], "thehat"],[["notice","possible"], "basicbasic"]]
+for i,test in enumerate(test_case):
+    print(f"Test Case {i+1}: The minimum number of stickers to spell out {test[1]} based on the {test[0]}"
+          f" is {minStickers(test[0],test[1])} ")
