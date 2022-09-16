@@ -898,3 +898,34 @@ test_case = [[["with","example","science"], "thehat"],[["notice","possible"], "b
 for i,test in enumerate(test_case):
     print(f"Test Case {i+1}: The minimum number of stickers to spell out {test[1]} based on the {test[0]}"
           f" is {minStickers(test[0],test[1])} ")
+print("-------------------- 338. Counting Bits -------------------------")
+print("***** Method One: Transfer to Bit and Count *****")
+def countBits(n):
+    def count1(s):
+        cnt = 0
+        for c in s:
+            if c == "1":
+                cnt = cnt + 1
+        return cnt
+    binary_result = []
+    for i in range(n + 1):
+        binary_result.append(str(bin(i))[2:])
+    result = []
+    for item in binary_result:
+        result.append(count1(item))
+    return result
+test_case = [2,5]
+for i, n in enumerate(test_case):
+    print(f"Test Case {i+1}: For {n}, the numbers of '1' by each number in bit format is {countBits(n)}")
+print("***** Method Two: Dynamic Programming *****")
+def countBits(n):
+    dp = [0]*(n+1)
+    dp[0] = 0
+    offset = 1
+    for i in range(1,n+1):
+        if offset*2==i:
+            offset = i
+        dp[i] = 1+dp[i-offset]
+    return dp
+for i, n in enumerate(test_case):
+    print(f"Test Case {i+1}: For {n}, the numbers of '1' by each number in bit format is {countBits(n)}")
