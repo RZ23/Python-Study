@@ -943,3 +943,24 @@ def minDays(n):
 test_case = [10,6,1,56]
 for i, n in enumerate(test_case):
     print(f"The minimum days to eat {n} oranges is {minDays(n)} days")
+print("-------------------- 64. Minimum Path Sum -------------------------")
+def minPathSum(grid):
+    ROW = len(grid)
+    COL = len(grid[0])
+    path = [[0 for i in range(COL)] for j in range(ROW)]
+    path[0][0] = grid[0][0]
+    for i in range(1,COL):
+        path[0][i] = grid[0][i]+path[0][i-1]
+    for j in range(1,ROW):
+        path[j][0] = grid[j][0]+path[j-1][0]
+    for i in range(1,ROW):
+        for j in range(1,COL):
+            path[i][j] = min(grid[i][j]+path[i][j-1],grid[i][j]+path[i-1][j])
+    print("Result Path Sum:")
+    print_matrix(path)
+    return path[-1][-1]
+test_case = [[[1,3,1],[1,5,1],[4,2,1]],[[1,2,3],[4,5,6]]]
+for i, grid in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print_matrix(grid)
+    print(f"The Minimum Path Sum is {minPathSum(grid)}")
