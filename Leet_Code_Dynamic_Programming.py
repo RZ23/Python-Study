@@ -929,3 +929,17 @@ def countBits(n):
     return dp
 for i, n in enumerate(test_case):
     print(f"Test Case {i+1}: For {n}, the numbers of '1' by each number in bit format is {countBits(n)}")
+print("-------------------- 1553. Minimum Number of Days to Eat N Oranges -------------------------")
+def minDays(n):
+    dp = {0:0,1:1}
+    def dfs(n):
+        if n in dp:
+            return dp[n]
+        divide_by_two = 1+(n%2)+dfs(n//2)
+        divide_by_three = 1+(n%3)+dfs(n//3)
+        dp[n] = min(divide_by_two,divide_by_three)
+        return dp[n]
+    return dfs(n)
+test_case = [10,6,1,56]
+for i, n in enumerate(test_case):
+    print(f"The minimum days to eat {n} oranges is {minDays(n)} days")
