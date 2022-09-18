@@ -964,3 +964,18 @@ for i, grid in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print_matrix(grid)
     print(f"The Minimum Path Sum is {minPathSum(grid)}")
+print("-------------------- 118. Pascal's Triangle -------------------------")
+def generate(numRows):
+    result = [[1]]
+    for i in range(1,numRows):
+        temp_result = []
+        temp_result.append(1)
+        for j in range(1,i):
+            temp_result.append(result[i-1][j-1]+result[i-1][j])
+        temp_result.append(1)
+        result.append(temp_result)
+    return result
+test_case = [5,1]
+for i,numRows in enumerate(test_case):
+    print(f"Test Case {i+1}: The Pascal's Triangle of {numRows} is {generate(numRows)}")
+    print_triangle(generate(numRows))
