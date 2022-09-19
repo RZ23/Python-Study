@@ -979,3 +979,60 @@ test_case = [5,1]
 for i,numRows in enumerate(test_case):
     print(f"Test Case {i+1}: The Pascal's Triangle of {numRows} is {generate(numRows)}")
     print_triangle(generate(numRows))
+print("---------------------894. All Possible Full Binary Trees-------------------------")
+from collections import deque
+import binarytree
+from binarytree import Node,tree
+class TreeNode(binarytree.Node):
+    def __init__(self,values=0,right=None,left= None):
+        self.val = values
+        self.right = right
+        self.left = left
+def tree_level_to_list_with_queue_and_null_value(root):
+    if not root:
+        return []
+    result = []
+    q= deque()
+    q.append(root)
+    while q:
+        node = q.popleft()
+        if node is None:
+            result.append(None)
+        else:
+            result.append(node.val)
+            q.append(node.left)
+            q.append(node.right)
+    return result
+
+'''A full binary tree is a binary tree where each node has exactly 0 or 2 children'''
+def allPossibleFBT(n):
+    if n%2==0:
+        return []
+    """
+    using hashmap to reduce the computing time
+    """
+    dp ={0:[],1:[TreeNode(0,None,None)]}
+    # Return the list of full-binary tree
+    def backtracking(n):
+        if n in dp:
+            return dp[n]
+        res = []
+        # since it is from 0 to n-1, and for the n nodes, there are n-1 children nodes without the root
+        for l in range(n):
+            r = n-1-l
+            leftTrees, rightTrees= backtracking(l),backtracking(r)
+
+            for t1 in leftTrees:
+                for t2 in rightTrees:
+                    res.append(TreeNode(0,left = t1,right = t2))
+        dp[n] = res
+        return res
+    return backtracking(n)
+test_case = [7,3]
+for n in test_case:
+    print(f"All the possible of Full Binary Tree(s) of the {n} nodes:")
+    root_list = allPossibleFBT(n)
+    for i in range(len(root_list)):
+        root = root_list[i]
+        print(root)
+        print(tree_level_to_list_with_queue_and_null_value(root))
