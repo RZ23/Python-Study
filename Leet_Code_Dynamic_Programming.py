@@ -1036,3 +1036,24 @@ for n in test_case:
         root = root_list[i]
         print(root)
         print(tree_level_to_list_with_queue_and_null_value(root))
+print("---------------------746. Min Cost Climbing Stairs-------------------------")
+print("***** Method One: Dynamic Programming with Array List")
+def minCostClimbingStairs(cost):
+    dp =[0]*(len(cost))
+    dp[-1] = cost[-1]
+    dp[-2] = cost[-2]
+    for i in range(len(cost)-3,-1,-1):
+        dp[i] = cost[i]+min(dp[i+1],dp[i+2])
+    # print(dp)
+    return min(dp[0],dp[1])
+test_case = [[10,15,20],[1,100,1,1,1,100,1,1,100,1]]
+for i,cost in enumerate(test_case):
+    print(f"Test Case: {i+1}: Based on the list {cost}, the Min Cost Climbing Stairs is {minCostClimbingStairs(cost)}")
+print("***** Method Two: Dynamic Programming without Additional Array")
+def minCostClimbingStairs(cost):
+    cost.append(0)
+    for i in range(len(cost)-3,-1,-1):
+        cost[i] = cost[i]+min(cost[i+1],cost[i+2])
+    return min(cost[0],cost[1])
+for i,cost in enumerate(test_case):
+    print(f"Test Case: {i+1}: Based on the list {cost}, the Min Cost Climbing Stairs is {minCostClimbingStairs(cost)}")
