@@ -1057,3 +1057,22 @@ def minCostClimbingStairs(cost):
     return min(cost[0],cost[1])
 for i,cost in enumerate(test_case):
     print(f"Test Case: {i+1}: Based on the list {cost}, the Min Cost Climbing Stairs is {minCostClimbingStairs(cost)}")
+print("---------------------877. Stone Game-------------------------")
+def stoneGame(pile):
+    dp = {} #dp[(l,r)] = max pile from l to r
+    def dfs(l,r):
+        if l>r:
+            return 0
+        if (l,r) in dp:
+            return dp[(l,r)]
+        even = True if (r-l)%2==1 else False
+        left = pile[l] if even else 0
+        right = pile[r] if even else 0
+        dp[(l,r)] = max(left+dfs(l+1,r),right+dfs(l,r-1))
+        return dp[l,r]
+    first_player_score  = dfs(0,len(pile)-1)
+    return first_player_score,first_player_score>(sum(pile)//2)
+test_case = [[5,3,4,5],[3,7,2,3]]
+for i, pile in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the Pile {pile},"
+          f"The first player's maximum score is {stoneGame(pile)[0]} and could win the game: {stoneGame(pile)[1]}")
