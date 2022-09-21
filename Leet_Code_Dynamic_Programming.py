@@ -1097,3 +1097,32 @@ test_case = [[1,2,3,0,2],[1]]
 for i,prices in enumerate(test_case):
     print(f"Test Case {i+1}: Based on the Price {prices},"
           f"The maximum value is {maxProfit(prices)}")
+print("---------------------343. Integer Break-------------------------")
+print("***** Method One: Dynamic Programming with Recursive *****")
+def integerBreak(n):
+    dp = {1:1}
+    def dfs(num):
+        if num in dp:
+            return dp[num]
+        dp[num] = 0 if num==n else num
+        for i in range(1,num):
+            val = dfs(i)*dfs(num-i)
+            dp[num] = max(dp[num],val)
+        return dp[num]
+    return dfs(n)
+test_case = [2,10]
+for i, n in enumerate(test_case):
+    print(f"For the int {n}, the maximum "
+          f"product is {integerBreak(n)} ")
+print("***** Method Two: Dynamic Programming without Recursive *****")
+def integerBreak(n):
+    dp = {1:1}
+    for num in range(2,n+1):
+        dp[num] = 0 if num== n else num
+        for i in range(1,num):
+            val = dp[i]*dp[num-i]
+            dp[num] = max(dp[num],val)
+    return dp[n]
+for i, n in enumerate(test_case):
+    print(f"For the int {n}, the maximum "
+          f"product is {integerBreak(n)} ")
