@@ -1076,3 +1076,24 @@ test_case = [[5,3,4,5],[3,7,2,3]]
 for i, pile in enumerate(test_case):
     print(f"Test Case {i+1}: Based on the Pile {pile},"
           f"The first player's maximum score is {stoneGame(pile)[0]} and could win the game: {stoneGame(pile)[1]}")
+print("---------------------309. Best Time to Buy and Sell Stock with Cooldown-------------------------")
+def maxProfit(prices):
+    dp ={} # dp[i,buying] = max_value
+    def dfs(i,buying):
+        if i>=len(prices):
+            return 0
+        if (i,buying) in dp:
+            return dp[(i,buying)]
+        cooldown = dfs(i + 1, buying)
+        if buying:
+            buy = dfs(i+1,not buying)-prices[i]
+            dp[(i,buying)] = max(buy,cooldown)
+        else:
+            sell = dfs(i+2,not buying)+prices[i]
+            dp[(i,buying)] = max(sell,cooldown)
+        return dp[(i,buying)]
+    return dfs(0,True)
+test_case = [[1,2,3,0,2],[1]]
+for i,prices in enumerate(test_case):
+    print(f"Test Case {i+1}: Based on the Price {prices},"
+          f"The maximum value is {maxProfit(prices)}")
