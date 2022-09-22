@@ -1,3 +1,4 @@
+from collections import Counter
 def print_matrix(dp):
     for i in range(len(dp)):
         for j in range(len(dp[0])):
@@ -1149,3 +1150,23 @@ test_case = [[1,3,5,4,7],[2,2,2,2,2]]
 for i,nums in enumerate(test_case):
     print(f"Test Case {i+1}: There are {findNumberOfLIS(nums)} longest increasing subsequence"
           f" based on {nums} ")
+print("---------------------740. Delete and Earn-------------------------")
+def deleteAndEarn(nums):
+    count = Counter(nums)
+    nums = sorted(list(set(nums)))
+    earn1,earn2 = 0,0
+    for i in range(len(nums)):
+        curEarn = nums[i]*count[nums[i]]
+        #can't use both curEarn amd earn2
+        if i>0 and nums[i]==nums[i-1]+1:
+            temp = earn2
+            earn2 = max(curEarn+earn1,earn2)
+            earn1 = temp
+        else:
+            temp = earn2
+            earn2 = curEarn+earn2
+            earn1 = temp
+    return earn2
+test_case = [[3,4,2],[2,2,3,3,3,4]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case :{i+1}: Based on the list {nums}, The maximum number of point is {deleteAndEarn(nums)}")
