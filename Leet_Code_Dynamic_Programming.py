@@ -1126,3 +1126,26 @@ def integerBreak(n):
 for i, n in enumerate(test_case):
     print(f"For the int {n}, the maximum "
           f"product is {integerBreak(n)} ")
+print("---------------------673. Number of Longest Increasing Subsequence-------------------------")
+def findNumberOfLIS(nums):
+    dp = {}
+    lenLIS,cnt = 0,0
+    for i in range(len(nums)-1,-1,-1):
+        maxLen,maxCnt = 1,1
+        for j in range(i+1,len(nums)):
+            if nums[j]>nums[i]:
+                length,count = dp[j]
+                if length+1>maxLen:
+                    maxLen,maxCnt = length + 1,count
+                elif length + 1 ==maxLen:
+                    maxCnt = maxCnt + count
+        if maxLen>lenLIS:
+            lenLIS,cnt = maxLen,maxCnt
+        elif maxLen==lenLIS:
+            cnt = cnt+maxCnt
+        dp[i] = [maxLen,maxCnt]
+    return cnt
+test_case = [[1,3,5,4,7],[2,2,2,2,2]]
+for i,nums in enumerate(test_case):
+    print(f"Test Case {i+1}: There are {findNumberOfLIS(nums)} longest increasing subsequence"
+          f" based on {nums} ")
