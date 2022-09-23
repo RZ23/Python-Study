@@ -7,6 +7,14 @@ def print_matrix(dp):
             else:
                 print(dp[i][j], end="|")
         print()
+def print_int_matrix(matrix):
+    print("Matrix:")
+    row = len(matrix)
+    col =len(matrix[0])
+    for i in range(row):
+        for j in range(col):
+            print(format(matrix[i][j],"02d"),end = " ")
+        print()
 def print_matrix_in_triangle_format(matrix):
     for i in range(len(matrix)):
         for j in range(len(matrix[i])):
@@ -1170,3 +1178,29 @@ def deleteAndEarn(nums):
 test_case = [[3,4,2],[2,2,3,3,3,4]]
 for i,nums in enumerate(test_case):
     print(f"Test Case :{i+1}: Based on the list {nums}, The maximum number of point is {deleteAndEarn(nums)}")
+print("---------------------329. Longest Increasing Path in a Matrix-------------------------")
+def longestIncreasingPath(matrix):
+    dp = {}
+    COL= len(matrix[0])
+    ROW = len(matrix)
+    def dfs(r,c,preVal):
+        if (r<0 or r>=ROW or c<0 or c>=COL or matrix[r][c]<=preVal):
+            return 0
+        if (r,c) in dp:
+            return dp[(r,c)]
+        res = 1
+        res = max(res, 1 + dfs(r + 1,c,matrix[r][c]))
+        res = max(res, 1 + dfs(r - 1, c, matrix[r][c]))
+        res = max(res, 1 + dfs(r, c + 1, matrix[r][c]))
+        res = max(res, 1 + dfs(r, c - 1, matrix[r][c]))
+        dp[(r,c)] = res
+        return res
+    for i in range(ROW):
+        for j in range(COL):
+            dfs(i,j,-1)
+    return max(dp.values())
+test_case = [[[9,9,4],[6,6,8],[2,1,1]],[[3,4,5],[3,2,6],[2,2,1]]]
+for i, matrix in enumerate(test_case):
+    print(f"Test Case {i+1}: ")
+    print_int_matrix(matrix)
+    print(f"The Length of longest Increasing Path is {longestIncreasingPath(matrix)} ")
