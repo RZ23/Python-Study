@@ -1252,3 +1252,20 @@ def splitArray(nums,m):
 for i, test in enumerate(test_case):
     print(f"Test Case {i+1}:")
     print(f"For the array {test[0]}, the minimize the largest sum to {test[1]} subarray is {splitArray(test[0],test[1])}")
+print("---------------------1220. Count Vowels Permutation-------------------------")
+def countVowelPermutation(n):
+    dp =[[],[1,1,1,1,1,]]
+    a,e,i,o,u=0,1,2,3,4
+    mod = 10**9 +7
+    for j in range(2,n+1):
+        dp.append([0,0,0,0,0])
+        dp[j][a] = (dp[j-1][e]+dp[j-1][i]+dp[j-1][u])%mod
+        dp[j][e] = (dp[j-1][a]+dp[j-1][i])%mod
+        dp[j][i] = (dp[j-1][e]+dp[j-1][o])%mod
+        dp[j][o] = (dp[j-1][i])%mod
+        dp[j][u] = (dp[j-1][i]+dp[j-1][o])%mod
+    return sum(dp[n])%mod
+test_case = [1,2,5]
+for i,n in enumerate(test_case):
+    print(f"Test Case {i+1}, there is(are) {countVowelPermutation(n)} combinations by using "
+          f"Vowels to create {n} length string following by the rules")
