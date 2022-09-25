@@ -1204,3 +1204,51 @@ for i, matrix in enumerate(test_case):
     print(f"Test Case {i+1}: ")
     print_int_matrix(matrix)
     print(f"The Length of longest Increasing Path is {longestIncreasingPath(matrix)} ")
+print("---------------------410. Split Array Largest Sum-------------------------")
+print("***** Method One: Bruce Force and Recursive *****")
+def splitArray(nums,m):
+   dp = {}
+   def dfs(i,m):
+       if m==1:
+           return sum(nums[i:])
+       if (i,m) in dp:
+           return dp[(i,m)]
+       result = float("inf")
+       curSum = 0
+       for j in range(i,len(nums)-m+1):
+           curSum = curSum+nums[j]
+           maxSum = max(curSum,dfs(j+1,m-1))
+           result = min(result,maxSum)
+           if curSum>result:
+               break
+           dp[(i,m)] = result
+       return result
+   return dfs(0,m)
+test_case = [[[7,2,5,10,8],2],[[1,2,3,4,5],2],[[1,4,4],3]]
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the array {test[0]}, the minimize the largest sum to {test[1]} subarray is {splitArray(test[0],test[1])}")
+print("***** Method Two: Binary Search *****")
+def splitArray(nums,m):
+    l,r= max(nums),sum(nums)
+    def canSplit(largest):
+        subarray = 0
+        curSum = 0
+        for n in nums:
+            curSum = curSum+n
+            if curSum>largest:
+                subarray = subarray+1
+                curSum = n
+        return subarray+1<=m
+    result = r
+    while l<=r:
+        mid = (l+r)//2
+        if canSplit(mid):
+            result = mid
+            r = mid-1
+        else:
+            l = mid+1
+    return result
+for i, test in enumerate(test_case):
+    print(f"Test Case {i+1}:")
+    print(f"For the array {test[0]}, the minimize the largest sum to {test[1]} subarray is {splitArray(test[0],test[1])}")
